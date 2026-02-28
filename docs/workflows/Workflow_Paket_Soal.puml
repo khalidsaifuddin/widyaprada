@@ -1,0 +1,49 @@
+@startuml
+!pragma activityDiagram
+title 2. Paket Soal - Workflow per Role
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2E86AB
+skinparam partitionBorderColor #2E86AB
+
+|#LightGreen|Admin Uji Kompetensi / Super Admin|
+start
+:Buka menu **Paket Soal**;
+:Daftar Paket (search, filter status dan verifikasi, sort);
+if (Aksi?) then (Tambah Paket)
+  :Form **Create**: kode, nama, deskripsi;
+  :Tambah soal dari **Bank Soal** (pilih, atur urutan);
+  :Simpan (Draft atau Aktif);
+else (Detail atau lainnya)
+  if (Pilih Detail?) then (Detail)
+    :Buka **Detail** paket;
+    if (Ubah atau Hapus?) then (Edit)
+      :**Edit**: ubah data, tambah-hapus soal, urutan;
+      :Simpan;
+    else (Hapus)
+      :Klik Hapus;
+      :Isi **alasan penghapusan** (wajib);
+      :Konfirmasi Ya, Hapus;
+    endif
+  else (Lanjut)
+    :Kembali ke List;
+  endif
+endif
+:Paket Aktif bisa dipilih di **Manajemen Uji Kompetensi**;
+stop
+
+|#LightYellow|Verifikator Uji Kompetensi / Super Admin|
+start
+:Buka menu **Paket Soal**;
+:Daftar Paket (filter: Status Verifikasi);
+:Buka **Detail** paket;
+if (Status verifikasi?) then (Belum Diverifikasi)
+  :Klik **Verifikasi**;
+  :Paket ditandai Sudah Diverifikasi;
+else (Sudah Diverifikasi)
+  :Klik **Batalkan Verifikasi**;
+  :Paket kembali Belum Diverifikasi;
+endif
+stop
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+!pragma activityDiagram
+title 4. Assignment (Penugasan Uji Kompetensi) - Workflow per Role
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2E86AB
+skinparam partitionBorderColor #2E86AB
+
+|#LightBlue|Widyaprada (Peserta)|
+start
+:Buka **Tugas Saya** / Penugasan Uji Kompetensi;
+:Daftar ujian yang di-assign (nama, batas waktu, status);
+if (Ujian?) then (Belum dikerjakan & dalam jadwal)
+  :Klik **Mulai Ujian**;
+  :Dialihkan ke **CBT** (lihat workflow CBT);
+else (Sudah dikerjakan & hasil keluar)
+  :Lihat **Hasil** (nilai sendiri);
+  if (Ujian set Leaderboard?) then (Ya)
+    :Klik **Lihat Leaderboard**;
+    :Halaman ranking (peringkat, identitas, nilai);
+  else (Tidak / Privat)
+    :Hanya nilai sendiri;
+  endif
+endif
+stop
+
+|#LightGreen|Admin Uji Kompetensi / Super Admin|
+start
+:Buka **Manajemen Uji Kompetensi**;
+:Saat **Create/Edit** ujian: Atur peserta, Tampilkan Leaderboard (Ya/Tidak);
+:Batas waktu = **Jadwal Selesai** ujian;
+:Peserta yang di-assign melihat ujian di **Tugas Saya**;
+stop
+
+@enduml

@@ -1,0 +1,36 @@
+# Dependencies
+**/vendor
+node_modules
+
+# Environment & secrets
+**/*.env
+.env.local
+.env.*.local
+
+# Build outputs
+**/.next
+**/out
+**/.vercel
+**/.turbo
+**/*.tsbuildinfo
+
+# Go
+*.exe
+*.test
+**/__debug_bin*
+**/coverage.out
+
+# Logs
+**/*.log
+
+# macOS
+**/.DS_Store
+
+# IDE
+.idea/
+
+# Examples / generated
+examples
+
+
+ProjectWidyaprada.code-workspace

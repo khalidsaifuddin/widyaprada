@@ -1,0 +1,47 @@
+@startuml
+!pragma activityDiagram
+title 3. Manajemen Uji Kompetensi - Workflow per Role
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2E86AB
+skinparam partitionBorderColor #2E86AB
+
+|#LightGreen|Admin Uji Kompetensi / Super Admin|
+start
+:Buka menu **Manajemen Uji Kompetensi**;
+:Daftar Ujian (search, filter status dan verifikasi);
+if (Aksi?) then (Buat Ujian)
+  :**Create** ujian;
+  :Isi data dasar: kode, nama, deskripsi, jadwal mulai-selesai, durasi;
+  :Isi **konten ujian**: soal individu (Bank Soal) dan atau paket soal;
+  :Atur **peserta** (satker, unit atau per orang);
+  :Atur **Tampilkan Leaderboard** (Ya atau Tidak);
+  :Simpan **Draft**;
+  :Buka Detail ujian;
+  :Klik **Terbitkan** (konfirmasi);
+  :Status Diterbitkan (peserta bisa akses via CBT);
+else (Detail ujian)
+  :Buka **Detail** ujian;
+  if (Status ujian?) then (Draft)
+    :**Edit** (jadwal, konten, peserta) atau **Hapus** (alasan wajib);
+  else (Berlangsung atau Selesai)
+    :Lihat **rekap**: daftar peserta, status pengerjaan, nilai;
+  endif
+endif
+stop
+
+|#LightYellow|Verifikator Uji Kompetensi / Super Admin|
+start
+:Buka menu **Manajemen Uji Kompetensi**;
+:Daftar Ujian (filter: Status Verifikasi);
+:Buka **Detail** ujian;
+if (Status verifikasi?) then (Belum Diverifikasi)
+  :Klik **Verifikasi**;
+  :Ujian ditandai Sudah Diverifikasi;
+else (Sudah Diverifikasi)
+  :Klik **Batalkan Verifikasi**;
+  :Ujian kembali Belum Diverifikasi;
+endif
+stop
+
+@enduml

@@ -1,0 +1,51 @@
+{
+  "navItems": [
+    {
+      "label": "Beranda",
+      "href": "/",
+      "icon": "HomeIcon",
+      "enabled": true
+    },
+    {
+      "label": "Dashboard",
+      "href": "/dashboard",
+      "icon": "ChartBarIcon",
+      "enabled": true
+    },
+    {
+      "label": "WPData",
+      "icon": "ServerIcon",
+      "children": [
+        {
+          "label": "Manajemen Data WP",
+          "href": "/wpdata",
+          "icon": "UserGroupIcon",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "label": "WPJurnal",
+      "icon": "DocumentTextIcon",
+      "children": [
+        {
+          "label": "Manajemen Jurnal",
+          "href": "/wpjurnal",
+          "icon": "BookOpenIcon",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "label": "WPUjikom",
+      "icon": "AcademicCapIcon",
+      "children": [
+        { "label": "Bank Soal", "href": "/wpujikom/bank-soal", "icon": "ClipboardDocumentListIcon", "enabled": true },
+        { "label": "Paket Soal", "href": "/wpujikom/paket-soal", "icon": "DocumentDuplicateIcon", "enabled": true },
+        { "label": "Manajemen Uji Kompetensi", "href": "/wpujikom/uji-kompetensi", "icon": "CalendarDaysIcon", "enabled": true },
+        { "label": "CBT", "href": "/wpujikom/cbt", "icon": "ComputerDesktopIcon", "enabled": true },
+        { "label": "Assignment", "href": "/wpujikom/assignment", "icon": "ClipboardDocumentCheckIcon", "enabled": true }
+      ]
+    }
+  ]
+}

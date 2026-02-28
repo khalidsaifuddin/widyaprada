@@ -1,0 +1,48 @@
+@startuml
+!pragma activityDiagram
+title 1. Bank Soal - Workflow per Role
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2E86AB
+skinparam partitionBorderColor #2E86AB
+
+|#LightGreen|Admin Uji Kompetensi / Super Admin|
+start
+:Buka menu **Bank Soal**;
+:Daftar Soal (search, filter, sort, paginasi);
+if (Aksi?) then (Tambah Soal)
+  :Form **Create** soal (tipe, kategori, teks, opsi/kunci, bobot, status);
+  :Simpan;
+  :Soal tersimpan;
+else (Detail atau lainnya)
+  if (Pilih Detail?) then (Detail)
+    :Buka **Detail** soal;
+    if (Ubah atau Hapus?) then (Edit)
+      :Form **Edit** soal;
+      :Simpan;
+    else (Hapus)
+      :Klik Hapus;
+      :Isi **alasan penghapusan** (wajib);
+      :Konfirmasi Ya, Hapus;
+    endif
+  else (Lanjut)
+    :Kembali ke List atau keluar;
+  endif
+endif
+stop
+
+|#LightYellow|Verifikator Uji Kompetensi / Super Admin|
+start
+:Buka menu **Bank Soal**;
+:Daftar Soal (filter: Status Verifikasi);
+:Buka **Detail** soal;
+if (Status verifikasi?) then (Belum Diverifikasi)
+  :Klik **Verifikasi**;
+  :Soal ditandai Sudah Diverifikasi;
+else (Sudah Diverifikasi)
+  :Klik **Batalkan Verifikasi** (jika kebijakan mengizinkan);
+  :Soal kembali Belum Diverifikasi;
+endif
+stop
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+!pragma activityDiagram
+title 5. CBT (Computer-Based Test) - Workflow per Role
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2E86AB
+skinparam partitionBorderColor #2E86AB
+
+|#LightBlue|Widyaprada (Peserta)|
+start
+:Buka menu **CBT** / Ujian Tersedia;
+:Daftar ujian tersedia (Diterbitkan, dalam jadwal, saya peserta);
+if (Ada ujian?) then (Ya)
+  :Klik **Mulai Ujian** (atau Lanjutkan);
+  :Baca **petunjuk** (durasi, jumlah soal, peringatan);
+  :Klik **Mulai Ujian**, timer mulai;
+  :**Pengerjaan**: soal PG, Benar-Salah, Essay (navigasi nomor, Simpan opsional);
+  if (Selesai?) then (Submit manual)
+    :Klik **Submit Ujian**;
+    :Konfirmasi "Ya, Submit", jawaban terkunci;
+  else (Waktu habis)
+    :**Auto-submit**, jawaban tersimpan;
+  endif
+  :Halaman **Selesai** (nilai langsung atau setelah koreksi);
+  :**Riwayat / Hasil Saya**: daftar ujian + nilai (jika ada);
+else (Tidak ada)
+  :Pesan: Tidak ada ujian tersedia;
+endif
+stop
+
+|#White|Admin / Verifikator / Super Admin|
+start
+:Tidak mengerjakan ujian di CBT sebagai peserta;
+:Rekap hasil dilihat di **Manajemen Uji Kompetensi**;
+stop
+
+@enduml

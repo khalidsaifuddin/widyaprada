@@ -1,0 +1,14 @@
+@startuml
+title Workflow Modul WPUjikom (Uji Kompetensi)\nAplikasi Widyaprada
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2E86AB
+skinparam partitionBorderColor #2E86AB
+skinparam arrowColor #333333
+|#E8F4FD|**Legenda**|
+note right
+  Setiap diagram berikut: workflow per modul sesuai role.
+  Admin = Admin Uji Kompetensi (Super Admin punya akses sama + modul lain).
+  Widyaprada = peserta ujian (tidak akses Bank Soal, Paket Soal, Manajemen Uji Kompetensi).
+end note
+@enduml

@@ -1,0 +1,674 @@
+@startuml Widyaprada ERD
+!theme plain
+skinparam linetype ortho
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontSize 11
+skinparam defaultFontName SansSerif
+
+title ERD - Aplikasi Widyaprada\n(schema: ref + public)\nSesuai PRD terbaru: Auth/RBAC, Manajemen Uji Kompetensi, Bank Soal, Paket Soal, CBT, Assignment
+
+' ========== SCHEMA REF (Referensi) ==========
+package "schema: ref" as ref_schema {
+  entity "ref.agama" as ref_agama {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.jenis_kelamin" as ref_jenis_kelamin {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(10)
+    nama : varchar(50)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.jenis_kepegawaian" as ref_jenis_kepegawaian {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.golongan_ruang" as ref_golongan_ruang {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(20)
+    nama : varchar(100)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.pangkat" as ref_pangkat {
+    * id : uuid <<PK>>
+    --
+    golongan_ruang_id : uuid <<FK>>
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.jenjang_jabatan_fungsional" as ref_jenjang_jabatan {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.satker" as ref_satker {
+    * id : uuid <<PK>>
+    --
+    parent_satker_id : uuid <<FK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.unit_kerja" as ref_unit_kerja {
+    * id : uuid <<PK>>
+    --
+    satker_id : uuid <<FK>>
+    parent_unit_kerja_id : uuid <<FK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.pendidikan_terakhir" as ref_pendidikan {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.status" as ref_status {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(100)
+    tipe : varchar(50)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.role" as ref_role {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.permission" as ref_permission {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(100)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.tipe_soal" as ref_tipe_soal {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(100)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.kategori_kompetensi" as ref_kategori_kompetensi {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.tingkat_kesulitan" as ref_tingkat_kesulitan {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(100)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.kategori_berita" as ref_kategori_berita {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.level_wilayah" as ref_level_wilayah {
+    * id : uuid <<PK>>
+    --
+    kode : varchar(50)
+    nama : varchar(100)
+    urutan : int
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "ref.mst_wilayah" as ref_mst_wilayah {
+    * id : uuid <<PK>>
+    --
+    level_wilayah_id : uuid <<FK>>
+    parent_wilayah_id : uuid <<FK>>
+    --
+    kode : varchar(8)
+    nama : varchar(60)
+    parent_kode_wilayah : varchar(8)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+}
+
+' ========== SCHEMA PUBLIC (Data Utama & Transaksional) ==========
+package "schema: public" as pub_schema {
+
+  entity "public.user" as pub_user {
+    * id : uuid <<PK>>
+    --
+    satker_id : uuid <<FK>>
+    status_id : uuid <<FK>>
+    --
+    nama_lengkap : varchar(255)
+    email : varchar(255)
+    username : varchar(100)
+    password_hash : varchar(255)
+    no_hp : varchar(50)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+    deleted_reason : text
+  }
+
+  entity "public.user_role" as pub_user_role {
+    * id : uuid <<PK>>
+    --
+    user_id : uuid <<FK>>
+    role_id : uuid <<FK>>
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.role_permission" as pub_role_permission {
+    * id : uuid <<PK>>
+    --
+    role_id : uuid <<FK>>
+    permission_id : uuid <<FK>>
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.widyaprada" as pub_widyaprada {
+    * id : uuid <<PK>>
+    --
+    user_id : uuid <<FK>>
+    satker_id : uuid <<FK>>
+    unit_kerja_id : uuid <<FK>>
+    jenis_kelamin_id : uuid <<FK>>
+    golongan_ruang_id : uuid <<FK>>
+    pangkat_id : uuid <<FK>>
+    jenjang_jabatan_fungsional_id : uuid <<FK>>
+    pendidikan_terakhir_id : uuid <<FK>>
+    status_id : uuid <<FK>>
+    agama_id : uuid <<FK>>
+    wilayah_id : uuid <<FK>>
+    --
+    nip : varchar(18)
+    nama_lengkap : varchar(255)
+    tmt_golongan : date
+    tmt_jabatan_fungsional : date
+    no_sk_pengangkatan : varchar(100)
+    no_hp : varchar(50)
+    email : varchar(255)
+    alamat : text
+    keterangan : text
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+    deleted_reason : text
+  }
+
+  entity "public.slide" as pub_slide {
+    * id : uuid <<PK>>
+    --
+    satker_id : uuid <<FK>>
+    status_id : uuid <<FK>>
+    --
+    judul : varchar(500)
+    subjudul : text
+    gambar_url : varchar(500)
+    url : varchar(500)
+    label_cta : varchar(100)
+    urutan : int
+    tanggal_mulai_tampil : timestamptz
+    tanggal_selesai_tampil : timestamptz
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.berita" as pub_berita {
+    * id : uuid <<PK>>
+    --
+    satker_id : uuid <<FK>>
+    status_id : uuid <<FK>>
+    kategori_berita_id : uuid <<FK>>
+    --
+    judul : varchar(500)
+    slug : varchar(500)
+    konten : text
+    ringkasan : text
+    thumbnail_url : varchar(500)
+    tanggal_publikasi : timestamptz
+    penulis : varchar(255)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.tautan" as pub_tautan {
+    * id : uuid <<PK>>
+    --
+    satker_id : uuid <<FK>>
+    status_id : uuid <<FK>>
+    --
+    judul : varchar(500)
+    url : varchar(500)
+    deskripsi : text
+    urutan : int
+    buka_tab_baru : boolean
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.jurnal" as pub_jurnal {
+    * id : uuid <<PK>>
+    --
+    status_id : uuid <<FK>>
+    widyaprada_id : uuid <<FK>>
+    --
+    judul : varchar(500)
+    penulis : varchar(255)
+    abstrak : text
+    konten : text
+    tanggal_publish : timestamptz
+    doi : varchar(255)
+    issn : varchar(100)
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.soal" as pub_soal {
+    * id : uuid <<PK>>
+    --
+    tipe_soal_id : uuid <<FK>>
+    kategori_kompetensi_id : uuid <<FK>>
+    tingkat_kesulitan_id : uuid <<FK>>
+    status_id : uuid <<FK>>
+    status_verifikasi_id : uuid <<FK>>
+    --
+    kode : varchar(50)
+    teks_soal : text
+    kunci_essay : text
+    bobot_nilai : decimal(5,2)
+    keterangan : text
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+    deleted_reason : text
+  }
+
+  entity "public.soal_opsi" as pub_soal_opsi {
+    * id : uuid <<PK>>
+    --
+    soal_id : uuid <<FK>>
+    --
+    urutan : int
+    teks_opsi : text
+    is_correct : boolean
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.paket_soal" as pub_paket_soal {
+    * id : uuid <<PK>>
+    --
+    status_id : uuid <<FK>>
+    status_verifikasi_id : uuid <<FK>>
+    --
+    kode : varchar(50)
+    nama : varchar(255)
+    deskripsi : text
+    keterangan : text
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+    deleted_reason : text
+  }
+
+  entity "public.paket_soal_item" as pub_paket_soal_item {
+    * id : uuid <<PK>>
+    --
+    paket_soal_id : uuid <<FK>>
+    soal_id : uuid <<FK>>
+    --
+    urutan : int
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.ujian" as pub_ujian {
+    * id : uuid <<PK>>
+    --
+    status_id : uuid <<FK>>
+    status_verifikasi_id : uuid <<FK>>
+    --
+    kode_ujian : varchar(50)
+    nama_ujian : varchar(255)
+    deskripsi : text
+    jadwal_mulai : timestamptz
+    jadwal_selesai : timestamptz
+    durasi_menit : int
+    tampilkan_leaderboard : boolean
+    acak_urutan_soal : boolean
+    acak_opsi : boolean
+    keterangan : text
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+    deleted_reason : text
+  }
+
+  entity "public.ujian_soal" as pub_ujian_soal {
+    * id : uuid <<PK>>
+    --
+    ujian_id : uuid <<FK>>
+    soal_id : uuid <<FK>>
+    --
+    urutan : int
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  entity "public.ujian_paket" as pub_ujian_paket {
+    * id : uuid <<PK>>
+    --
+    ujian_id : uuid <<FK>>
+    paket_soal_id : uuid <<FK>>
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+
+  ' Satu record per peserta per ujian; jawaban semua soal di jawaban_json (key=soal_id, value={jawaban_opsi_id|jawaban_teks})
+  entity "public.ujian_peserta" as pub_ujian_peserta {
+    * id : uuid <<PK>>
+    --
+    ujian_id : uuid <<FK>>
+    user_id : uuid <<FK>>
+    --
+    status_pengerjaan : varchar(30)
+    started_at : timestamptz
+    submitted_at : timestamptz
+    nilai : decimal(5,2)
+    jawaban_json : jsonb
+    --
+    created_at : timestamptz
+    created_by : varchar(255)
+    updated_at : timestamptz
+    updated_by : varchar(255)
+    deleted_at : timestamptz
+    deleted_by : varchar(255)
+  }
+}
+
+' ========== RELASI REF ==========
+' (Self-ref: satker.parent_satker_id, unit_kerja.parent_unit_kerja_id, mst_wilayah.parent_wilayah_id - dihilangkan agar diagram bisa render)
+ref_pangkat }o-- ref_golongan_ruang : golongan_ruang_id
+ref_unit_kerja }o-- ref_satker : satker_id
+ref_mst_wilayah }o-- ref_level_wilayah : level_wilayah_id
+
+' ========== RELASI PUBLIC -> REF ==========
+pub_user }o-- ref_satker : satker_id
+pub_user }o-- ref_status : status_id
+
+pub_user_role }o-- pub_user : user_id
+pub_user_role }o-- ref_role : role_id
+
+pub_role_permission }o-- ref_role : role_id
+pub_role_permission }o-- ref_permission : permission_id
+
+pub_widyaprada }o-- pub_user : user_id
+pub_widyaprada }o-- ref_satker : satker_id
+pub_widyaprada }o-- ref_unit_kerja : unit_kerja_id
+pub_widyaprada }o-- ref_jenis_kelamin : jenis_kelamin_id
+pub_widyaprada }o-- ref_golongan_ruang : golongan_ruang_id
+pub_widyaprada }o-- ref_pangkat : pangkat_id
+pub_widyaprada }o-- ref_jenjang_jabatan : jenjang_jabatan_fungsional_id
+pub_widyaprada }o-- ref_pendidikan : pendidikan_terakhir_id
+pub_widyaprada }o-- ref_status : status_id
+pub_widyaprada }o-- ref_agama : agama_id
+pub_widyaprada }o-- ref_mst_wilayah : wilayah_id
+
+pub_slide }o-- ref_satker : satker_id
+pub_slide }o-- ref_status : status_id
+
+pub_berita }o-- ref_satker : satker_id
+pub_berita }o-- ref_status : status_id
+pub_berita }o-- ref_kategori_berita : kategori_berita_id
+
+pub_tautan }o-- ref_satker : satker_id
+pub_tautan }o-- ref_status : status_id
+
+pub_jurnal }o-- ref_status : status_id
+pub_jurnal }o-- pub_widyaprada : widyaprada_id
+
+' ========== WPUjikom: Bank Soal, Paket Soal, Ujian, CBT, Assignment ==========
+pub_soal }o-- ref_tipe_soal : tipe_soal_id
+pub_soal }o-- ref_kategori_kompetensi : kategori_kompetensi_id
+pub_soal }o-- ref_tingkat_kesulitan : tingkat_kesulitan_id
+pub_soal }o-- ref_status : status_id
+pub_soal }o-- ref_status : status_verifikasi_id
+
+pub_soal_opsi }o-- pub_soal : soal_id
+
+pub_paket_soal }o-- ref_status : status_id
+pub_paket_soal }o-- ref_status : status_verifikasi_id
+
+pub_paket_soal_item }o-- pub_paket_soal : paket_soal_id
+pub_paket_soal_item }o-- pub_soal : soal_id
+
+pub_ujian }o-- ref_status : status_id
+pub_ujian }o-- ref_status : status_verifikasi_id
+
+pub_ujian_soal }o-- pub_ujian : ujian_id
+pub_ujian_soal }o-- pub_soal : soal_id
+
+pub_ujian_paket }o-- pub_ujian : ujian_id
+pub_ujian_paket }o-- pub_paket_soal : paket_soal_id
+
+pub_ujian_peserta }o-- pub_ujian : ujian_id
+pub_ujian_peserta }o-- pub_user : user_id
+
+@enduml
