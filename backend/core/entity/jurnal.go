@@ -5,20 +5,20 @@ const (
 	JurnalStatusPublished = "Published"
 )
 
-// Jurnal untuk WPJurnal
+// Jurnal untuk WPJurnal (JSON tags untuk API response jika digunakan)
 type Jurnal struct {
-	ID          string
-	Title       string
-	Author      string
-	Abstract    string
-	Content     string
-	PublishedAt string
-	Status      string
-	Category    string
-	Year        int
-	UserID      *string // pemilik/submitter (untuk dashboard "my journals")
-	CreatedAt   string
-	UpdatedAt   string
+	ID          string  `json:"id"`
+	Title       string  `json:"title"`
+	Author      string  `json:"author"`
+	Abstract    string  `json:"abstract"`
+	Content     string  `json:"content"`
+	PublishedAt string  `json:"published_at,omitempty"`
+	Status      string  `json:"status"`
+	Category    string  `json:"category,omitempty"`
+	Year        int     `json:"year,omitempty"`
+	UserID      *string `json:"user_id,omitempty"`
+	CreatedAt   string  `json:"created_at,omitempty"`
+	UpdatedAt   string  `json:"updated_at,omitempty"`
 }
 
 // GetJurnalListRequest query GET /api/v1/jurnal

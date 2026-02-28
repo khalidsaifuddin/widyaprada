@@ -10,21 +10,21 @@ const (
 	LinkStatusNonaktif   = "Nonaktif"
 )
 
-// Slide for CMS Slider
+// Slide for CMS Slider (JSON tags for API response)
 type Slide struct {
-	ID              string
-	ImageURL        string
-	Title           string
-	Subtitle        string
-	LinkURL         string
-	CTALabel        string
-	SortOrder       int
-	Status          string
-	DateStart       string
-	DateEnd         string
-	SatkerID        *string
-	CreatedAt       string
-	UpdatedAt       string
+	ID        string  `json:"id"`
+	ImageURL  string  `json:"image_url"`
+	Title     string  `json:"title"`
+	Subtitle  string  `json:"subtitle"`
+	LinkURL   string  `json:"link_url"`
+	CTALabel  string  `json:"cta_label"`
+	SortOrder int     `json:"sort_order"`
+	Status    string  `json:"status"`
+	DateStart string  `json:"date_start,omitempty"`
+	DateEnd   string  `json:"date_end,omitempty"`
+	SatkerID  *string `json:"satker_id,omitempty"`
+	CreatedAt string  `json:"created_at,omitempty"`
+	UpdatedAt string  `json:"updated_at,omitempty"`
 }
 
 // GetSlideListRequest query
@@ -88,21 +88,21 @@ type UpdateSlideRequest struct {
 	DateEnd   string  `json:"tanggal_selesai_tampil"`
 }
 
-// Article for CMS Berita
+// Article for CMS Berita (JSON tags for API response)
 type Article struct {
-	ID           string
-	Title        string
-	Slug         string
-	Content      string
-	Excerpt      string
-	ThumbnailURL string
-	PublishedAt  string
-	Status       string
-	AuthorName   string
-	Category     string
-	SatkerID     *string
-	CreatedAt    string
-	UpdatedAt    string
+	ID           string  `json:"id"`
+	Title        string  `json:"title"`
+	Slug         string  `json:"slug"`
+	Content      string  `json:"content"`
+	Excerpt      string  `json:"excerpt"`
+	ThumbnailURL string  `json:"thumbnail_url,omitempty"`
+	PublishedAt  string  `json:"published_at,omitempty"`
+	Status       string  `json:"status"`
+	AuthorName   string  `json:"author_name,omitempty"`
+	Category     string  `json:"category,omitempty"`
+	SatkerID     *string `json:"satker_id,omitempty"`
+	CreatedAt    string  `json:"created_at,omitempty"`
+	UpdatedAt    string  `json:"updated_at,omitempty"`
 }
 
 // GetArticleListRequest query
@@ -190,18 +190,18 @@ type UpdateArticleRequest struct {
 	Category    string `json:"kategori"`
 }
 
-// Link for CMS Tautan
+// Link for CMS Tautan (JSON tags for API response)
 type Link struct {
-	ID            string
-	Title         string
-	URL           string
-	Description   string
-	SortOrder     int
-	Status        string
-	OpenInNewTab  bool
-	SatkerID      *string
-	CreatedAt     string
-	UpdatedAt     string
+	ID           string  `json:"id"`
+	Title        string  `json:"title"`
+	URL          string  `json:"url"`
+	Description  string  `json:"description"`
+	SortOrder    int     `json:"sort_order"`
+	Status       string  `json:"status"`
+	OpenInNewTab bool    `json:"buka_di_tab_baru"`
+	SatkerID     *string `json:"satker_id,omitempty"`
+	CreatedAt    string  `json:"created_at,omitempty"`
+	UpdatedAt    string  `json:"updated_at,omitempty"`
 }
 
 // GetLinkListRequest query

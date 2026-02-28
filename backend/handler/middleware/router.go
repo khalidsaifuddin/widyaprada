@@ -41,6 +41,7 @@ import (
 	wpdata_usecase "github.com/ProjectWidyaprada/backend/core/usecase/wpdata"
 	"github.com/ProjectWidyaprada/backend/pkg/auth"
 	"github.com/ProjectWidyaprada/backend/pkg/email"
+	"github.com/ProjectWidyaprada/backend/pkg/seed"
 	assignmentrepo "github.com/ProjectWidyaprada/backend/repository/assignment-repo"
 	articlerepo "github.com/ProjectWidyaprada/backend/repository/article-repo"
 	cbtrepo "github.com/ProjectWidyaprada/backend/repository/cbt-repo"
@@ -79,8 +80,8 @@ func InitRouter(cfg config.Config, db *gorm.DB) (*gin.Engine, interface{}) {
 		c.Next()
 	})
 
-	// Auto-migrate: for SQLite use GORM AutoMigrate; for Postgres schema comes from SQL migrations (see pkg/migrate)
-	if cfg.DBType != "postgres" {
+	// Auto-migrate: for SQLite always; for Postgres also when development (untuk seed dummy data)
+	if cfg.DBType != "postgres" || strings.EqualFold(cfg.Environment, "development") {
 		_ = db.AutoMigrate(&examplerepo.Example{})
 		_ = db.AutoMigrate(&questionrepo.QuestionCategory{}, &questionrepo.Question{}, &questionrepo.QuestionOption{})
 		_ = db.AutoMigrate(&packagerepo.QuestionPackage{}, &packagerepo.PackageQuestionItem{})
@@ -100,6 +101,7 @@ func InitRouter(cfg config.Config, db *gorm.DB) (*gin.Engine, interface{}) {
 	_ = dokumenpersyaratanrepo.SeedDokumenPersyaratan(db)
 	_ = questionrepo.SeedDefaultCategories(db)
 	_ = userrepo.SeedDefaultRoles(db)
+	_ = seed.SeedDevData(db, cfg.Environment)
 
 	// Auth feature (SDD Auth Login + Registrasi + Logout + Lupa Password)
 	userRepo := userrepo.NewUserRepo(db)

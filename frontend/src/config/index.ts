@@ -38,7 +38,7 @@ const defaultConfig: AppConfig = {
   app: {
     name: "Widyaprada",
     title: "Aplikasi Widyaprada",
-    description: "Layanan penjaminan mutu pendidikan – PAUD, dasar, menengah, dan masyarakat",
+    description: "Layanan Portal Widyaprada – Kementerian Pendidikan Dasar dan Menengah",
     version: "0.1.0",
     display_version: "0.1.0",
   },
@@ -46,7 +46,7 @@ const defaultConfig: AppConfig = {
     logo: { src: "/logo-widyaprada.svg", alt: "Widyaprada" },
     header: {
       title: "Widyaprada",
-      subtitle: "Penjaminan Mutu Pendidikan",
+      subtitle: "Kemendikdasmen",
     },
     theme: {
       primaryColor: "#2563eb",

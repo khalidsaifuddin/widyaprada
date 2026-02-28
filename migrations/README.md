@@ -33,6 +33,26 @@ Backend menjalankan auto-migration saat startup ketika `DB_TYPE=postgres`:
 
 Auto-migration tidak dijalankan untuk SQLite (schema tetap via GORM AutoMigrate).
 
+## Dummy Data (Development)
+
+Saat `ENVIRONMENT=development`, backend menjalankan seed dummy data otomatis untuk **SQLite dan PostgreSQL**. Data meliputi:
+
+- **User login**:
+  | Email | Password | Role |
+  |-------|----------|------|
+  | admin@example.com | Password123! | Super Admin |
+  | peserta@example.com | Password123! | Peserta |
+
+- **Berita**: 3 artikel (pengumuman, workshop, pedoman CBT)
+- **Bank Soal**: 3 soal pilihan ganda
+- **Paket Soal**: 1 paket (Paket Soal Umum Widyaprada)
+- **Ujian**: 1 ujian diterbitkan (Uji Kompetensi Widyaprada Dasar 2025), peserta demo sudah terdaftar
+- **Slide**: 2 slide hero
+- **Jurnal**: 2 artikel jurnal
+- **Tautan**: 2 link (Ditjen PAUD Dikdas Dikmen, Pusat Asesmen)
+
+Seed bersifat idempotent: hanya dijalankan jika data belum ada.
+
 ## Cara jalankan manual (psql)
 
 ```bash

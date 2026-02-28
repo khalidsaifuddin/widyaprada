@@ -57,6 +57,7 @@ Slider menampilkan beberapa **slide** di beranda (hero). Setiap slide dikelola s
 ### 2.4 CMS Slider – Create / Edit
 - **Create**: Form dengan field di 2.1; Gambar wajib; Urutan dan Status wajib.
 - **Edit**: Form sama, data terisi; bisa ubah urutan dan status.
+- **Pratinjau gambar**: Di field URL Gambar, tampilkan **thumbnail pratinjau** gambar sesuai URL yang diisi (dari data existing atau input pengguna). Jika gagal memuat, tampilkan pesan "Gagal memuat gambar". Bermanfaat agar pengelola bisa memastikan gambar yang dipasang sesuai sebelum menyimpan.
 - Tombol Simpan, Batal. Validasi: gambar ada; urutan numerik; URL valid jika diisi. Umpan balik: loading saat simpan, pesan sukses/error.
 
 ### 2.5 CMS Slider – Delete
@@ -155,6 +156,7 @@ Keputusan apakah data CMS dibatasi per satker atau global ditetapkan produk; set
 | Versi | Tanggal | Perubahan | Penulis |
 |-------|---------|-----------|---------|
 | 1.0 | 2025-02-11 | Dokumen awal: CMS Slider, CMS Berita, CMS Tautan (masing-masing List, Detail, Create, Edit, Delete) | - |
+| 1.1 | 2025-03-01 | CMS Slider Create/Edit: tambah pratinjau thumbnail gambar sesuai URL | - |
 
 ---
 

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const publicPaths = [
+  "/",
+  "/beranda",
+  "/berita",
+  "/jurnal",
   "/auth/login",
   "/auth/register",
   "/auth/forgot-password",

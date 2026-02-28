@@ -28,7 +28,7 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk CMS Landing Page dengan
 
 #### Organisms
 - `SlideListTable` | Tabel: thumbnail, judul, urutan, status; aksi Detail, Edit, Hapus; tombol Tambah Slide |
-- `SlideForm` | Create/Edit: gambar, judul, subjudul, URL, label CTA, urutan, status, periode tampil |
+- `SlideForm` | Create/Edit: gambar (URL), **pratinjau thumbnail** gambar sesuai URL, judul, subjudul, URL, label CTA, urutan, status, periode tampil. Pratinjau diperbarui saat URL berubah; tampilkan pesan jika gagal memuat. |
 - `SlideDetailCard` | Detail lengkap; tombol Edit, Hapus |
 - `SlideDeleteDialog` | Konfirmasi (opsional: alasan) |
 
@@ -74,7 +74,11 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk CMS Landing Page dengan
 
 ---
 
-## 4. File Lokasi
+## 4. Catatan Implementasi – Slide Create/Edit
+
+- **Pratinjau gambar**: Di form Create/Edit slide, field URL Gambar menampilkan thumbnail pratinjau di bawah input. Pratinjau diperbarui saat URL berubah (termasuk saat data existing di-load). Jika gambar gagal dimuat (CORS, 404, dll), tampilkan pesan "Gagal memuat gambar". Implementasi: `<img>` dengan `onLoad`/`onError` dan state `imgError`.
+
+## 5. File Lokasi
 
 ```
 frontend/src/
@@ -87,3 +91,7 @@ frontend/src/
 ├── components/organisms/LinkListTable.tsx
 └── components/molecules/RichTextEditor.tsx
 ```
+
+---
+
+**Changelog SDD**: 2025-03-01 – Tambah pratinjau thumbnail gambar di CMS Slider Create/Edit (sesuai PRD 1.1)

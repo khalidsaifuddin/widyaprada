@@ -21,6 +21,11 @@ export default function SliderEditPage() {
   const [loading, setLoading] = useState(false);
   const [loadDetail, setLoadDetail] = useState(true);
   const [error, setError] = useState("");
+  const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [imageUrl]);
 
   useEffect(() => {
     if (!id) return;
@@ -81,6 +86,24 @@ export default function SliderEditPage() {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">URL Gambar *</label>
           <input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" required />
+          {imageUrl.trim() && (
+            <div className="mt-3">
+              <p className="text-xs text-gray-500 mb-1">Pratinjau</p>
+              <div className="relative h-40 w-full max-w-md rounded-lg border border-gray-200 overflow-hidden bg-gray-100 flex items-center justify-center">
+                {imgError ? (
+                  <p className="text-sm text-gray-500">Gagal memuat gambar</p>
+                ) : (
+                  <img
+                    src={imageUrl.trim()}
+                    alt="Pratinjau gambar slide"
+                    className="h-full w-full object-contain"
+                    onLoad={() => setImgError(false)}
+                    onError={() => setImgError(true)}
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Judul</label>

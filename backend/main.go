@@ -9,6 +9,7 @@ import (
 	"github.com/ProjectWidyaprada/backend/handler/middleware"
 	"github.com/ProjectWidyaprada/backend/pkg/conn"
 	"github.com/ProjectWidyaprada/backend/pkg/migrate"
+	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
@@ -22,6 +23,7 @@ import (
 func main() {
 	log.Print("initializing backend")
 
+	_ = godotenv.Load() // load .env into environment
 	cfg := config.Get()
 
 	if cfg.IsEnableSentry {

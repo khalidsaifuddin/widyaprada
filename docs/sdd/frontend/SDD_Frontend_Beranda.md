@@ -12,7 +12,8 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk Beranda dengan pendekat
 ## 1. Arsitektur & Konteks
 
 - **Route**: `/` atau `/beranda`
-- **Akses**: Publik (pengunjung) + Panel Pengumuman hanya untuk Peserta yang login
+- **Akses**: **Publik tanpa login** — beranda, berita, jurnal dapat diakses oleh siapa saja. Panel Pengumuman hanya untuk Peserta yang login.
+- **Header**: Tombol **Login** jika belum login; tombol **Dashboard** jika sudah login.
 - **Layout**: PublicLayout (header/footer publik, tanpa sidebar dashboard)
 - **API**: Slider, Berita, Tautan, Jurnal published; Pengumuman peserta
 
@@ -61,7 +62,13 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk Beranda dengan pendekat
 #### Organisms
 - `AnnouncementPanel` | Pengumuman hasil seleksi administrasi; Info jadwal Ujikom; Tombol "Mulai Ujikom" (jika jadwal tersedia); hanya tampil untuk user dengan role Peserta/Widyaprada |
 
-### 2.6 Urutan Layout
+### 2.6 Header Auth (PublicHeaderAuth)
+
+- **Belum login**: Tombol "Login" → `/auth/login`
+- **Sudah login**: Tombol "Dashboard" → `/dashboard`
+- Implementasi: `PublicLayout` memakai `PublicHeaderAuth` yang memeriksa `getUserProfile()`; middleware dan AuthWrapper mengizinkan path landing tanpa token.
+
+### 2.7 Urutan Layout
 
 1. HeroSlider – full-width
 2. NewsPanel
@@ -69,7 +76,7 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk Beranda dengan pendekat
 4. JournalPanel
 5. AnnouncementPanel (jika login & role Peserta)
 
-### 2.7 Pages
+### 2.8 Pages
 
 | Route | Page |
 |-------|------|
@@ -77,7 +84,12 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk Beranda dengan pendekat
 
 ---
 
-## 3. State & Fetch
+## 3. Middleware & Auth
+
+- **Public paths** (dapat diakses tanpa token): `/`, `/beranda`, `/berita`, `/jurnal`, `/berita/*`, `/jurnal/*` — dikonfigurasi di `middleware.ts`.
+- AuthWrapper memperbolehkan path ini tanpa memeriksa login.
+
+## 4. State & Fetch
 
 - Slider: `GET /api/v1/landing/slides` (filter: published, periode)
 - Berita: `GET /api/v1/berita?status=published&limit=5`
@@ -87,7 +99,7 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk Beranda dengan pendekat
 
 ---
 
-## 4. Responsivitas & Performa
+## 5. Responsivitas & Performa
 
 - Gambar slider: lazy load, format WebP/optimized; skeleton untuk LCP
 - Grid responsif: 1 kolom mobile, 2–3 kolom desktop
@@ -95,11 +107,13 @@ Dokumen ini menjelaskan **desain teknis frontend** untuk Beranda dengan pendekat
 
 ---
 
-## 5. File Lokasi
+## 6. File Lokasi
 
 ```
 frontend/src/
-├── app/page.tsx                     # atau app/beranda/page.tsx
+├── app/(landing)/page.tsx           # Beranda
+├── app/(landing)/layout.tsx         # PublicLayout
+├── middleware.ts                    # publicPaths: /, /beranda, /berita, /jurnal
 ├── components/organisms/HeroSlider.tsx
 ├── components/organisms/NewsPanel.tsx
 ├── components/organisms/LinksPanel.tsx

@@ -61,7 +61,8 @@ class ApiService {
     if (!this.checkRateLimit()) {
       return { success: false, data: null as T, message: "Rate limit exceeded" };
     }
-    const url = new URL(endpoint.startsWith("/") ? endpoint : `/${endpoint}`, this.baseUrl + "/");
+    const path = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
+    const url = new URL(path, this.baseUrl + "/");
     if (params) {
       const safe = this.sanitizeParams(params);
       Object.entries(safe).forEach(([k, v]) => url.searchParams.set(k, String(v)));
@@ -75,7 +76,8 @@ class ApiService {
     if (!this.checkRateLimit()) {
       return { success: false, data: null as T, message: "Rate limit exceeded" };
     }
-    const url = new URL(endpoint.startsWith("/") ? endpoint : `/${endpoint}`, this.baseUrl + "/");
+    const path = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
+    const url = new URL(path, this.baseUrl + "/");
     const headers = await this.authHeaders();
     const res = await fetch(url.toString(), {
       method: "POST",
@@ -90,7 +92,8 @@ class ApiService {
     if (!this.checkRateLimit()) {
       return { success: false, data: null as T, message: "Rate limit exceeded" };
     }
-    const url = new URL(endpoint.startsWith("/") ? endpoint : `/${endpoint}`, this.baseUrl + "/");
+    const path = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
+    const url = new URL(path, this.baseUrl + "/");
     const headers = await this.authHeaders();
     const res = await fetch(url.toString(), {
       method: "PUT",
@@ -105,7 +108,8 @@ class ApiService {
     if (!this.checkRateLimit()) {
       return { success: false, data: null as T, message: "Rate limit exceeded" };
     }
-    const url = new URL(endpoint.startsWith("/") ? endpoint : `/${endpoint}`, this.baseUrl + "/");
+    const path = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
+    const url = new URL(path, this.baseUrl + "/");
     const headers = await this.authHeaders();
     const res = await fetch(url.toString(), {
       method: "DELETE",

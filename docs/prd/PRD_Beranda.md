@@ -18,7 +18,7 @@
 - **Prioritas**: High
 
 ### 1.2 Ringkasan untuk Pengguna
-Beranda adalah halaman utama landing page aplikasi Widyaprada yang ditampilkan kepada pengunjung (dan pengguna setelah login, jika beranda dipakai sebagai titik masuk). Beranda menampilkan **slider besar (hero slider)** di bagian atas, lalu **Panel Berita**, **Panel Tautan**, dan **Panel Jurnal**. Untuk **Peserta (Calon/WP)** yang sudah login, beranda juga menampilkan **Panel Pengumuman** yang berisi: (1) **Pengumuman hasil seleksi administrasi** — jika tidak lolos ada informasi; (2) **Info menunggu jadwal Ujikom** (ditentukan admin); (3) **Tombol Mulai Ujikom** ketika jadwal tersedia dan diinformasikan.
+Beranda adalah halaman utama landing page aplikasi Widyaprada yang **dapat diakses secara publik** tanpa harus login. Pengunjung melihat **slider besar (hero slider)** di bagian atas, lalu **Panel Berita**, **Panel Tautan**, dan **Panel Jurnal**. Di header, pengunjung yang belum login melihat tombol **Login**; setelah login, tombol berubah menjadi **Dashboard**. Untuk **Peserta (Calon/WP)** yang sudah login, beranda juga menampilkan **Panel Pengumuman** yang berisi: (1) **Pengumuman hasil seleksi administrasi** — jika tidak lolos ada informasi; (2) **Info menunggu jadwal Ujikom** (ditentukan admin); (3) **Tombol Mulai Ujikom** ketika jadwal tersedia dan diinformasikan.
 
 ---
 
@@ -31,6 +31,9 @@ Beranda adalah halaman utama landing page aplikasi Widyaprada yang ditampilkan k
 | 3 | Pengunjung / Semua | pengunjung beranda | melihat panel tautan berisi tautan penting | mengakses link terkait (situs lain, dokumen, dll) dengan cepat |
 | 4 | Pengunjung / Semua | pengunjung beranda | melihat panel jurnal berisi jurnal yang sudah dipublikasikan | melihat ringkasan jurnal terbaru dari landing |
 | 5 | Pengunjung / Semua | pengunjung beranda | mengklik slide, berita, tautan, atau jurnal untuk ke detail/halaman tujuan | menelusuri konten lebih lanjut |
+| 5a | Pengunjung / Semua | pengunjung beranda | mengakses beranda dan halaman publik (Berita, Jurnal) tanpa harus login | melihat konten publik kapan saja |
+| 5b | Pengunjung / Semua | pengunjung beranda | melihat tombol **Login** di header jika belum login | masuk ke aplikasi jika ingin mengakses fitur terproteksi |
+| 5c | Pengunjung / Semua | pengguna yang sudah login | melihat tombol **Dashboard** di header (menggantikan tombol Login) | cepat beralih ke dashboard |
 | 6 | Admin Satker / Super Admin | pengelola konten | mengelola konten slider (slide) melalui CMS Slider (List, Detail, Create, Edit, Delete) | mengubah gambar, judul, tautan, dan urutan slide yang tampil di beranda |
 | 7 | Peserta | peserta ujian | melihat **pengumuman hasil seleksi administrasi** di beranda (jika tidak lolos ada informasi; jika lolos info menunggu jadwal) | tahu status pendaftaran dan langkah selanjutnya |
 | 8 | Peserta | peserta ujian | melihat **info jadwal Ujikom** yang telah ditetapkan admin di beranda | tahu kapan dapat mengerjakan ujian |
@@ -115,6 +118,10 @@ Urutan dan tampilan (grid, jumlah item) dapat disesuaikan dengan design system d
 
 ## 5. Acceptance Criteria (Ringkas)
 
+**Akses publik & header:**
+- Beranda (`/`), Berita (`/berita`, `/berita/[slug]`), dan Jurnal (`/jurnal`, `/jurnal/[id]`) **dapat diakses tanpa login**.
+- Header menampilkan tombol **Login** jika pengguna belum login; tombol **Dashboard** jika sudah login.
+
 **Slider:** (1) Hanya slide dengan status Published yang tampil; jika ada tanggal mulai/selesai, hanya dalam periode tersebut. (2) Urutan sesuai pengaturan di CMS. (3) Setiap slide menampilkan gambar (wajib), plus opsional judul, subjudul, tautan/CTA. (4) Ada navigasi (prev/next atau indikator). (5) Auto-play opsional; pause on hover. (6) Responsif; tidak layout shift saat gambar dimuat.
 
 **Panel Berita:** (1) Hanya berita status Published; jumlah dibatasi (misalnya 3–5 terbaru). (2) Tampil judul, tanggal (opsional), snippet (opsional), link ke Detail Berita. (3) Judul panel jelas (misalnya "Berita Terbaru"). (4) Jika belum ada berita published: panel kosong atau pesan "Belum ada berita."
@@ -147,6 +154,7 @@ Urutan dan tampilan (grid, jumlah item) dapat disesuaikan dengan design system d
 |-------|---------|-----------|---------|
 | 1.0 | 2025-02-11 | Dokumen awal: Slider besar, Panel Berita, Panel Tautan, Panel Jurnal | - |
 | 1.1 | 2025-02-28 | Panel Pengumuman untuk Peserta: hasil seleksi administrasi, info jadwal Ujikom, tombol Mulai Ujikom | - |
+| 1.2 | 2025-03-01 | Akses publik beranda tanpa login; tombol Login/Dashboard di header sesuai status auth | - |
 
 ---
 

@@ -3,12 +3,33 @@ package journalrepo
 import (
 	"context"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/ProjectWidyaprada/backend/core/entity"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
+
+// mapJournalSort maps user-facing sort values (terbaru, terlama) to actual DB columns.
+func mapJournalSort(sortBy, sortOrder string) (col, order string) {
+	col = "published_at"
+	order = "desc"
+	sb := strings.ToLower(sortBy)
+	so := strings.ToLower(sortOrder)
+	switch sb {
+	case "terbaru":
+		col, order = "published_at", "desc"
+	case "terlama":
+		col, order = "published_at", "asc"
+	case "published_at", "created_at", "updated_at", "title", "year":
+		col = sb
+		if so == "asc" || so == "desc" {
+			order = so
+		}
+	}
+	return col, order
+}
 
 func (r *journalRepo) ListPublished(ctx context.Context, req entity.GetJurnalListRequest) (*entity.GetJurnalListResponse, error) {
 	var items []Journal
@@ -39,14 +60,7 @@ func (r *journalRepo) ListPublished(ctx context.Context, req entity.GetJurnalLis
 	if pageSize < 1 || pageSize > 100 {
 		pageSize = 10
 	}
-	sortBy := req.Sort
-	if sortBy == "" {
-		sortBy = "published_at"
-	}
-	sortOrder := req.SortOrder
-	if sortOrder == "" {
-		sortOrder = "desc"
-	}
+	sortBy, sortOrder := mapJournalSort(req.Sort, req.SortOrder)
 	order := sortBy + " " + sortOrder
 
 	offset := (page - 1) * pageSize

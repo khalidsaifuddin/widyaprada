@@ -2,12 +2,33 @@ package articlerepo
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/ProjectWidyaprada/backend/core/entity"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
+
+// mapArticleSort maps user-facing sort values (terbaru, terlama) to actual DB columns.
+func mapArticleSort(sortBy, sortOrder string) (col, order string) {
+	col = "published_at"
+	order = "desc"
+	sb := strings.ToLower(sortBy)
+	so := strings.ToLower(sortOrder)
+	switch sb {
+	case "terbaru":
+		col, order = "published_at", "desc"
+	case "terlama":
+		col, order = "published_at", "asc"
+	case "published_at", "created_at", "updated_at", "title":
+		col = sb
+		if so == "asc" || so == "desc" {
+			order = so
+		}
+	}
+	return col, order
+}
 
 func (r *articleRepo) List(ctx context.Context, req entity.GetArticleListRequest, satkerFilter *string) (*entity.GetArticleListResponse, error) {
 	var items []Article
@@ -42,14 +63,7 @@ func (r *articleRepo) List(ctx context.Context, req entity.GetArticleListRequest
 	if pageSize < 1 || pageSize > 100 {
 		pageSize = 10
 	}
-	sortBy := req.SortBy
-	if sortBy == "" {
-		sortBy = "published_at"
-	}
-	sortOrder := req.SortOrder
-	if sortOrder == "" {
-		sortOrder = "desc"
-	}
+	sortBy, sortOrder := mapArticleSort(req.SortBy, req.SortOrder)
 	order := sortBy + " " + sortOrder
 
 	offset := (page - 1) * pageSize

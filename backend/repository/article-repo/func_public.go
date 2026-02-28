@@ -33,14 +33,7 @@ func (r *articleRepo) ListPublished(ctx context.Context, req entity.GetArticleLi
 	if pageSize < 1 || pageSize > 100 {
 		pageSize = 10
 	}
-	sortBy := req.SortBy
-	if sortBy == "" {
-		sortBy = "published_at"
-	}
-	sortOrder := req.SortOrder
-	if sortOrder == "" {
-		sortOrder = "desc"
-	}
+	sortBy, sortOrder := mapArticleSort(req.SortBy, req.SortOrder)
 	order := sortBy + " " + sortOrder
 
 	offset := (page - 1) * pageSize
