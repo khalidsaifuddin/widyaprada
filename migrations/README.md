@@ -20,7 +20,20 @@ Sesuai PRD terbaru: Auth/RBAC (user–role many-to-many), Manajemen Uji Kompeten
 6. `006_user_ref_adjustments.sql` — user.satker_id nullable (calon peserta); ref.permission tambah group, description; ref.role tambah description.
 7. `007_dokumen_persyaratan_ujikom.sql` — ref.dokumen_persyaratan_ujikom: referensi 13 dokumen persyaratan apply uji kompetensi (Non-WP ke WP / Widyaprada Ahli Madya).
 
-## Cara jalankan
+## Auto-migration (backend service)
+
+Backend menjalankan auto-migration saat startup ketika `DB_TYPE=postgres`:
+
+1. Membuat tabel `public.schema_migrations` untuk tracking versi
+2. Mendeteksi versi database saat ini (berdasarkan migration yang sudah dijalankan)
+3. Memindai file migration (`NNN_*.sql`) dan mendeteksi yang belum dijalankan (stale)
+4. Menjalankan migration yang tertunda secara berurutan
+
+**Config**: `MIGRATIONS_PATH` (default: `migrations`). Jika backend dijalankan dari `backend/`, set `MIGRATIONS_PATH=../migrations`.
+
+Auto-migration tidak dijalankan untuk SQLite (schema tetap via GORM AutoMigrate).
+
+## Cara jalankan manual (psql)
 
 ```bash
 # Dari direktori project, dengan psql:

@@ -19,7 +19,12 @@ import {
   DocumentDuplicateIcon,
   DocumentTextIcon,
   HomeIcon,
+  KeyIcon,
+  LinkIcon,
+  NewspaperIcon,
+  PhotoIcon,
   ServerIcon,
+  ShieldCheckIcon,
   UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -41,6 +46,11 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   CalendarDaysIcon,
   ComputerDesktopIcon,
   ClipboardDocumentCheckIcon,
+  ShieldCheckIcon,
+  KeyIcon,
+  PhotoIcon,
+  NewspaperIcon,
+  LinkIcon,
 };
 
 export default function Sidebar() {

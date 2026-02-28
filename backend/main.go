@@ -8,6 +8,7 @@ import (
 	"github.com/ProjectWidyaprada/backend/docs"
 	"github.com/ProjectWidyaprada/backend/handler/middleware"
 	"github.com/ProjectWidyaprada/backend/pkg/conn"
+	"github.com/ProjectWidyaprada/backend/pkg/migrate"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
@@ -44,6 +45,10 @@ func main() {
 		defer conn.DbCloseSQLite(db)
 	default:
 		log.Fatalf("Unsupported DB_TYPE: %s (use postgres or sqlite)", cfg.DBType)
+	}
+
+	if err := migrate.Run(db, &cfg); err != nil {
+		log.Fatalf("Migration failed: %v", err)
 	}
 
 	router, _ := middleware.InitRouter(cfg, db)

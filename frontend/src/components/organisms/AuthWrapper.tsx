@@ -11,7 +11,18 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
+    const publicPaths = [
+      "/",
+      "/beranda",
+      "/berita",
+      "/jurnal",
+    ];
+    const isPublicPath =
+      publicPaths.includes(pathname) ||
+      pathname.startsWith("/berita/") ||
+      pathname.startsWith("/jurnal/");
     if (
+      isPublicPath ||
       pathname === "/auth/login" ||
       pathname === "/auth/register" ||
       pathname === "/auth/forgot-password" ||

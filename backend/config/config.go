@@ -34,6 +34,10 @@ type Config struct {
 	// SQLite
 	SQLiteDBPath string `envconfig:"SQLITE_DB_PATH" default:"./data/backend.db"`
 
+	// Migrations (PostgreSQL only). Path to migrations dir. Default "migrations" (relative to cwd).
+	// Set MIGRATIONS_PATH=../migrations when running from backend/ dir.
+	MigrationsPath string `envconfig:"MIGRATIONS_PATH" default:"migrations"`
+
 	// Sentry (optional)
 	IsEnableSentry         bool   `envconfig:"IS_ENABLE_SENTRY" default:"false"`
 	SentryDSN              string `envconfig:"SENTRY_DSN" default:""`

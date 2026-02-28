@@ -2,7 +2,7 @@
 
 Dokumen ini mencatat status implementasi SDD. Perbarui file ini setiap selesai mengimplementasikan satu SDD.
 
-**Terakhir diperbarui:** 2025-03-01
+**Terakhir diperbarui:** 2026-03-01 (Landing Page, CMS, Manajemen Data WP)
 
 ---
 
@@ -44,23 +44,23 @@ Dokumen ini mencatat status implementasi SDD. Perbarui file ini setiap selesai m
 | [SDD_Frontend_Auth_Logout](frontend/SDD_Frontend_Auth_Logout.md) | Auth & RBAC | ✅ Done | POST /api/v1/auth/logout, redirect + toast |
 | [SDD_Frontend_Auth_Lupa_Password](frontend/SDD_Frontend_Auth_Lupa_Password.md) | Auth & RBAC | ✅ Done | forgot-password, reset-password |
 | [SDD_Frontend_Auth_Manajemen_Pengguna](frontend/SDD_Frontend_Auth_Manajemen_Pengguna.md) | Auth & RBAC | ✅ Done | CRUD /auth/manajemen-pengguna |
-| [SDD_Frontend_RBAC](frontend/SDD_Frontend_RBAC.md) | Auth & RBAC | ❌ Not started | |
-| [SDD_Frontend_Dashboard_Widyaprada](frontend/SDD_Frontend_Dashboard_Widyaprada.md) | Dashboard | ❌ Not started | |
-| [SDD_Frontend_Bank_Soal](frontend/SDD_Frontend_Bank_Soal.md) | WPUjikom | ❌ Not started | |
-| [SDD_Frontend_Paket_Soal](frontend/SDD_Frontend_Paket_Soal.md) | WPUjikom | ❌ Not started | |
-| [SDD_Frontend_CBT](frontend/SDD_Frontend_CBT.md) | WPUjikom | ❌ Not started | |
-| [SDD_Frontend_Manajemen_Uji_Kompetensi](frontend/SDD_Frontend_Manajemen_Uji_Kompetensi.md) | WPUjikom | ❌ Not started | |
-| [SDD_Frontend_Assignment](frontend/SDD_Frontend_Assignment.md) | WPUjikom | ❌ Not started | |
-| [SDD_Frontend_Beranda](frontend/SDD_Frontend_Beranda.md) | Landing Page | ❌ Not started | |
-| [SDD_Frontend_Berita](frontend/SDD_Frontend_Berita.md) | Landing Page | ❌ Not started | |
-| [SDD_Frontend_Jurnal](frontend/SDD_Frontend_Jurnal.md) | Landing Page | ❌ Not started | |
-| [SDD_Frontend_CMS_Landing_Page](frontend/SDD_Frontend_CMS_Landing_Page.md) | CMS | ❌ Not started | |
-| [SDD_Frontend_Manajemen_Data_WP](frontend/SDD_Frontend_Manajemen_Data_WP.md) | Manajemen Data WP | ❌ Not started | |
+| [SDD_Frontend_RBAC](frontend/SDD_Frontend_RBAC.md) | Auth & RBAC | ✅ Done | /auth/role, /auth/permission, CRUD roles & permissions |
+| [SDD_Frontend_Dashboard_Widyaprada](frontend/SDD_Frontend_Dashboard_Widyaprada.md) | Dashboard | ✅ Done | /dashboard: AssignmentBlock, JournalBlock, sapaan user |
+| [SDD_Frontend_Bank_Soal](frontend/SDD_Frontend_Bank_Soal.md) | WPUjikom | ✅ Done | CRUD v1/questions, verify/unverify, categories |
+| [SDD_Frontend_Paket_Soal](frontend/SDD_Frontend_Paket_Soal.md) | WPUjikom | ✅ Done | CRUD v1/question-packages, verify/unverify, pilih soal |
+| [SDD_Frontend_CBT](docs/sdd/frontend/SDD_Frontend_CBT.md) | WPUjikom | ✅ Done | /wpujikom/cbt, mulai, kerjakan, selesai, riwayat |
+| [SDD_Frontend_Manajemen_Uji_Kompetensi](docs/sdd/frontend/SDD_Frontend_Manajemen_Uji_Kompetensi.md) | WPUjikom | ✅ Done | /wpujikom/uji-kompetensi CRUD, publish, verify |
+| [SDD_Frontend_Assignment](docs/sdd/frontend/SDD_Frontend_Assignment.md) | WPUjikom | ✅ Done | Tugas Saya, apply, hasil, leaderboard |
+| [SDD_Frontend_Beranda](frontend/SDD_Frontend_Beranda.md) | Landing Page | ✅ Done | /, HeroSlider, NewsPanel, LinksPanel, JournalPanel, AnnouncementPanel |
+| [SDD_Frontend_Berita](frontend/SDD_Frontend_Berita.md) | Landing Page | ✅ Done | /berita, /berita/[slug], BeritaList, BeritaDetail |
+| [SDD_Frontend_Jurnal](frontend/SDD_Frontend_Jurnal.md) | Landing Page | ✅ Done | /jurnal, /jurnal/[id], JurnalList, JurnalDetail |
+| [SDD_Frontend_CMS_Landing_Page](frontend/SDD_Frontend_CMS_Landing_Page.md) | CMS | ✅ Done | /cms/slider, /cms/berita, /cms/tautan CRUD |
+| [SDD_Frontend_Manajemen_Data_WP](frontend/SDD_Frontend_Manajemen_Data_WP.md) | Manajemen Data WP | ✅ Done | /wpdata CRUD, list, create, [id], [id]/edit |
 
 ### Ringkasan Frontend
 
-- **Done:** 5
-- **Not started:** 12
+- **Done:** 17
+- **Not started:** 0
 
 ---
 
