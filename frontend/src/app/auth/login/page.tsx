@@ -2,41 +2,65 @@
 
 import { ErrorDialog } from "@/components";
 import { api, app, ui } from "@/config";
-import { storeAuthData } from "@/lib/auth";
+import { getAuthCookie, storeAuthData } from "@/lib/auth";
 import { ArrowRightIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+
+// Backend LoginResponse: { access_token, token_type, expires_in, user: { id, name, email, username, roles, default_home_path } }
+interface LoginResponse {
+  access_token?: string;
+  token_type?: string;
+  expires_in?: number;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    username: string;
+    roles?: { id: string; code: string; name: string }[];
+    default_home_path?: string;
+  };
+}
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/";
+  const redirectParam = searchParams.get("redirect");
+  const sessionExpired = searchParams.get("session") === "expired";
+  const logoutSuccess = searchParams.get("message") === "logout_success";
+  const redirect = redirectParam || "/dashboard";
 
-  const [username, setUsername] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    sessionExpired ? "Sesi Anda telah berakhir. Silakan masuk kembali." : ""
+  );
+  const [infoMessage, setInfoMessage] = useState(logoutSuccess ? "Anda telah keluar." : "");
   const [successOpen, setSuccessOpen] = useState(false);
 
   useEffect(() => {
-    const check = async () => {
-      try {
-        const res = await fetch(`${api.baseUrl}/v1/auth/me`, {
-          credentials: "include",
-          headers: { Accept: "application/json" },
-        });
-        if (res.ok) router.replace(redirect);
-      } catch {
-        // not logged in
-      }
-    };
-    check();
-  }, [api.baseUrl, redirect, router]);
+    if (getAuthCookie()) {
+      router.replace(redirect);
+      return;
+    }
+  }, [redirect, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!identifier.trim()) {
+      setError("Email atau username wajib diisi");
+      return;
+    }
+    if (!password) {
+      setError("Kata sandi wajib diisi");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(`${api.baseUrl}/v1/auth/login`, {
@@ -44,33 +68,42 @@ function LoginForm() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "X-Requested-With": "XMLHttpRequest",
         },
         body: JSON.stringify({
-          user_name: username.trim(),
-          user_password: password,
+          identifier: identifier.trim(),
+          password,
         }),
-        credentials: "include",
       });
-      const data = await res.json().catch(() => ({}));
+      const data: LoginResponse & { message?: string } = await res.json().catch(() => ({}));
 
-      if (res.ok && (data.code === 200 || data.data?.access_token)) {
+      if (res.ok && data.access_token && data.user) {
+        const u = data.user;
+        const expiresIn = data.expires_in ?? 86400;
+        const expiry = new Date(Date.now() + expiresIn * 1000).toISOString();
         const authData = {
-          access_token: data.data?.access_token ?? data.data?.token ?? data.access_token,
-          user_id: String(data.data?.user_id ?? data.data?.id ?? ""),
-          user_name: data.data?.user_name ?? data.data?.username ?? username,
-          user_nik: data.data?.user_nik ?? data.data?.nik ?? "",
-          user_fullname: data.data?.user_fullname ?? data.data?.fullname ?? data.data?.name ?? username,
-          expiry: data.data?.expires_at ?? data.data?.expiry ?? new Date(Date.now() + 86400000).toISOString(),
-          role_user: data.data?.role_user ?? [],
+          access_token: data.access_token,
+          user_id: u.id,
+          user_name: u.username,
+          user_nik: "",
+          user_fullname: u.name,
+          default_home_path: u.default_home_path || "/dashboard",
+          expiry,
+          role_user: (u.roles ?? []).map((r) => ({
+            role_aplikasi_id: r.id,
+            role_aplikasi: r.code,
+            user_id: u.id,
+            instansi_id: "",
+            nama_instansi: "",
+          })),
         };
         await storeAuthData(authData);
         setSuccessOpen(true);
+        const homePath = u.default_home_path || "/dashboard";
         setTimeout(() => {
-          window.location.href = redirect;
+          window.location.href = redirectParam || homePath;
         }, 800);
       } else {
-        setError(data.message ?? data.status ?? "Login gagal. Periksa username dan password.");
+        setError(data.message ?? "Email/username atau kata sandi salah.");
       }
     } catch {
       setError("Koneksi gagal. Periksa jaringan Anda.");
@@ -96,36 +129,46 @@ function LoginForm() {
             <h2 className="text-2xl font-bold text-gray-900">Masuk</h2>
             <p className="text-gray-600 mt-1">Gunakan kredensial Anda</p>
           </div>
+          {infoMessage && (
+            <div
+              role="status"
+              className="rounded-lg bg-green-50 border border-green-200 p-3 text-sm text-green-800 mb-4"
+            >
+              {infoMessage}
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                Username
+              <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
+                Email atau Username
               </label>
               <input
-                id="username"
+                id="identifier"
                 type="text"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                placeholder="Username"
+                placeholder="Email atau username"
                 disabled={loading}
+                aria-describedby={error ? "identifier-error" : undefined}
               />
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+                Kata sandi
               </label>
               <div className="relative">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  required
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                  placeholder="Password"
+                  placeholder="Kata sandi"
                   disabled={loading}
+                  aria-describedby={error ? "password-error" : undefined}
                 />
                 <button
                   type="button"
@@ -137,10 +180,28 @@ function LoginForm() {
               </div>
             </div>
             {error && (
-              <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+              <div
+                id="form-error"
+                role="alert"
+                className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700"
+              >
                 {error}
               </div>
             )}
+            <div className="flex justify-between items-center">
+              <Link
+                href="/auth/register"
+                className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                Belum punya akun? Daftar
+              </Link>
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                Lupa kata sandi?
+              </Link>
+            </div>
             <button
               type="submit"
               disabled={loading}

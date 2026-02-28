@@ -11,7 +11,12 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (pathname === "/auth/login") {
+    if (
+      pathname === "/auth/login" ||
+      pathname === "/auth/register" ||
+      pathname === "/auth/forgot-password" ||
+      pathname.startsWith("/auth/reset-password")
+    ) {
       setAuthenticated(true);
       setLoading(false);
       return;

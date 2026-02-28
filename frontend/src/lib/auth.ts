@@ -1,5 +1,7 @@
 // Authentication utilities for Widyaprada
 
+import { api } from "@/config";
+
 export interface UserRole {
   user_id: string;
   instansi_id: string;
@@ -15,6 +17,7 @@ export interface AuthData {
   user_name: string;
   user_nik: string;
   user_fullname: string;
+  default_home_path: string;
   expiry: string;
   role_user: UserRole[];
   [key: string]: unknown;
@@ -157,9 +160,20 @@ export const isLoggedIn = async (): Promise<boolean> => {
 };
 
 export const logout = async (): Promise<void> => {
+  const token = getAuthCookie();
+  if (token) {
+    try {
+      await fetch(`${api.baseUrl}/v1/auth/logout`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch {
+      // Continue with local cleanup even if API fails
+    }
+  }
   await clearDB();
   clearAuthCookie();
-  if (typeof window !== "undefined") window.location.href = "/auth/login";
+  if (typeof window !== "undefined") window.location.href = "/auth/login?message=logout_success";
 };
 
 export const detectStorageIssues = (): { issues: string[] } => {

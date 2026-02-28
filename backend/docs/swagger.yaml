@@ -1,0 +1,2748 @@
+basePath: /api/v1
+definitions:
+  entity.ApplyStatusResponse:
+    properties:
+      applied_at:
+        type: string
+      catatan_tolak:
+        type: string
+      jenis_ujikom:
+        type: string
+      status:
+        description: menunggu_verifikasi | lolos | tidak_lolos
+        type: string
+      status_kode:
+        description: ujikom_menunggu_verifikasi, etc
+        type: string
+    type: object
+  entity.ApplyUjikomRequest:
+    properties:
+      jenis_ujikom:
+        type: string
+    required:
+    - jenis_ujikom
+    type: object
+  entity.AssignmentListItem:
+    properties:
+      can_view_leaderboard:
+        type: boolean
+      deadline:
+        description: jadwal_selesai
+        type: string
+      exam_id:
+        type: string
+      exam_name:
+        type: string
+      score:
+        type: number
+      status:
+        description: belum_dikerjakan | sudah_dikerjakan
+        type: string
+    type: object
+  entity.AssignmentResultResponse:
+    properties:
+      exam_id:
+        type: string
+      exam_name:
+        type: string
+      score:
+        type: number
+      submitted_at:
+        type: string
+    type: object
+  entity.CBTExamTersediaItem:
+    properties:
+      code:
+        type: string
+      durasi_menit:
+        type: integer
+      id:
+        type: string
+      jadwal_mulai:
+        type: string
+      jadwal_selesai:
+        type: string
+      name:
+        type: string
+    type: object
+  entity.CBTHistoryItem:
+    properties:
+      attempt_id:
+        type: string
+      exam_id:
+        type: string
+      exam_name:
+        type: string
+      score:
+        type: number
+      started_at:
+        type: string
+      submitted_at:
+        type: string
+    type: object
+  entity.CBTHistoryResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.CBTHistoryItem'
+        type: array
+    type: object
+  entity.CBTListExamsResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.CBTExamTersediaItem'
+        type: array
+    type: object
+  entity.CBTListQuestionsResponse:
+    properties:
+      attempt_id:
+        type: string
+      questions:
+        items:
+          $ref: '#/definitions/entity.CBTQuestionItem'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.CBTQuestionItem:
+    properties:
+      num:
+        type: integer
+      options:
+        items:
+          $ref: '#/definitions/entity.CBTQuestionOption'
+        type: array
+      question_id:
+        type: string
+      question_text:
+        type: string
+      type:
+        type: string
+      weight:
+        type: number
+    type: object
+  entity.CBTQuestionOption:
+    properties:
+      id:
+        type: string
+      option_key:
+        type: string
+      option_text:
+        type: string
+    type: object
+  entity.CBTSaveAnswerRequest:
+    properties:
+      answer_text:
+        description: Essay
+        type: string
+      option_id:
+        description: PG, B-S
+        type: string
+      question_id:
+        type: string
+    required:
+    - question_id
+    type: object
+  entity.CBTSaveAnswerResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.CBTStartResponse:
+    properties:
+      attempt_id:
+        type: string
+      durasi_menit:
+        type: integer
+      exam_id:
+        type: string
+      jadwal_selesai:
+        type: string
+      started_at:
+        type: string
+    type: object
+  entity.CBTSubmitResponse:
+    properties:
+      attempt_id:
+        type: string
+      score:
+        type: number
+      submitted_at:
+        type: string
+    type: object
+  entity.CreateExamRequest:
+    properties:
+      code:
+        type: string
+      durasi_menit:
+        type: integer
+      jadwal_mulai:
+        type: string
+      jadwal_selesai:
+        type: string
+      name:
+        type: string
+      package_ids:
+        items:
+          type: string
+        type: array
+      participant_ids:
+        items:
+          type: string
+        type: array
+      question_ids:
+        items:
+          type: string
+        type: array
+      shuffle_questions:
+        type: boolean
+      tampilkan_leaderboard:
+        type: boolean
+    required:
+    - code
+    - durasi_menit
+    - jadwal_mulai
+    - jadwal_selesai
+    - name
+    type: object
+  entity.CreatePackageRequest:
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      question_ids:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+    required:
+    - code
+    - name
+    - question_ids
+    type: object
+  entity.CreateQuestionRequest:
+    properties:
+      answer_key:
+        type: string
+      category_id:
+        type: string
+      code:
+        type: string
+      difficulty:
+        type: string
+      options:
+        items:
+          $ref: '#/definitions/entity.QuestionOptionInput'
+        type: array
+      question_text:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      weight:
+        type: number
+    required:
+    - code
+    - question_text
+    - type
+    type: object
+  entity.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      nip:
+        type: string
+      password:
+        type: string
+      role_ids:
+        items:
+          type: string
+        type: array
+      satker_id:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - role_ids
+    - username
+    type: object
+  entity.DeleteExamRequest:
+    properties:
+      reason:
+        type: string
+    required:
+    - reason
+    type: object
+  entity.DeletePackageRequest:
+    properties:
+      reason:
+        type: string
+    required:
+    - reason
+    type: object
+  entity.DeleteQuestionRequest:
+    properties:
+      reason:
+        type: string
+    required:
+    - reason
+    type: object
+  entity.DeleteUserRequest:
+    properties:
+      reason:
+        type: string
+    required:
+    - reason
+    type: object
+  entity.DokumenPersyaratanItem:
+    properties:
+      batasan:
+        type: string
+      deskripsi:
+        type: string
+      id:
+        type: string
+      kode:
+        type: string
+      nama:
+        type: string
+      tipeInput:
+        description: file | text_portofolio | text_essay
+        type: string
+      untukJenisUjikom:
+        type: string
+      urutan:
+        type: integer
+    type: object
+  entity.ExamContentInfo:
+    properties:
+      sort_order:
+        type: integer
+      source_id:
+        type: string
+      source_type:
+        type: string
+    type: object
+  entity.ExamDetailResponse:
+    properties:
+      code:
+        type: string
+      contents:
+        items:
+          $ref: '#/definitions/entity.ExamContentInfo'
+        type: array
+      created_at:
+        type: string
+      durasi_menit:
+        type: integer
+      id:
+        type: string
+      jadwal_mulai:
+        type: string
+      jadwal_selesai:
+        type: string
+      name:
+        type: string
+      participants:
+        items:
+          $ref: '#/definitions/entity.ExamParticipantInfo'
+        type: array
+      shuffle_questions:
+        type: boolean
+      status:
+        type: string
+      tampilkan_leaderboard:
+        type: boolean
+      updated_at:
+        type: string
+      verification_status:
+        type: string
+    type: object
+  entity.ExamListItem:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      durasi_menit:
+        type: integer
+      id:
+        type: string
+      jadwal_mulai:
+        type: string
+      jadwal_selesai:
+        type: string
+      name:
+        type: string
+      participant_count:
+        type: integer
+      status:
+        type: string
+      verification_status:
+        type: string
+    type: object
+  entity.ExamParticipantInfo:
+    properties:
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
+  entity.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  entity.ForgotPasswordResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.GetAssignmentListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.AssignmentListItem'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  entity.GetExamListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.ExamListItem'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  entity.GetLeaderboardResponse:
+    properties:
+      exam_id:
+        type: string
+      exam_name:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.LeaderboardItem'
+        type: array
+    type: object
+  entity.GetPackageListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.PackageListItem'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  entity.GetQuestionListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.QuestionListItem'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  entity.GetUserListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.UserListItem'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  entity.LeaderboardItem:
+    properties:
+      name:
+        type: string
+      rank:
+        type: integer
+      score:
+        type: number
+      user_id:
+        type: string
+    type: object
+  entity.ListDokumenPersyaratanResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.DokumenPersyaratanItem'
+        type: array
+    type: object
+  entity.LoginRequest:
+    properties:
+      identifier:
+        description: email atau username
+        type: string
+      password:
+        type: string
+    required:
+    - identifier
+    - password
+    type: object
+  entity.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      token_type:
+        type: string
+      user:
+        $ref: '#/definitions/entity.UserResponse'
+    type: object
+  entity.LogoutResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.PackageDetailResponse:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      questions:
+        items:
+          $ref: '#/definitions/entity.PackageQuestionInfo'
+        type: array
+      status:
+        type: string
+      updated_at:
+        type: string
+      verification_status:
+        type: string
+    type: object
+  entity.PackageListItem:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      question_count:
+        type: integer
+      status:
+        type: string
+      verification_status:
+        type: string
+    type: object
+  entity.PackageQuestionInfo:
+    properties:
+      question_code:
+        type: string
+      question_id:
+        type: string
+      sort_order:
+        type: integer
+    type: object
+  entity.QuestionCategory:
+    properties:
+      code:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  entity.QuestionDetailResponse:
+    properties:
+      answer_key:
+        type: string
+      category_id:
+        type: string
+      category_name:
+        type: string
+      code:
+        type: string
+      created_at:
+        type: string
+      difficulty:
+        type: string
+      id:
+        type: string
+      options:
+        items:
+          $ref: '#/definitions/entity.QuestionOption'
+        type: array
+      question_text:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+      verification_status:
+        type: string
+      weight:
+        type: number
+    type: object
+  entity.QuestionListItem:
+    properties:
+      answer_key:
+        type: string
+      category_id:
+        type: string
+      category_name:
+        type: string
+      code:
+        type: string
+      created_at:
+        type: string
+      difficulty:
+        type: string
+      id:
+        type: string
+      question_text:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      verification_status:
+        type: string
+      weight:
+        type: number
+    type: object
+  entity.QuestionOption:
+    properties:
+      id:
+        type: string
+      is_correct:
+        type: boolean
+      option_key:
+        type: string
+      option_text:
+        type: string
+      question_id:
+        type: string
+    type: object
+  entity.QuestionOptionInput:
+    properties:
+      is_correct:
+        type: boolean
+      option_key:
+        type: string
+      option_text:
+        type: string
+    type: object
+  entity.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      nip:
+        type: string
+    required:
+    - email
+    - name
+    type: object
+  entity.RegisterResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.ResetPasswordRequest:
+    properties:
+      password:
+        type: string
+      password_confirm:
+        type: string
+      token:
+        type: string
+    required:
+    - password
+    - password_confirm
+    - token
+    type: object
+  entity.ResetPasswordResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.RoleInfo:
+    properties:
+      code:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  entity.UpdateExamRequest:
+    properties:
+      code:
+        type: string
+      durasi_menit:
+        type: integer
+      jadwal_mulai:
+        type: string
+      jadwal_selesai:
+        type: string
+      name:
+        type: string
+      package_ids:
+        items:
+          type: string
+        type: array
+      participant_ids:
+        items:
+          type: string
+        type: array
+      question_ids:
+        items:
+          type: string
+        type: array
+      shuffle_questions:
+        type: boolean
+      tampilkan_leaderboard:
+        type: boolean
+    type: object
+  entity.UpdatePackageRequest:
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      question_ids:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+    type: object
+  entity.UpdateQuestionRequest:
+    properties:
+      answer_key:
+        type: string
+      category_id:
+        type: string
+      code:
+        type: string
+      difficulty:
+        type: string
+      options:
+        items:
+          $ref: '#/definitions/entity.QuestionOptionInput'
+        type: array
+      question_text:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      weight:
+        type: number
+    type: object
+  entity.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      nip:
+        type: string
+      password:
+        description: kosong = tidak diubah
+        type: string
+      role_ids:
+        items:
+          type: string
+        type: array
+      satker_id:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.UserDetailResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      nip:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/entity.RoleInfo'
+        type: array
+      satker_id:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.UserListItem:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/entity.RoleInfo'
+        type: array
+      satker_id:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.UserResponse:
+    properties:
+      default_home_path:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/entity.RoleInfo'
+        type: array
+      username:
+        type: string
+    type: object
+  helper.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      error:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  helper.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      status:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Backend service (hexagon/clean architecture).
+  title: Widyaprada Backend API
+  version: "1.0"
+paths:
+  /api/v1/assignments:
+    get:
+      consumes:
+      - application/json
+      description: Ujian yang user ikuti, filter status, sort batas_waktu
+      parameters:
+      - description: belum_dikerjakan | sudah_dikerjakan
+        in: query
+        name: status
+        type: string
+      - default: jadwal_selesai
+        description: jadwal_selesai
+        in: query
+        name: sort_by
+        type: string
+      - default: asc
+        description: asc | desc
+        in: query
+        name: sort_order
+        type: string
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.GetAssignmentListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Tugas Saya
+      tags:
+      - assignments
+  /api/v1/assignments/{examId}/leaderboard:
+    get:
+      consumes:
+      - application/json
+      description: Hanya jika tampilkan_leaderboard=Ya & user peserta. 403 jika privat.
+      parameters:
+      - description: Exam ID
+        in: path
+        name: examId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.GetLeaderboardResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Leaderboard ujian
+      tags:
+      - assignments
+  /api/v1/assignments/{examId}/result:
+    get:
+      consumes:
+      - application/json
+      description: Hasil ujian untuk exam tersebut (hanya peserta)
+      parameters:
+      - description: Exam ID
+        in: path
+        name: examId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.AssignmentResultResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Hasil ujian user
+      tags:
+      - assignments
+  /api/v1/auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Minta link reset password ke email
+      parameters:
+      - description: Email
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ForgotPasswordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Forgot Password
+      tags:
+      - auth
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login dengan identifier (email/username) dan password
+      parameters:
+      - description: Login request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Login
+      tags:
+      - auth
+  /api/v1/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: 'Keluar dari aplikasi, invalidasi token. Requires Authorization:
+        Bearer &lt;token&gt;'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.LogoutResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout
+      tags:
+      - auth
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Registrasi mandiri calon peserta (nama, email, nip opsional). Password
+        dikirim ke email.
+      parameters:
+      - description: Register request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Register
+      tags:
+      - auth
+  /api/v1/auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Atur ulang kata sandi dengan token dari email
+      parameters:
+      - description: Token, password, confirm
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ResetPasswordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Reset Password
+      tags:
+      - auth
+  /api/v1/cbt/attempts/{attemptId}/answers:
+    post:
+      consumes:
+      - application/json
+      description: Simpan jawaban (option_id untuk PG/B-S, answer_text untuk Essay)
+      parameters:
+      - description: Attempt ID
+        in: path
+        name: attemptId
+        required: true
+        type: string
+      - description: Jawaban
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CBTSaveAnswerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CBTSaveAnswerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Simpan jawaban
+      tags:
+      - cbt
+  /api/v1/cbt/attempts/{attemptId}/questions:
+    get:
+      consumes:
+      - application/json
+      description: Daftar soal untuk attempt
+      parameters:
+      - description: Attempt ID
+        in: path
+        name: attemptId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CBTListQuestionsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar soal
+      tags:
+      - cbt
+  /api/v1/cbt/attempts/{attemptId}/questions/{num}:
+    get:
+      consumes:
+      - application/json
+      description: Get soal by nomor (1-based)
+      parameters:
+      - description: Attempt ID
+        in: path
+        name: attemptId
+        required: true
+        type: string
+      - description: Nomor soal
+        in: path
+        name: num
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CBTQuestionItem'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Soal per nomor
+      tags:
+      - cbt
+  /api/v1/cbt/attempts/{attemptId}/submit:
+    post:
+      consumes:
+      - application/json
+      description: Submit ujian dan hitung skor (PG/B-S otomatis)
+      parameters:
+      - description: Attempt ID
+        in: path
+        name: attemptId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CBTSubmitResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Submit ujian
+      tags:
+      - cbt
+  /api/v1/cbt/exams:
+    get:
+      consumes:
+      - application/json
+      description: Ujian yang bisa dikerjakan (Diterbitkan, jadwal aktif, user peserta)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CBTListExamsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Daftar ujian tersedia
+      tags:
+      - cbt
+  /api/v1/cbt/exams/{id}/start:
+    post:
+      consumes:
+      - application/json
+      description: Create attempt dan return attempt_id
+      parameters:
+      - description: Exam ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CBTStartResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Mulai ujian
+      tags:
+      - cbt
+  /api/v1/cbt/history:
+    get:
+      consumes:
+      - application/json
+      description: Riwayat ujian + nilai user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CBTHistoryResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Riwayat ujian
+      tags:
+      - cbt
+  /api/v1/examples:
+    get:
+      consumes:
+      - application/json
+      description: Returns a paginated list of examples
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Get example list
+      tags:
+      - example
+  /api/v1/examples/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a single example by ID
+      parameters:
+      - description: Example ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      summary: Get example detail
+      tags:
+      - example
+  /api/v1/exams:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated list of exams with filters
+      parameters:
+      - description: Search
+        in: query
+        name: q
+        type: string
+      - description: Draft, Diterbitkan, Berlangsung, Selesai, all
+        in: query
+        name: status
+        type: string
+      - description: Belum, Sudah, all
+        in: query
+        name: status_verifikasi
+        type: string
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.GetExamListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List exams
+      tags:
+      - exams
+    post:
+      consumes:
+      - application/json
+      description: Create new exam (Draft status)
+      parameters:
+      - description: Create exam request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateExamRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.ExamDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create exam
+      tags:
+      - exams
+  /api/v1/exams/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete exam by ID, reason required
+      parameters:
+      - description: Exam ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Delete reason
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.DeleteExamRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete exam
+      tags:
+      - exams
+    get:
+      consumes:
+      - application/json
+      description: Get exam by ID with contents and participants
+      parameters:
+      - description: Exam ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ExamDetailResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get exam detail
+      tags:
+      - exams
+    put:
+      consumes:
+      - application/json
+      description: Update exam (only Draft status)
+      parameters:
+      - description: Exam ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update exam request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateExamRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ExamDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update exam
+      tags:
+      - exams
+  /api/v1/exams/{id}/publish:
+    post:
+      consumes:
+      - application/json
+      description: Publish exam (Draft -> Diterbitkan)
+      parameters:
+      - description: Exam ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Publish exam
+      tags:
+      - exams
+  /api/v1/exams/{id}/unverify:
+    post:
+      consumes:
+      - application/json
+      description: Cancel verification of exam
+      parameters:
+      - description: Exam ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Unverify exam
+      tags:
+      - exams
+  /api/v1/exams/{id}/verify:
+    post:
+      consumes:
+      - application/json
+      description: Mark exam as verified
+      parameters:
+      - description: Exam ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Verify exam
+      tags:
+      - exams
+  /api/v1/question-packages:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated list of question packages with filters
+      parameters:
+      - description: Search
+        in: query
+        name: q
+        type: string
+      - description: Draft, Aktif, all
+        in: query
+        name: status
+        type: string
+      - description: Belum, Sudah, all
+        in: query
+        name: status_verifikasi
+        type: string
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.GetPackageListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List question packages
+      tags:
+      - question-packages
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create package request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreatePackageRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.PackageDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create question package
+      tags:
+      - question-packages
+  /api/v1/question-packages/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete package by ID, reason required
+      parameters:
+      - description: Package ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Delete reason
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.DeletePackageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete question package
+      tags:
+      - question-packages
+    get:
+      consumes:
+      - application/json
+      description: Get question package by ID with list of questions
+      parameters:
+      - description: Package ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PackageDetailResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get package detail
+      tags:
+      - question-packages
+    put:
+      consumes:
+      - application/json
+      description: Update question package by ID
+      parameters:
+      - description: Package ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update package request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdatePackageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PackageDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update question package
+      tags:
+      - question-packages
+  /api/v1/question-packages/{id}/unverify:
+    post:
+      consumes:
+      - application/json
+      description: Cancel verification of package (Verifikator or Super Admin)
+      parameters:
+      - description: Package ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Unverify question package
+      tags:
+      - question-packages
+  /api/v1/question-packages/{id}/verify:
+    post:
+      consumes:
+      - application/json
+      description: Mark package as verified (Verifikator or Super Admin)
+      parameters:
+      - description: Package ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Verify question package
+      tags:
+      - question-packages
+  /api/v1/questions:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated list of questions with filters
+      parameters:
+      - description: Search
+        in: query
+        name: q
+        type: string
+      - description: Filter by type (PG, BENAR_SALAH, ESSAY)
+        in: query
+        name: tipe
+        type: string
+      - description: Filter by category
+        in: query
+        name: kategori_id
+        type: string
+      - description: Draft, Aktif, all
+        in: query
+        name: status
+        type: string
+      - description: Belum, Sudah, all
+        in: query
+        name: status_verifikasi
+        type: string
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Sort by
+        in: query
+        name: sort_by
+        type: string
+      - description: asc, desc
+        in: query
+        name: sort_order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.GetQuestionListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List questions
+      tags:
+      - questions
+    post:
+      consumes:
+      - application/json
+      description: Create new question (Super Admin only)
+      parameters:
+      - description: Create question request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.QuestionDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create question
+      tags:
+      - questions
+  /api/v1/questions/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete question by ID, reason required (Super Admin only)
+      parameters:
+      - description: Question ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Delete reason
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.DeleteQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete question
+      tags:
+      - questions
+    get:
+      consumes:
+      - application/json
+      description: Get question by ID with options
+      parameters:
+      - description: Question ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.QuestionDetailResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get question detail
+      tags:
+      - questions
+    put:
+      consumes:
+      - application/json
+      description: Update question by ID (Super Admin only)
+      parameters:
+      - description: Question ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update question request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.QuestionDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update question
+      tags:
+      - questions
+  /api/v1/questions/{id}/unverify:
+    post:
+      consumes:
+      - application/json
+      description: Cancel verification of question (Verifikator or Super Admin)
+      parameters:
+      - description: Question ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Unverify question
+      tags:
+      - questions
+  /api/v1/questions/{id}/verify:
+    post:
+      consumes:
+      - application/json
+      description: Mark question as verified (Verifikator or Super Admin)
+      parameters:
+      - description: Question ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Verify question
+      tags:
+      - questions
+  /api/v1/questions/categories:
+    get:
+      consumes:
+      - application/json
+      description: Get all question categories for dropdown
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.QuestionCategory'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List question categories
+      tags:
+      - questions
+  /api/v1/ujikom/apply:
+    post:
+      consumes:
+      - application/json
+      description: Apply pendaftaran dengan dokumen persyaratan
+      parameters:
+      - description: Apply request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ApplyUjikomRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Apply pendaftaran Ujikom
+      tags:
+      - ujikom
+  /api/v1/ujikom/apply/status:
+    get:
+      consumes:
+      - application/json
+      description: Menunggu verifikasi / lolos / tidak lolos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ApplyStatusResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Status pendaftaran user
+      tags:
+      - ujikom
+  /api/v1/ujikom/dokumen-persyaratan:
+    get:
+      consumes:
+      - application/json
+      description: Daftar dokumen persyaratan sesuai jenis ujikom
+      parameters:
+      - description: perpindahan_jabatan | kenaikan_tingkat
+        in: query
+        name: jenis_ujikom
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ListDokumenPersyaratanResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List dokumen persyaratan
+      tags:
+      - ujikom
+  /api/v1/users:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated list of users with filters
+      parameters:
+      - description: Search
+        in: query
+        name: q
+        type: string
+      - description: Filter by role
+        in: query
+        name: role_id
+        type: string
+      - description: Filter by satker
+        in: query
+        name: satker_id
+        type: string
+      - description: active, inactive, all
+        in: query
+        name: status
+        type: string
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: Sort by
+        in: query
+        name: sort_by
+        type: string
+      - description: asc, desc
+        in: query
+        name: sort_order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.GetUserListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create new user
+      parameters:
+      - description: Create user request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.UserDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create user
+      tags:
+      - users
+  /api/v1/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete user by ID (reason required)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Delete reason
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.DeleteUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Get user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserDetailResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user detail
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update user request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserDetailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update user
+      tags:
+      - users
+swagger: "2.0"

@@ -1,0 +1,21 @@
+---
+description: DTO ↔ Entity conversion pattern for repository layer
+globs: backend/repository/**/dto.go
+alwaysApply: false
+---
+
+# DTO ↔ Entity Pattern
+
+In repository DTO files (`dto.go`), always define:
+
+1. **ToEntity()** – method on DTO to convert to `entity.*`
+2. **FromEntity()** – method/function to convert `entity.*` to DTO
+
+Reference implementation: `backend/repository/example-repo/dto.go` and `backend/repository/user-repo/dto.go`.
+
+## Conventions
+
+- **ToEntity**: `func (d *DTO) ToEntity() entity.SomeType`
+- **FromEntity**: `func (DTO) FromEntity(e entity.SomeType) DTO` (method on type, returns DTO)
+- Use these in repo functions instead of manual struct construction
+- For composite responses (e.g. list item = DTO + extra data), add helpers like `ToUserListItem(roles)`

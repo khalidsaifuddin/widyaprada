@@ -101,13 +101,18 @@ class ApiService {
     return this.handleResponse<T>(res);
   }
 
-  async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
+  async delete<T>(endpoint: string, body?: unknown): Promise<ApiResponse<T>> {
     if (!this.checkRateLimit()) {
       return { success: false, data: null as T, message: "Rate limit exceeded" };
     }
     const url = new URL(endpoint.startsWith("/") ? endpoint : `/${endpoint}`, this.baseUrl + "/");
     const headers = await this.authHeaders();
-    const res = await fetch(url.toString(), { method: "DELETE", headers, credentials: "include" });
+    const res = await fetch(url.toString(), {
+      method: "DELETE",
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: "include",
+    });
     return this.handleResponse<T>(res);
   }
 }
@@ -118,7 +123,7 @@ export const apiService = {
   get: <T>(endpoint: string, params?: Record<string, unknown>) => api.get<T>(endpoint, params),
   post: <T>(endpoint: string, body?: unknown) => api.post<T>(endpoint, body),
   put: <T>(endpoint: string, body?: unknown) => api.put<T>(endpoint, body),
-  delete: <T>(endpoint: string) => api.delete<T>(endpoint),
+  delete: <T>(endpoint: string, body?: unknown) => api.delete<T>(endpoint, body),
 };
 
 export function extractApiData<T>(response: ApiResponse<unknown>, fallback: T): T {

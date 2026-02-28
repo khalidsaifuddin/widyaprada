@@ -20,8 +20,19 @@ func (Example) TableName() string {
 	return "examples"
 }
 
+// ToEntity converts DTO to entity.Example
 func (e *Example) ToEntity() entity.Example {
 	return entity.Example{
+		ID:        e.ID,
+		Name:      e.Name,
+		CreatedAt: e.CreatedAt,
+		UpdatedAt: e.UpdatedAt,
+	}
+}
+
+// FromEntity converts entity.Example to DTO
+func (Example) FromEntity(e entity.Example) Example {
+	return Example{
 		ID:        e.ID,
 		Name:      e.Name,
 		CreatedAt: e.CreatedAt,

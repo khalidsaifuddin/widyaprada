@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const publicPaths = ["/auth/login", "/api", "/_next", "/favicon.ico"];
+const publicPaths = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+  "/api",
+  "/_next",
+  "/favicon.ico",
+];
 
 function isPublic(pathname: string): boolean {
   if (publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/"))) return true;

@@ -31,6 +31,8 @@ node_modules
 
 # Examples / generated
 examples
-
+bin
+cursor
+.vscode
 
 ProjectWidyaprada.code-workspace

@@ -44,6 +44,14 @@ type Config struct {
 	// Swagger
 	SwaggerHost     string `envconfig:"SWAGGER_HOST" default:"localhost:8080"`
 	SwaggerBasePath string `envconfig:"SWAGGER_BASE_PATH" default:""`
+
+	// JWT (Auth)
+	JWTSecret   string `envconfig:"JWT_SECRET" default:"widyaprada-secret-change-in-production"`
+	JWTExpiryHr int    `envconfig:"JWT_EXPIRY_HOUR" default:"1"`
+
+	// Lupa Password
+	FrontendURL        string `envconfig:"FRONTEND_URL" default:"http://localhost:3000"`
+	ResetTokenExpiryHr int    `envconfig:"RESET_TOKEN_EXPIRY_HOUR" default:"1"`
 }
 
 func Get() Config {

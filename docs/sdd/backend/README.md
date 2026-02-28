@@ -25,6 +25,12 @@ Persyaratan produk yang menyebut "validasi wewenang", "alasan penghapusan disimp
 
 ---
 
+## Status Implementasi
+
+Lihat [IMPLEMENTATION_STATUS.md](../IMPLEMENTATION_STATUS.md) untuk daftar SDD yang sudah dan belum diimplementasi.
+
+---
+
 ## Daftar SDD
 
 | SDD | PRD Terkait | Modul |

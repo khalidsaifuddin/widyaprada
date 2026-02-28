@@ -1,0 +1,11 @@
+---
+description: Backend timestamps must be stored in UTC; frontend handles local conversion
+globs: backend/**/*.go
+alwaysApply: false
+---
+
+# Timestamp Convention
+
+- **Backend**: Store all timestamps in **UTC**. Use `time.Now().UTC()` (not `time.Now()`).
+- **API responses**: Serialize as UTC (RFC3339 with `Z` or offset).
+- **Frontend**: Convert UTC to user's local timezone for display only.
