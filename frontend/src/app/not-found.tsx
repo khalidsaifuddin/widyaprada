@@ -3,8 +3,10 @@
 import { ui } from "@/config";
 import { HomeIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function NotFound() {
+  const { t } = useTranslation("common");
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-2xl">
@@ -12,10 +14,10 @@ export default function NotFound() {
           <img src={ui.logo.src} alt={ui.logo.alt} className="h-16 w-auto" />
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-          Halaman tidak ditemukan
+          {t("notFound.title")}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          URL yang Anda buka tidak ada atau belum tersedia.
+          {t("notFound.message")}
         </p>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
@@ -25,21 +27,21 @@ export default function NotFound() {
               <QuestionMarkCircleIcon className="h-12 w-12 text-blue-600" />
             </div>
             <h1 className="text-6xl font-bold text-gray-300 mb-2">404</h1>
-            <p className="text-lg text-gray-600 mb-8">Gunakan menu atau kembali ke beranda.</p>
+            <p className="text-lg text-gray-600 mb-8">{t("notFound.hint")}</p>
             <div className="flex gap-3 w-full sm:w-auto">
               <Link
                 href="/"
                 className="flex-1 sm:flex-initial flex justify-center items-center px-4 py-3 rounded-lg text-white bg-blue-600 hover:bg-blue-700 font-medium text-sm"
               >
                 <HomeIcon className="h-5 w-5 mr-2" />
-                Beranda
+                {t("nav.home")}
               </Link>
               <button
                 type="button"
                 onClick={() => window.history.back()}
                 className="flex-1 sm:flex-initial flex justify-center items-center px-4 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium text-sm"
               >
-                Kembali
+                {t("action.back")}
               </button>
             </div>
           </div>

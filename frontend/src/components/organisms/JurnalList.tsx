@@ -3,6 +3,7 @@
 import { apiService } from "@/lib/api";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface JurnalItem {
   id: string;
@@ -36,6 +37,7 @@ function formatDate(d: string): string {
 }
 
 export default function JurnalList() {
+  const { t } = useTranslation("common");
   const [items, setItems] = useState<JurnalItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -61,10 +63,10 @@ export default function JurnalList() {
       setItems(d.items ?? []);
       setTotalPage(d.total_page ?? 1);
     } else {
-      setError(res.message ?? "Gagal memuat jurnal");
+      setError(res.message ?? t("journal.loadFailed"));
     }
     setLoading(false);
-  }, [search, tahun, sort, page]);
+  }, [search, tahun, sort, page, t]);
 
   useEffect(() => {
     fetchJurnal();
@@ -73,7 +75,7 @@ export default function JurnalList() {
   return (
     <div className="py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">Jurnal</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-8">{t("journal.title")}</h1>
 
         <form
           onSubmit={(e) => {
@@ -87,14 +89,14 @@ export default function JurnalList() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cari judul, penulis..."
+            placeholder={t("journal.searchPlaceholder")}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm w-64 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           <input
             type="text"
             value={tahun}
             onChange={(e) => setTahun(e.target.value)}
-            placeholder="Tahun"
+            placeholder={t("journal.year")}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm w-24"
           />
           <select
@@ -105,14 +107,14 @@ export default function JurnalList() {
             }}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
           >
-            <option value="terbaru">Terbaru</option>
-            <option value="terlama">Terlama</option>
+            <option value="terbaru">{t("news.sortNewest")}</option>
+            <option value="terlama">{t("news.sortOldest")}</option>
           </select>
           <button
             type="submit"
             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
-            Cari
+            {t("action.search")}
           </button>
         </form>
 
@@ -125,7 +127,7 @@ export default function JurnalList() {
         ) : error ? (
           <p className="text-red-600">{error}</p>
         ) : items.length === 0 ? (
-          <p className="text-gray-500 text-center py-16">Tidak ada jurnal yang sesuai.</p>
+          <p className="text-gray-500 text-center py-16">{t("journal.emptySearch")}</p>
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -143,7 +145,7 @@ export default function JurnalList() {
                     <p className="mt-2 text-sm text-gray-600 line-clamp-2">{item.abstract}</p>
                   )}
                   <span className="mt-2 inline-block text-sm font-medium text-blue-600">
-                    Baca detail →
+                    {t("journal.readMore")}
                   </span>
                 </Link>
               ))}
@@ -156,7 +158,7 @@ export default function JurnalList() {
                   disabled={page <= 1}
                   className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50"
                 >
-                  Sebelumnya
+                  {t("news.prev")}
                 </button>
                 <span className="px-3 py-1.5 text-sm text-gray-600">
                   {page} / {totalPage}
@@ -167,7 +169,7 @@ export default function JurnalList() {
                   disabled={page >= totalPage}
                   className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50"
                 >
-                  Selanjutnya
+                  {t("news.next")}
                 </button>
               </div>
             )}

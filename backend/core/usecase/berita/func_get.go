@@ -21,6 +21,7 @@ func (u *beritaUsecase) GetBySlug(ctx context.Context, slug string) (*entity.Art
 		Content:      a.Content,
 		Excerpt:      a.Excerpt,
 		ThumbnailURL: a.ThumbnailURL,
+		GalleryURLs:  a.GalleryURLs,
 		PublishedAt:  a.PublishedAt,
 		AuthorName:   a.AuthorName,
 		Category:     a.Category,

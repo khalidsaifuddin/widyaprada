@@ -7,6 +7,7 @@ import { ArrowRightIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outli
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Backend LoginResponse: { access_token, token_type, expires_in, user: { id, name, email, username, roles, default_home_path } }
 interface LoginResponse {
@@ -24,6 +25,7 @@ interface LoginResponse {
 }
 
 function LoginForm() {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectParam = searchParams.get("redirect");
@@ -36,9 +38,13 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(
-    sessionExpired ? "Sesi Anda telah berakhir. Silakan masuk kembali." : ""
+    sessionExpired ? "" : ""
   );
-  const [infoMessage, setInfoMessage] = useState(logoutSuccess ? "Anda telah keluar." : "");
+  const [infoMessage, setInfoMessage] = useState(logoutSuccess ? "" : "");
+  useEffect(() => {
+    if (sessionExpired) setError(t("auth.sessionExpired"));
+    if (logoutSuccess) setInfoMessage(t("auth.logoutSuccess"));
+  }, [sessionExpired, logoutSuccess, t]);
   const [successOpen, setSuccessOpen] = useState(false);
 
   useEffect(() => {
@@ -53,11 +59,11 @@ function LoginForm() {
     setError("");
 
     if (!identifier.trim()) {
-      setError("Email atau username wajib diisi");
+      setError(t("auth.requiredIdentifier"));
       return;
     }
     if (!password) {
-      setError("Kata sandi wajib diisi");
+      setError(t("auth.requiredPassword"));
       return;
     }
 
@@ -103,10 +109,10 @@ function LoginForm() {
           window.location.href = redirectParam || homePath;
         }, 800);
       } else {
-        setError(data.message ?? "Email/username atau kata sandi salah.");
+        setError(data.message ?? t("auth.invalidCredentials"));
       }
     } catch {
-      setError("Koneksi gagal. Periksa jaringan Anda.");
+      setError(t("auth.connectionFailed"));
     } finally {
       setLoading(false);
     }
@@ -122,12 +128,15 @@ function LoginForm() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8 md:hidden">
           <img src={ui.logo.src} alt={ui.logo.alt} className="h-14 w-auto mx-auto mb-2" />
-          <h2 className="text-xl font-bold text-white">{app.name}</h2>
+          <h2 className="text-2xl font-bold">
+            <span style={{ color: "#057AC1" }}>Widya</span>
+            <span style={{ color: "#F9A702" }}>prada</span>
+          </h2>
         </div>
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Masuk</h2>
-            <p className="text-gray-600 mt-1">Gunakan kredensial Anda</p>
+            <h2 className="text-2xl font-bold text-gray-900">{t("auth.loginTitle")}</h2>
+            <p className="text-gray-600 mt-1">{t("auth.loginSubtitle")}</p>
           </div>
           {infoMessage && (
             <div
@@ -140,7 +149,7 @@ function LoginForm() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
-                Email atau Username
+                {t("auth.emailOrUsername")}
               </label>
               <input
                 id="identifier"
@@ -149,14 +158,14 @@ function LoginForm() {
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                placeholder="Email atau username"
+                placeholder={t("auth.emailOrUsernamePlaceholder")}
                 disabled={loading}
                 aria-describedby={error ? "identifier-error" : undefined}
               />
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Kata sandi
+                {t("auth.password")}
               </label>
               <div className="relative">
                 <input
@@ -166,7 +175,7 @@ function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                  placeholder="Kata sandi"
+                  placeholder={t("auth.passwordPlaceholder")}
                   disabled={loading}
                   aria-describedby={error ? "password-error" : undefined}
                 />
@@ -193,13 +202,13 @@ function LoginForm() {
                 href="/auth/register"
                 className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
               >
-                Belum punya akun? Daftar
+                {t("auth.noAccount")}
               </Link>
               <Link
                 href="/auth/forgot-password"
                 className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
               >
-                Lupa kata sandi?
+                {t("auth.forgotPassword")}
               </Link>
             </div>
             <button
@@ -211,7 +220,7 @@ function LoginForm() {
                 <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
               ) : (
                 <>
-                  Masuk
+                  {t("auth.login")}
                   <ArrowRightIcon className="ml-2 h-5 w-5" />
                 </>
               )}
@@ -225,8 +234,8 @@ function LoginForm() {
       <ErrorDialog
         isOpen={successOpen}
         onClose={() => setSuccessOpen(false)}
-        title="Berhasil"
-        message="Login berhasil. Mengalihkan..."
+        title={t("auth.success")}
+        message={t("auth.loginSuccess")}
         type="info"
         disableClose
       />

@@ -1,6 +1,6 @@
 "use client";
 
-import { app, env, ui } from "@/config";
+import { env, ui } from "@/config";
 import { getUserProfile, logout, UserProfile } from "@/lib/auth";
 import { getBadgeStyle, getNavigationItems, NavItem } from "@/lib/navigation";
 import {
@@ -31,6 +31,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ConfirmDialog from "./ConfirmDialog";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -54,6 +55,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 export default function Sidebar() {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [width, setWidth] = useState(280);
@@ -128,7 +130,7 @@ export default function Sidebar() {
             {(!collapsed || mobile) && (
               <>
                 <span className="truncate flex-1 text-left flex items-center">
-                  {item.label}
+                  {t(item.label)}
                   {item.tags?.[0] && (
                     <span
                       className={`ml-2 px-1.5 py-0.5 text-xs rounded ${getBadgeStyle(item.tags[0]).bgColor} ${getBadgeStyle(item.tags[0]).textColor}`}
@@ -173,7 +175,7 @@ export default function Sidebar() {
         {Icon && <Icon className="h-5 w-5 mr-3 flex-shrink-0" />}
         {(!collapsed || mobile) && (
           <span className="truncate flex items-center">
-            {item.label}
+            {t(item.label)}
             {item.tags?.[0] && (
               <span
                 className={`ml-2 px-1.5 py-0.5 text-xs rounded ${getBadgeStyle(item.tags[0]).bgColor} ${getBadgeStyle(item.tags[0]).textColor}`}
@@ -191,17 +193,22 @@ export default function Sidebar() {
     <>
       <div className="flex items-center h-16 px-4 border-b border-white/20 overflow-hidden">
         {collapsed && !mobile ? (
-          <span className="text-lg font-bold text-white">WP</span>
+          <span className="text-lg font-bold text-white">
+            <img src={ui.logo.src} alt={ui.logo.alt} className="h-10 w-auto" />
+          </span>
         ) : (
           <div className="flex items-center space-x-3">
             <img src={ui.logo.src} alt={ui.logo.alt} className="h-10 w-auto" />
-            <span className="text-lg font-bold text-white whitespace-nowrap">{app.name}</span>
+            <span className="text-3xl font-bold whitespace-nowrap">
+              <span style={{ color: "#057AC1" }}>Widya</span>
+              <span style={{ color: "#F9A702" }}>prada</span>
+            </span>
           </div>
         )}
       </div>
       {env.isDevelopment && (
         <div className="px-4 py-2 bg-yellow-500/20 text-yellow-800 text-center text-xs font-medium">
-          {collapsed ? "Dev" : "Development"}
+          {collapsed ? t("common.dev") : t("common.development")}
         </div>
       )}
       <nav className="flex-1 px-2 py-4 space-y-2 overflow-y-auto">
@@ -239,7 +246,7 @@ export default function Sidebar() {
               ) : (
                 <>
                   <ArrowRightEndOnRectangleIcon className="h-4 w-4" />
-                  {(!collapsed || mobile) && <span className="ml-1">Keluar</span>}
+                  {(!collapsed || mobile) && <span className="ml-1">{t("auth.logout")}</span>}
                 </>
               )}
             </button>
@@ -249,7 +256,7 @@ export default function Sidebar() {
             href="/auth/login"
             className="flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 w-full"
           >
-            {collapsed && !mobile ? "L" : "Login"}
+            {collapsed && !mobile ? "L" : t("nav.login")}
           </Link>
         )}
       </div>
@@ -260,10 +267,10 @@ export default function Sidebar() {
           setShowLogoutConfirm(false);
           await handleLogout();
         }}
-        title="Konfirmasi Logout"
-        message="Apakah Anda yakin ingin keluar? Anda perlu login kembali untuk mengakses aplikasi."
-        confirmText="Ya, Logout"
-        cancelText="Batal"
+        title={t("auth.logoutConfirmTitle")}
+        message={t("auth.logoutConfirmMessage")}
+        confirmText={t("action.yesLogout")}
+        cancelText={t("action.cancel")}
         type="warning"
       />
     </>
@@ -276,7 +283,7 @@ export default function Sidebar() {
           type="button"
           onClick={() => setMobileOpen((o) => !o)}
           className="fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow border border-gray-200"
-          aria-label="Menu"
+          aria-label={t("action.menu")}
         >
           {mobileOpen ? <XMarkIcon className="h-6 w-6 text-gray-700" /> : <Bars3Icon className="h-6 w-6 text-gray-700" />}
         </button>
@@ -288,7 +295,7 @@ export default function Sidebar() {
           >
             <div
               ref={sidebarRef}
-              className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-gradient-to-b from-blue-800 to-blue-900 shadow-xl"
+              className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-gradient-to-b from-[#02203a] to-[#011628] shadow-xl"
               style={{ background: `linear-gradient(to top, ${ui.theme.gradient.from}, ${ui.theme.gradient.to})` }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -313,7 +320,7 @@ export default function Sidebar() {
         type="button"
         className="absolute -right-4 top-4 z-10 w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow hover:bg-gray-50"
         onClick={() => setCollapsed((c) => !c)}
-        aria-label={collapsed ? "Expand" : "Collapse"}
+        aria-label={collapsed ? t("action.expand") : t("action.collapse")}
         style={{ left: collapsed ? 48 : width - 16 }}
       >
         {collapsed ? <ChevronRightIcon className="h-4 w-4 text-gray-700" /> : <ChevronLeftIcon className="h-4 w-4 text-gray-700" />}

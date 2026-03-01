@@ -90,19 +90,20 @@ type UpdateSlideRequest struct {
 
 // Article for CMS Berita (JSON tags for API response)
 type Article struct {
-	ID           string  `json:"id"`
-	Title        string  `json:"title"`
-	Slug         string  `json:"slug"`
-	Content      string  `json:"content"`
-	Excerpt      string  `json:"excerpt"`
-	ThumbnailURL string  `json:"thumbnail_url,omitempty"`
-	PublishedAt  string  `json:"published_at,omitempty"`
-	Status       string  `json:"status"`
-	AuthorName   string  `json:"author_name,omitempty"`
-	Category     string  `json:"category,omitempty"`
-	SatkerID     *string `json:"satker_id,omitempty"`
-	CreatedAt    string  `json:"created_at,omitempty"`
-	UpdatedAt    string  `json:"updated_at,omitempty"`
+	ID           string   `json:"id"`
+	Title        string   `json:"title"`
+	Slug         string   `json:"slug"`
+	Content      string   `json:"content"`
+	Excerpt      string   `json:"excerpt"`
+	ThumbnailURL string   `json:"thumbnail_url,omitempty"`
+	GalleryURLs  []string `json:"gallery_urls,omitempty"`
+	PublishedAt  string   `json:"published_at,omitempty"`
+	Status       string   `json:"status"`
+	AuthorName   string   `json:"author_name,omitempty"`
+	Category     string   `json:"category,omitempty"`
+	SatkerID     *string  `json:"satker_id,omitempty"`
+	CreatedAt    string   `json:"created_at,omitempty"`
+	UpdatedAt    string   `json:"updated_at,omitempty"`
 }
 
 // GetArticleListRequest query
@@ -142,30 +143,32 @@ type ArticleListItem struct {
 
 // CreateArticleRequest body
 type CreateArticleRequest struct {
-	Title       string  `json:"judul" binding:"required"`
-	Slug        string  `json:"slug"`
-	Content     string  `json:"konten"`
-	Excerpt     string  `json:"ringkasan"`
-	Thumbnail   string  `json:"thumbnail"`
-	PublishedAt string  `json:"tanggal_publikasi"`
-	Status      string  `json:"status"`
-	AuthorName  string  `json:"penulis"`
-	Category    string  `json:"kategori"`
-	SatkerID    *string `json:"satker_id"`
+	Title       string   `json:"judul" binding:"required"`
+	Slug        string   `json:"slug"`
+	Content     string   `json:"konten"`
+	Excerpt     string   `json:"ringkasan"`
+	Thumbnail   string   `json:"thumbnail"`
+	GalleryURLs []string `json:"gallery_urls"`
+	PublishedAt string   `json:"tanggal_publikasi"`
+	Status      string   `json:"status"`
+	AuthorName  string   `json:"penulis"`
+	Category    string   `json:"kategori"`
+	SatkerID    *string  `json:"satker_id"`
 }
 
 // ArticleDetailResponse untuk GET /api/v1/berita/:slug (publik)
 type ArticleDetailResponse struct {
-	ID           string `json:"id"`
-	Title        string `json:"title"`
-	Slug         string `json:"slug"`
-	Content      string `json:"content"`
-	Excerpt      string `json:"excerpt"`
-	ThumbnailURL string `json:"thumbnail_url,omitempty"`
-	PublishedAt  string `json:"published_at,omitempty"`
-	AuthorName   string `json:"author_name,omitempty"`
-	Category     string `json:"category,omitempty"`
-	CreatedAt    string `json:"created_at,omitempty"`
+	ID           string   `json:"id"`
+	Title        string   `json:"title"`
+	Slug         string   `json:"slug"`
+	Content      string   `json:"content"`
+	Excerpt      string   `json:"excerpt"`
+	ThumbnailURL string   `json:"thumbnail_url,omitempty"`
+	GalleryURLs  []string `json:"gallery_urls,omitempty"`
+	PublishedAt  string   `json:"published_at,omitempty"`
+	AuthorName   string   `json:"author_name,omitempty"`
+	Category     string   `json:"category,omitempty"`
+	CreatedAt    string   `json:"created_at,omitempty"`
 }
 
 // GetBeritaListResponse response GET /api/v1/berita (publik)
@@ -179,15 +182,16 @@ type GetBeritaListResponse struct {
 
 // UpdateArticleRequest body
 type UpdateArticleRequest struct {
-	Title       string `json:"judul"`
-	Slug        string `json:"slug"`
-	Content     string `json:"konten"`
-	Excerpt     string `json:"ringkasan"`
-	Thumbnail   string `json:"thumbnail"`
-	PublishedAt string `json:"tanggal_publikasi"`
-	Status      string `json:"status"`
-	AuthorName  string `json:"penulis"`
-	Category    string `json:"kategori"`
+	Title       string   `json:"judul"`
+	Slug        string   `json:"slug"`
+	Content     string   `json:"konten"`
+	Excerpt     string   `json:"ringkasan"`
+	Thumbnail   string   `json:"thumbnail"`
+	GalleryURLs []string `json:"gallery_urls"`
+	PublishedAt string   `json:"tanggal_publikasi"`
+	Status      string   `json:"status"`
+	AuthorName  string   `json:"penulis"`
+	Category    string   `json:"kategori"`
 }
 
 // Link for CMS Tautan (JSON tags for API response)

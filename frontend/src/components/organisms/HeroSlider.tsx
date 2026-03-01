@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface SlideItem {
   id: string;
@@ -20,6 +21,7 @@ interface HeroSliderProps {
 }
 
 export default function HeroSlider({ slides }: HeroSliderProps) {
+  const { t } = useTranslation("common");
   const [current, setCurrent] = useState(0);
   const len = slides.length;
 
@@ -45,12 +47,12 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
   return (
     <div
       className="relative w-full overflow-hidden bg-gray-900"
-      style={{ minHeight: 320 }}
+      style={{ minHeight: 416 }}
       onMouseEnter={() => {
         // pause auto-play on hover would need ref to interval
       }}
     >
-      <div className="relative w-full h-[320px] md:h-[420px]">
+      <div className="relative w-full h-[416px] md:h-[546px]">
         {slide.image_url ? (
           <Image
             src={slide.image_url}
@@ -65,7 +67,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
           <div
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(135deg, #1e40af 0%, #2563eb 100%)",
+              background: "linear-gradient(135deg, #022a47 0%, #044a7d 100%)",
             }}
           />
         )}
@@ -73,7 +75,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="max-w-4xl mx-auto px-4 text-center text-white">
             <h2 className="text-2xl md:text-4xl font-bold drop-shadow-lg">
-              {slide.title || "Selamat Datang"}
+              {slide.title || t("hero.welcome")}
             </h2>
             {slide.subtitle && (
               <p className="mt-2 text-base md:text-lg text-white/90 drop-shadow">
@@ -83,9 +85,9 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
             {hasLink && (
               <Link
                 href={slide.link_url!}
-                className="mt-6 inline-block rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-blue-700 hover:bg-white/90 transition-colors"
+                className="mt-6 inline-block rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-[#033259] hover:bg-white/90 transition-colors"
               >
-                {slide.cta_label || "Selengkapnya"}
+                {slide.cta_label || t("hero.readMore")}
               </Link>
             )}
           </div>
@@ -98,7 +100,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
             type="button"
             onClick={goPrev}
             className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
-            aria-label="Slide sebelumnya"
+            aria-label={t("hero.slidePrev")}
           >
             <ChevronLeftIcon className="h-6 w-6" />
           </button>
@@ -106,7 +108,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
             type="button"
             onClick={goNext}
             className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
-            aria-label="Slide berikutnya"
+            aria-label={t("hero.slideNext")}
           >
             <ChevronRightIcon className="h-6 w-6" />
           </button>

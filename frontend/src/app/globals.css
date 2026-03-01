@@ -3,11 +3,24 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #033259;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  /* Blue palette based on #033259 */
+  --color-blue-50: #e8eef4;
+  --color-blue-100: #c5d4e4;
+  --color-blue-200: #9fb8d0;
+  --color-blue-300: #6e94b5;
+  --color-blue-400: #417399;
+  --color-blue-500: #1a5278;
+  --color-blue-600: #033259;
+  --color-blue-700: #022a47;
+  --color-blue-800: #02203a;
+  --color-blue-900: #011628;
 }
 
 body {

@@ -132,6 +132,7 @@ func toArticleEntity(a *Article) *entity.Article {
 		Content:      a.Content,
 		Excerpt:      a.Excerpt,
 		ThumbnailURL: a.ThumbnailURL,
+		GalleryURLs:  a.GalleryURLs,
 		PublishedAt:  publishedAt,
 		Status:       a.Status,
 		AuthorName:   a.AuthorName,
@@ -162,6 +163,10 @@ func (r *articleRepo) Create(ctx context.Context, a *entity.Article) (string, er
 			publishedAt = &t
 		}
 	}
+	gallery := a.GalleryURLs
+	if gallery == nil {
+		gallery = []string{}
+	}
 	dto := Article{
 		ID:           id,
 		Title:        a.Title,
@@ -169,6 +174,7 @@ func (r *articleRepo) Create(ctx context.Context, a *entity.Article) (string, er
 		Content:      a.Content,
 		Excerpt:      a.Excerpt,
 		ThumbnailURL: a.ThumbnailURL,
+		GalleryURLs:  gallery,
 		PublishedAt:  publishedAt,
 		Status:       a.Status,
 		AuthorName:   a.AuthorName,
@@ -191,19 +197,29 @@ func (r *articleRepo) Update(ctx context.Context, a *entity.Article) error {
 			publishedAt = &t
 		}
 	}
-	upd := map[string]interface{}{
-		"title":        a.Title,
-		"slug":         a.Slug,
-		"content":      a.Content,
-		"excerpt":      a.Excerpt,
-		"thumbnail_url": a.ThumbnailURL,
-		"published_at": publishedAt,
-		"status":       a.Status,
-		"author_name":  a.AuthorName,
-		"category":     a.Category,
-		"updated_at":   time.Now().UTC(),
+	gallery := a.GalleryURLs
+	if gallery == nil {
+		gallery = []string{}
 	}
-	return r.db.WithContext(ctx).Model(&Article{}).Where("id = ?", a.ID).Updates(upd).Error
+	now := time.Now().UTC()
+	dto := Article{
+		ID:           a.ID,
+		Title:        a.Title,
+		Slug:         a.Slug,
+		Content:      a.Content,
+		Excerpt:      a.Excerpt,
+		ThumbnailURL: a.ThumbnailURL,
+		GalleryURLs:  gallery,
+		PublishedAt:  publishedAt,
+		Status:       a.Status,
+		AuthorName:   a.AuthorName,
+		Category:     a.Category,
+		UpdatedAt:    &now,
+	}
+	return r.db.WithContext(ctx).Model(&Article{}).Where("id = ?", a.ID).
+		Select("title", "slug", "content", "excerpt", "thumbnail_url", "gallery_urls",
+			"published_at", "status", "author_name", "category", "updated_at").
+		Updates(&dto).Error
 }
 
 func (r *articleRepo) Delete(ctx context.Context, id string) error {

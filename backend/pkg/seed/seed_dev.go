@@ -113,10 +113,59 @@ func seedDevArticles(db *gorm.DB) error {
 	}
 	now := time.Now().UTC()
 	pub := now.Add(-24 * time.Hour)
+
+	// URL gambar placeholder untuk thumbnail & galeri
+	img1 := "https://placehold.co/800x450/1e3a5f/ffffff?text=Pengumuman+Uji+Kompetensi"
+	img2 := "https://placehold.co/800x450/022c55/ffffff?text=Workshop+PMP"
+	img3 := "https://placehold.co/800x450/033259/ffffff?text=Pedoman+CBT"
+	img4 := "https://placehold.co/800x450/044a7d/ffffff?text=Galeri+Berita"
+
 	articles := []articlerepo.Article{
-		{ID: uuid.New().String(), Title: "Pengumuman Uji Kompetensi Widyaprada 2025", Slug: "pengumuman-uji-kompetensi-2025", Content: "Pendaftaran uji kompetensi jabatan fungsional Widyaprada dibuka mulai 1 Maret 2025. Silakan daftar melalui portal ini.", Excerpt: "Pendaftaran uji kompetensi dibuka.", ThumbnailURL: "", PublishedAt: &pub, Status: "Published", AuthorName: "Tim Widyaprada", Category: "Pengumuman", CreatedAt: &now, UpdatedAt: &now},
-		{ID: uuid.New().String(), Title: "Workshop Penjaminan Mutu Pendidikan Dasar", Slug: "workshop-penjaminan-mutu-2025", Content: "Workshop penjaminan mutu pendidikan dasar akan diselenggarakan pada bulan April 2025. Peserta diharapkan mendaftar sebelum tanggal 15 Maret.", Excerpt: "Workshop penjaminan mutu pendidikan.", ThumbnailURL: "", PublishedAt: &pub, Status: "Published", AuthorName: "Admin", Category: "Kegiatan", CreatedAt: &now, UpdatedAt: &now},
-		{ID: uuid.New().String(), Title: "Pedoman Pelaksanaan CBT Widyaprada", Slug: "pedoman-cbt-widyaprada", Content: "Berikut pedoman pelaksanaan Computer Based Test (CBT) untuk uji kompetensi Widyaprada. Pastikan perangkat dan koneksi internet memadai.", Excerpt: "Pedoman CBT Widyaprada.", ThumbnailURL: "", PublishedAt: &pub, Status: "Published", AuthorName: "Tim Ujikom", Category: "Dokumen", CreatedAt: &now, UpdatedAt: &now},
+		{
+			ID:           uuid.New().String(),
+			Title:        "Pengumuman Uji Kompetensi Widyaprada 2025",
+			Slug:         "pengumuman-uji-kompetensi-2025",
+			Content:      "Pendaftaran uji kompetensi jabatan fungsional Widyaprada dibuka mulai 1 Maret 2025. Silakan daftar melalui portal ini.",
+			Excerpt:      "Pendaftaran uji kompetensi dibuka.",
+			ThumbnailURL: img1,
+			GalleryURLs:  []string{img1, img2, img3},
+			PublishedAt:  &pub,
+			Status:       "Published",
+			AuthorName:   "Tim Widyaprada",
+			Category:     "Pengumuman",
+			CreatedAt:    &now,
+			UpdatedAt:    &now,
+		},
+		{
+			ID:           uuid.New().String(),
+			Title:        "Workshop Penjaminan Mutu Pendidikan Dasar",
+			Slug:         "workshop-penjaminan-mutu-2025",
+			Content:      "Workshop penjaminan mutu pendidikan dasar akan diselenggarakan pada bulan April 2025. Peserta diharapkan mendaftar sebelum tanggal 15 Maret.",
+			Excerpt:      "Workshop penjaminan mutu pendidikan.",
+			ThumbnailURL: img2,
+			GalleryURLs:  []string{img2, img3, img4, img1},
+			PublishedAt:  &pub,
+			Status:       "Published",
+			AuthorName:   "Admin",
+			Category:     "Kegiatan",
+			CreatedAt:    &now,
+			UpdatedAt:    &now,
+		},
+		{
+			ID:           uuid.New().String(),
+			Title:        "Pedoman Pelaksanaan CBT Widyaprada",
+			Slug:         "pedoman-cbt-widyaprada",
+			Content:      "Berikut pedoman pelaksanaan Computer Based Test (CBT) untuk uji kompetensi Widyaprada. Pastikan perangkat dan koneksi internet memadai.",
+			Excerpt:      "Pedoman CBT Widyaprada.",
+			ThumbnailURL: img3,
+			GalleryURLs:  []string{img3, img4},
+			PublishedAt:  &pub,
+			Status:       "Published",
+			AuthorName:   "Tim Ujikom",
+			Category:     "Dokumen",
+			CreatedAt:    &now,
+			UpdatedAt:    &now,
+		},
 	}
 	return db.Create(&articles).Error
 }

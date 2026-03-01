@@ -9,20 +9,21 @@ import (
 
 // Article DTO
 type Article struct {
-	ID           string     `gorm:"column:id;primaryKey;type:uuid"`
-	Title        string     `gorm:"column:title;size:500;not null"`
-	Slug         string     `gorm:"column:slug;size:300;uniqueIndex;not null"`
-	Content      string     `gorm:"column:content;type:text"`
-	Excerpt      string     `gorm:"column:excerpt;type:text"`
-	ThumbnailURL string     `gorm:"column:thumbnail_url;size:500"`
-	PublishedAt  *time.Time `gorm:"column:published_at"`
-	Status       string     `gorm:"column:status;size:20;default:Draft"`
-	AuthorName   string     `gorm:"column:author_name;size:255"`
-	Category     string     `gorm:"column:category;size:100"`
-	SatkerID     *string    `gorm:"column:satker_id;type:uuid"`
-	CreatedAt    *time.Time `gorm:"column:created_at"`
-	UpdatedAt    *time.Time `gorm:"column:updated_at"`
-	DeletedAt    gorm.DeletedAt `gorm:"column:deleted_at;index"`
+	ID           string          `gorm:"column:id;primaryKey;type:uuid"`
+	Title        string          `gorm:"column:title;size:500;not null"`
+	Slug         string          `gorm:"column:slug;size:300;uniqueIndex;not null"`
+	Content      string          `gorm:"column:content;type:text"`
+	Excerpt      string          `gorm:"column:excerpt;type:text"`
+	ThumbnailURL string          `gorm:"column:thumbnail_url;size:500"`
+	GalleryURLs  []string        `gorm:"column:gallery_urls;serializer:json"`
+	PublishedAt  *time.Time      `gorm:"column:published_at"`
+	Status       string          `gorm:"column:status;size:20;default:Draft"`
+	AuthorName   string          `gorm:"column:author_name;size:255"`
+	Category     string          `gorm:"column:category;size:100"`
+	SatkerID     *string         `gorm:"column:satker_id;type:uuid"`
+	CreatedAt    *time.Time      `gorm:"column:created_at"`
+	UpdatedAt    *time.Time      `gorm:"column:updated_at"`
+	DeletedAt    gorm.DeletedAt  `gorm:"column:deleted_at;index"`
 }
 
 func (Article) TableName() string {
@@ -56,12 +57,21 @@ func (a *Article) ToPublicItem() entity.ArticlePublicItem {
 	if a.PublishedAt != nil {
 		publishedAt = a.PublishedAt.UTC().Format(time.RFC3339)
 	}
+	thumb := a.ThumbnailURL
+	if thumb == "" && len(a.GalleryURLs) > 0 && a.GalleryURLs[0] != "" {
+		thumb = a.GalleryURLs[0]
+	}
+	gallery := a.GalleryURLs
+	if gallery == nil {
+		gallery = []string{}
+	}
 	return entity.ArticlePublicItem{
 		ID:           a.ID,
 		Title:        a.Title,
 		Slug:         a.Slug,
 		Excerpt:      a.Excerpt,
-		ThumbnailURL: a.ThumbnailURL,
+		ThumbnailURL: thumb,
+		GalleryURLs:  gallery,
 		PublishedAt:  publishedAt,
 	}
 }

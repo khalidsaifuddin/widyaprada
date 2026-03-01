@@ -1,8 +1,8 @@
 "use client";
 
+import BeritaImageSlider from "@/components/molecules/BeritaImageSlider";
 import { apiService } from "@/lib/api";
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface BeritaDetailData {
@@ -12,6 +12,7 @@ interface BeritaDetailData {
   content: string;
   excerpt?: string;
   thumbnail_url?: string;
+  gallery_urls?: string[];
   published_at?: string;
   author_name?: string;
   category?: string;
@@ -78,6 +79,10 @@ export default function BeritaDetail({ slug }: { slug: string }) {
     );
   }
 
+  const allImages: string[] = [];
+  if (data.thumbnail_url?.trim()) allImages.push(data.thumbnail_url);
+  (data.gallery_urls ?? []).filter((u) => u?.trim()).forEach((u) => allImages.push(u));
+
   return (
     <article className="py-12">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
@@ -90,17 +95,8 @@ export default function BeritaDetail({ slug }: { slug: string }) {
           {data.author_name && <span>Oleh: {data.author_name}</span>}
           {data.category && <span>Kategori: {data.category}</span>}
         </div>
-        {data.thumbnail_url && (
-          <div className="relative h-64 md:h-96 rounded-xl overflow-hidden mb-8 bg-gray-100">
-            <Image
-              src={data.thumbnail_url}
-              alt={data.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 672px"
-              unoptimized={data.thumbnail_url.startsWith("http")}
-            />
-          </div>
+        {allImages.length > 0 && (
+          <BeritaImageSlider images={allImages} title={data.title} className="mb-8" />
         )}
         <div
           className="text-gray-700 leading-relaxed [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-6 [&_img]:rounded-lg [&_img]:max-w-full"

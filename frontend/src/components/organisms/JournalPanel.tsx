@@ -3,6 +3,7 @@
 import { apiService } from "@/lib/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface JurnalItem {
   id: string;
@@ -30,6 +31,7 @@ function formatDate(d: string): string {
 }
 
 export default function JournalPanel() {
+  const { t } = useTranslation("common");
   const [items, setItems] = useState<JurnalItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,12 +52,12 @@ export default function JournalPanel() {
     <section className="py-12 bg-white border-t border-gray-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl font-bold text-gray-900">Jurnal Terbaru</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t("journal.latest")}</h2>
           <Link
             href="/jurnal"
             className="text-sm font-medium text-blue-600 hover:text-blue-800"
           >
-            Lihat semua
+            {t("journal.viewAll")}
           </Link>
         </div>
         {loading ? (
@@ -65,7 +67,7 @@ export default function JournalPanel() {
             ))}
           </div>
         ) : items.length === 0 ? (
-          <p className="text-gray-500 text-center py-12">Belum ada jurnal</p>
+          <p className="text-gray-500 text-center py-12">{t("journal.empty")}</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {items.slice(0, 6).map((item) => (
@@ -82,7 +84,7 @@ export default function JournalPanel() {
                   <p className="mt-2 text-sm text-gray-600 line-clamp-2">{item.abstract}</p>
                 )}
                 <span className="mt-2 inline-block text-sm font-medium text-blue-600">
-                  Baca detail →
+                  {t("journal.readMore")}
                 </span>
               </Link>
             ))}

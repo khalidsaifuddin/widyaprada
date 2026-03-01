@@ -21,12 +21,13 @@ type SlidePublicItem struct {
 
 // ArticlePublicItem berita untuk publik
 type ArticlePublicItem struct {
-	ID           string `json:"id"`
-	Title        string `json:"title"`
-	Slug         string `json:"slug"`
-	Excerpt      string `json:"excerpt"`
-	ThumbnailURL string `json:"thumbnail_url,omitempty"`
-	PublishedAt  string `json:"published_at,omitempty"`
+	ID           string   `json:"id"`
+	Title        string   `json:"title"`
+	Slug         string   `json:"slug"`
+	Excerpt      string   `json:"excerpt"`
+	ThumbnailURL string   `json:"thumbnail_url,omitempty"`
+	GalleryURLs  []string `json:"gallery_urls,omitempty"`
+	PublishedAt  string   `json:"published_at,omitempty"`
 }
 
 // LinkPublicItem tautan untuk publik (status Aktif)

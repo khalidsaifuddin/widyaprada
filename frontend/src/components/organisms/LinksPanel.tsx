@@ -3,6 +3,7 @@
 import { apiService } from "@/lib/api";
 import { ArrowTopRightOnSquareIcon, LinkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface LinkItem {
   id: string;
@@ -18,6 +19,7 @@ interface LandingHomeData {
 }
 
 export default function LinksPanel() {
+  const { t } = useTranslation("common");
   const [items, setItems] = useState<LinkItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +41,7 @@ export default function LinksPanel() {
   return (
     <section className="py-12 bg-gray-50 border-t border-gray-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Tautan Penting</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">{t("links.important")}</h2>
         <div className="flex flex-wrap gap-3">
           {items.map((item) => (
             <a

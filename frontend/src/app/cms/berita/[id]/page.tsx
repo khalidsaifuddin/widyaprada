@@ -1,5 +1,6 @@
 "use client";
 
+import BeritaImageSlider from "@/components/molecules/BeritaImageSlider";
 import { apiService } from "@/lib/api";
 import { ConfirmDialog } from "@/components";
 import Link from "next/link";
@@ -13,6 +14,7 @@ interface ArticleDetail {
   content: string;
   excerpt: string;
   thumbnail_url: string;
+  gallery_urls?: string[];
   published_at: string;
   status: string;
   author_name: string;
@@ -44,6 +46,10 @@ export default function BeritaCMSDetailPage() {
   if (loading) return <div className="animate-pulse h-32 bg-gray-100 rounded" />;
   if (!data) return <p className="text-red-600">Berita tidak ditemukan</p>;
 
+  const allImages: string[] = [];
+  if (data.thumbnail_url?.trim()) allImages.push(data.thumbnail_url);
+  (data.gallery_urls ?? []).filter((u) => u?.trim()).forEach((u) => allImages.push(u));
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
@@ -61,6 +67,7 @@ export default function BeritaCMSDetailPage() {
           {data.category && <span>Kategori: {data.category}</span>}
           <span className={`px-2 py-0.5 rounded text-xs ${data.status === "Published" ? "bg-green-100 text-green-800" : "bg-gray-100"}`}>{data.status}</span>
         </div>
+        {allImages.length > 0 && <BeritaImageSlider images={allImages} title={data.title} className="mb-6" />}
         {data.excerpt && <p className="text-gray-600 mb-4">{data.excerpt}</p>}
         <div className="text-gray-700 text-sm [&_p]:mb-2" dangerouslySetInnerHTML={{ __html: data.content || "" }} />
       </div>

@@ -43,15 +43,15 @@ const defaultConfig: AppConfig = {
     display_version: "0.1.0",
   },
   ui: {
-    logo: { src: "/logo-widyaprada.svg", alt: "Widyaprada" },
+    logo: { src: "/logo_kemendikdasmen.svg", alt: "Kemendikdasmen" },
     header: {
       title: "Widyaprada",
       subtitle: "Kemendikdasmen",
     },
     theme: {
-      primaryColor: "#2563eb",
-      secondaryColor: "#64748b",
-      gradient: { from: "#1e40af", to: "#2563eb" },
+      primaryColor: "#033259",
+      secondaryColor: "#475569",
+      gradient: { from: "#022a47", to: "#044a7d" },
     },
   },
   env: {

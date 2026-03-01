@@ -1,5 +1,6 @@
 "use client";
 
+import BeritaImageSlider from "@/components/molecules/BeritaImageSlider";
 import { apiService } from "@/lib/api";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -18,6 +19,7 @@ export default function BeritaCMSEditPage() {
   const [status, setStatus] = useState("Published");
   const [penulis, setPenulis] = useState("");
   const [kategori, setKategori] = useState("");
+  const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadDetail, setLoadDetail] = useState(true);
   const [error, setError] = useState("");
@@ -36,6 +38,8 @@ export default function BeritaCMSEditPage() {
         setStatus((d.status as string) ?? "Published");
         setPenulis((d.author_name as string) ?? "");
         setKategori((d.category as string) ?? "");
+        const urls = d.gallery_urls as string[] | undefined;
+        setGalleryUrls(Array.isArray(urls) ? urls : []);
       }
       setLoadDetail(false);
     });
@@ -52,6 +56,7 @@ export default function BeritaCMSEditPage() {
       konten: konten.trim(),
       ringkasan: ringkasan.trim(),
       thumbnail: thumbnail.trim() || undefined,
+      gallery_urls: galleryUrls.filter((u) => u.trim()),
       tanggal_publikasi: tanggalPublikasi || undefined,
       status,
       penulis: penulis.trim() || undefined,
@@ -88,7 +93,51 @@ export default function BeritaCMSEditPage() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">URL Thumbnail</label>
-          <input type="url" value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+          <input type="url" value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" placeholder="https://..." />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Galeri Gambar (multiple)</label>
+          <p className="text-xs text-gray-500 mb-2">URL gambar ditampilkan sebagai slider di halaman detail berita</p>
+          {galleryUrls.map((url, i) => (
+            <div key={i} className="flex gap-2 mb-2">
+              <input
+                type="url"
+                value={url}
+                onChange={(e) => {
+                  const next = [...galleryUrls];
+                  next[i] = e.target.value;
+                  setGalleryUrls(next);
+                }}
+                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                placeholder={`URL gambar ${i + 1}`}
+              />
+              <button
+                type="button"
+                onClick={() => setGalleryUrls(galleryUrls.filter((_, j) => j !== i))}
+                className="rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+              >
+                Hapus
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setGalleryUrls([...galleryUrls, ""])}
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            + Tambah Gambar
+          </button>
+          {(() => {
+            const imgs: string[] = [];
+            if (thumbnail?.trim()) imgs.push(thumbnail);
+            galleryUrls.filter((u) => u?.trim()).forEach((u) => imgs.push(u));
+            return imgs.length > 0 ? (
+              <div className="mt-4">
+                <p className="text-xs text-gray-500 mb-2">Preview slider</p>
+                <BeritaImageSlider images={imgs} title={judul || "Berita"} className="max-w-2xl" />
+              </div>
+            ) : null;
+          })()}
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
