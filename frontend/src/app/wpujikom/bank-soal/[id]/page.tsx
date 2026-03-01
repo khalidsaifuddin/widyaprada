@@ -11,6 +11,7 @@ interface QuestionOption {
   option_key: string;
   option_text: string;
   is_correct: boolean;
+  option_weight?: number;
 }
 
 interface QuestionDetail {
@@ -117,7 +118,7 @@ export default function BankSoalDetailPage() {
           {canEdit && (
             <Link
               href={`/wpujikom/bank-soal/${id}/edit`}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
             >
               Edit
             </Link>
@@ -125,7 +126,7 @@ export default function BankSoalDetailPage() {
           {canVerifyRole && (
             <button
               onClick={() => handleVerify(question!.verification_status !== "Sudah")}
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+              className="px-4 py-2 bg-amber-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-amber-700"
             >
               {question!.verification_status === "Sudah" ? "Batal Verifikasi" : "Verifikasi"}
             </button>
@@ -133,7 +134,7 @@ export default function BankSoalDetailPage() {
           {canEdit && (
             <button
               onClick={() => setDeleteDialog(true)}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700"
             >
               Hapus
             </button>
@@ -155,7 +156,15 @@ export default function BankSoalDetailPage() {
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Tipe</dt>
-              <dd className="mt-1">{question.type}</dd>
+              <dd className="mt-1">
+                {question.type === "PG"
+                  ? "Pilihan Ganda"
+                  : question.type === "MRA"
+                    ? "Multiple Right Answer"
+                    : question.type === "BENAR_SALAH"
+                      ? "Benar-Salah"
+                      : "Essay"}
+              </dd>
             </div>
             {question.category_name && (
               <div>
@@ -171,7 +180,10 @@ export default function BankSoalDetailPage() {
             )}
             <div>
               <dt className="text-sm font-medium text-gray-500">Teks Soal</dt>
-              <dd className="mt-1 whitespace-pre-wrap text-gray-900">{question.question_text}</dd>
+              <dd
+                className="mt-1 text-gray-900 text-sm [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-base [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-2 [&_blockquote]:border-gray-300 [&_blockquote]:pl-4 [&_blockquote]:italic"
+                dangerouslySetInnerHTML={{ __html: question.question_text || "" }}
+              />
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Kunci Jawaban</dt>
@@ -186,12 +198,15 @@ export default function BankSoalDetailPage() {
                     .map((o) => (
                       <div
                         key={o.id}
-                        className={`flex gap-2 ${o.is_correct ? "bg-green-50 p-2 rounded" : ""}`}
+                        className={`flex gap-2 items-center ${o.is_correct ? "bg-green-50 p-2 rounded" : ""}`}
                       >
                         <span className="font-medium">{o.option_key}.</span>
                         <span>{o.option_text}</span>
                         {o.is_correct && (
                           <span className="text-green-600 text-sm font-medium">(Benar)</span>
+                        )}
+                        {question.type === "MRA" && (o.option_weight ?? 1) !== 1 && (
+                          <span className="text-gray-500 text-sm">(bobot: {o.option_weight})</span>
                         )}
                       </div>
                     ))}
@@ -251,14 +266,14 @@ export default function BankSoalDetailPage() {
               <div className="mt-4 flex justify-end gap-2">
                 <button
                   onClick={() => setDeleteDialog(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
                 >
                   Batal
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={!deleteReason.trim() || deleteLoading}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700 disabled:opacity-50"
                 >
                   {deleteLoading ? "Menghapus..." : "Hapus"}
                 </button>

@@ -58,7 +58,7 @@ export default function BeritaCMSListPage() {
           <h1 className="text-2xl font-bold text-gray-900">CMS Berita</h1>
           <p className="text-gray-600 mt-1">Kelola berita landing page</p>
         </div>
-        <Link href="/cms/berita/create" className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+        <Link href="/cms/berita/create" className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700">
           Tambah Berita
         </Link>
       </div>
@@ -86,7 +86,7 @@ export default function BeritaCMSListPage() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {items.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
+                <tr key={item.id} className="transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50">
                   <td className="px-4 py-3">
                     <Link href={`/cms/berita/${item.id}`} className="font-medium text-gray-900 hover:text-blue-600">
                       {item.title || "-"}

@@ -16,30 +16,40 @@ func (u *examUsecase) Create(ctx context.Context, req entity.CreateExamRequest) 
 		return nil, entity.ErrExamCodeExists
 	}
 
-	// Build contents from question_ids and package_ids
+	// Build contents: prefer Contents (ordered), else fallback to QuestionIDs + PackageIDs
 	var contents []entity.ExamContentItem
-	sortOrder := 1
-	for _, qid := range req.QuestionIDs {
-		contents = append(contents, entity.ExamContentItem{
-			SourceType: entity.ExamContentSourceQuestion,
-			SourceID:   qid,
-			SortOrder:  sortOrder,
-		})
-		sortOrder++
-	}
-	for _, pid := range req.PackageIDs {
-		contents = append(contents, entity.ExamContentItem{
-			SourceType: entity.ExamContentSourcePackage,
-			SourceID:   pid,
-			SortOrder:  sortOrder,
-		})
-		sortOrder++
+	if len(req.Contents) > 0 {
+		for i, c := range req.Contents {
+			if c.SourceType != entity.ExamContentSourceQuestion && c.SourceType != entity.ExamContentSourcePackage {
+				continue
+			}
+			contents = append(contents, entity.ExamContentItem{
+				SourceType: c.SourceType,
+				SourceID:   c.SourceID,
+				SortOrder:  i + 1,
+			})
+		}
+	} else {
+		sortOrder := 1
+		for _, qid := range req.QuestionIDs {
+			contents = append(contents, entity.ExamContentItem{
+				SourceType: entity.ExamContentSourceQuestion,
+				SourceID:   qid,
+				SortOrder:  sortOrder,
+			})
+			sortOrder++
+		}
+		for _, pid := range req.PackageIDs {
+			contents = append(contents, entity.ExamContentItem{
+				SourceType: entity.ExamContentSourcePackage,
+				SourceID:   pid,
+				SortOrder:  sortOrder,
+			})
+			sortOrder++
+		}
 	}
 	if len(contents) == 0 {
 		return nil, entity.ErrExamMinContent
-	}
-	if len(req.ParticipantIDs) == 0 {
-		return nil, entity.ErrExamMinParticipant
 	}
 
 	e := &entity.ExamDetail{

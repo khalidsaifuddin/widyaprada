@@ -36,7 +36,7 @@ func (h *questionHTTPHandler) CreateQuestion(c *gin.Context) {
 			return
 		}
 		if errors.Is(err, entity.ErrQuestionOptionsRequired) {
-			helper.ResponseOutput(c, int32(http.StatusBadRequest), "Opsi dan kunci jawaban wajib untuk PG dan Benar-Salah", nil)
+			helper.ResponseOutput(c, int32(http.StatusBadRequest), "Opsi dan kunci jawaban wajib untuk PG, MRA, dan Benar-Salah", nil)
 			return
 		}
 		if errors.Is(err, entity.ErrCategoryNotFound) {

@@ -59,7 +59,7 @@ export default function SliderListPage() {
         </div>
         <Link
           href="/cms/slider/create"
-          className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700"
+          className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
         >
           Tambah Slide
         </Link>
@@ -96,7 +96,7 @@ export default function SliderListPage() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {items.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
+                <tr key={item.id} className="transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50">
                   <td className="px-4 py-3">
                     {item.image_url ? (
                       <div className="relative h-12 w-20 rounded overflow-hidden bg-gray-100">

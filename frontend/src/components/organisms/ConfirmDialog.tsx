@@ -27,10 +27,10 @@ export default function ConfirmDialog({
     type === "danger" ? "text-red-600" : type === "info" ? "text-blue-600" : "text-yellow-600";
   const btnColor =
     type === "danger"
-      ? "bg-red-600 hover:bg-red-700 focus:ring-red-500"
+      ? "bg-red-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700 focus:ring-red-500"
       : type === "info"
-        ? "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
-        : "bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500";
+        ? "bg-blue-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 focus:ring-blue-500"
+        : "bg-yellow-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-yellow-700 focus:ring-yellow-500";
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -62,7 +62,7 @@ export default function ConfirmDialog({
             </button>
             <button
               type="button"
-              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               onClick={onClose}
             >
               {cancelText}

@@ -39,7 +39,9 @@ export default function CBTWorkspacePage() {
   const attemptId = searchParams.get("attemptId") || "";
   const [questions, setQuestions] = useState<CBTQuestion[]>([]);
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, { option_id?: string; answer_text?: string }>>({});
+  const [answers, setAnswers] = useState<
+    Record<string, { option_id?: string; option_ids?: string[]; answer_text?: string }>
+  >({});
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -51,12 +53,16 @@ export default function CBTWorkspacePage() {
   const durasiMenitRef = useRef(0);
 
   const saveAnswer = useCallback(
-    async (questionId: string, value: { option_id?: string; answer_text?: string }) => {
+    async (
+      questionId: string,
+      value: { option_id?: string; option_ids?: string[]; answer_text?: string }
+    ) => {
       if (!attemptId || submitted) return;
       setAnswers((prev) => ({ ...prev, [questionId]: value }));
       await apiService.post(`v1/cbt/attempts/${attemptId}/answers`, {
         question_id: questionId,
         option_id: value.option_id || undefined,
+        option_ids: value.option_ids?.length ? value.option_ids : undefined,
         answer_text: value.answer_text || undefined,
       });
     },
@@ -185,7 +191,7 @@ export default function CBTWorkspacePage() {
                   ? "bg-blue-600 text-white border-blue-600"
                   : answers[q.question_id]
                     ? "bg-green-100 border-green-300 text-green-800"
-                    : "border-gray-300 hover:bg-gray-50"
+                    : "border-gray-300 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
               }`}
             >
               {i + 1}
@@ -203,31 +209,52 @@ export default function CBTWorkspacePage() {
           <p className="text-sm text-gray-500 mb-2">
             Soal {current.num} dari {questions.length}
           </p>
-          <p className="font-medium text-gray-900 mb-4 whitespace-pre-wrap">
-            {current.question_text}
-          </p>
-          {current.type === "PG" || current.type === "BENAR_SALAH" ? (
+          <div
+            className="font-medium text-gray-900 mb-4 text-sm [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-base [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-2 [&_blockquote]:border-gray-300 [&_blockquote]:pl-4 [&_blockquote]:italic"
+            dangerouslySetInnerHTML={{ __html: current.question_text || "" }}
+          />
+          {current.type === "PG" || current.type === "MRA" || current.type === "BENAR_SALAH" ? (
             <div className="space-y-2">
-              {current.options?.map((opt) => (
-                <label
-                  key={opt.id}
-                  className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
-                    answers[current.question_id]?.option_id === opt.id
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200 hover:bg-gray-50"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name={`q-${current.question_id}`}
-                    checked={answers[current.question_id]?.option_id === opt.id}
-                    onChange={() =>
-                      saveAnswer(current.question_id, { option_id: opt.id })
-                    }
-                  />
-                  <span>{opt.option_key}. {opt.option_text}</span>
-                </label>
-              ))}
+              {current.type === "MRA" && (
+                <p className="text-sm text-gray-500 mb-2">Pilih semua jawaban yang benar (boleh lebih dari satu)</p>
+              )}
+              {current.options?.map((opt) => {
+                const isSelected =
+                  current.type === "MRA"
+                    ? (answers[current.question_id]?.option_ids ?? []).includes(opt.id)
+                    : answers[current.question_id]?.option_id === opt.id;
+                const toggleMRA = () => {
+                  const currentIds = answers[current.question_id]?.option_ids ?? [];
+                  const next = currentIds.includes(opt.id)
+                    ? currentIds.filter((id) => id !== opt.id)
+                    : [...currentIds, opt.id];
+                  saveAnswer(current.question_id, { option_ids: next });
+                };
+                return (
+                  <label
+                    key={opt.id}
+                    className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                      isSelected
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
+                    }`}
+                  >
+                    <input
+                      type={current.type === "MRA" ? "checkbox" : "radio"}
+                      name={current.type === "MRA" ? undefined : `q-${current.question_id}`}
+                      checked={isSelected}
+                      onChange={() =>
+                        current.type === "MRA"
+                          ? toggleMRA()
+                          : saveAnswer(current.question_id, { option_id: opt.id })
+                      }
+                    />
+                    <span>
+                      {opt.option_key}. {opt.option_text}
+                    </span>
+                  </label>
+                );
+              })}
             </div>
           ) : (
             <textarea
@@ -247,14 +274,14 @@ export default function CBTWorkspacePage() {
         <button
           onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
           disabled={currentIdx === 0}
-          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+          className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50 disabled:opacity-50"
         >
           Sebelumnya
         </button>
         {currentIdx < questions.length - 1 ? (
           <button
             onClick={() => setCurrentIdx((i) => Math.min(questions.length - 1, i + 1))}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
           >
             Berikutnya
           </button>
@@ -262,7 +289,7 @@ export default function CBTWorkspacePage() {
           <button
             onClick={() => setSubmitConfirm(true)}
             disabled={submitted || submitting}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-green-700 disabled:opacity-50"
           >
             Submit Ujian
           </button>
@@ -279,14 +306,14 @@ export default function CBTWorkspacePage() {
             <div className="mt-4 flex gap-2 justify-end">
               <button
                 onClick={() => setSubmitConfirm(false)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
               >
                 Batal
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-green-700 disabled:opacity-50"
               >
                 {submitting ? "Mengirim..." : "Ya, Submit"}
               </button>

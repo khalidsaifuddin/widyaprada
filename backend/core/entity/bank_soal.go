@@ -27,6 +27,7 @@ type QuestionDetail struct {
 // Question type constants
 const (
 	QuestionTypePG         = "PG"         // Pilihan Ganda
+	QuestionTypeMRA        = "MRA"        // Multiple Right Answer (pilihan ganda, >1 benar, bobot per opsi)
 	QuestionTypeBenarSalah = "BENAR_SALAH"
 	QuestionTypeEssay      = "ESSAY"
 )
@@ -97,11 +98,12 @@ type QuestionDetailResponse struct {
 
 // QuestionOption opsi jawaban
 type QuestionOption struct {
-	ID          string `json:"id"`
-	QuestionID  string `json:"question_id"`
-	OptionKey   string `json:"option_key"`
-	OptionText  string `json:"option_text"`
-	IsCorrect   bool   `json:"is_correct"`
+	ID          string  `json:"id"`
+	QuestionID  string  `json:"question_id"`
+	OptionKey   string  `json:"option_key"`
+	OptionText  string  `json:"option_text"`
+	IsCorrect   bool    `json:"is_correct"`
+	OptionWeight float64 `json:"option_weight,omitempty"` // untuk MRA: bobot per opsi (default 1)
 }
 
 // CreateQuestionRequest untuk POST /api/v1/questions
@@ -119,9 +121,10 @@ type CreateQuestionRequest struct {
 
 // QuestionOptionInput input opsi saat create/update
 type QuestionOptionInput struct {
-	OptionKey  string `json:"option_key"`
-	OptionText string `json:"option_text"`
-	IsCorrect  bool   `json:"is_correct"`
+	OptionKey    string  `json:"option_key"`
+	OptionText   string  `json:"option_text"`
+	IsCorrect    bool    `json:"is_correct"`
+	OptionWeight float64 `json:"option_weight,omitempty"` // untuk MRA: bobot per opsi
 }
 
 // UpdateQuestionRequest untuk PUT /api/v1/questions/:id

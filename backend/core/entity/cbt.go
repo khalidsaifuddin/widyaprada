@@ -22,6 +22,18 @@ type CBTExamTersediaItem struct {
 	DurasiMenit   int    `json:"durasi_menit"`
 }
 
+// CBTExamDetailResponse response GET /api/v1/cbt/exams/:id (detail untuk halaman petunjuk)
+type CBTExamDetailResponse struct {
+	ID            string `json:"id"`
+	Code          string `json:"code"`
+	Name          string `json:"name"`
+	JadwalMulai   string `json:"jadwal_mulai"`
+	JadwalSelesai string `json:"jadwal_selesai"`
+	DurasiMenit   int    `json:"durasi_menit"`
+	DapatMulai    bool   `json:"dapat_mulai"`
+	Alasan        string `json:"alasan,omitempty"`
+}
+
 // CBTListExamsResponse response GET /api/v1/cbt/exams
 type CBTListExamsResponse struct {
 	Items []CBTExamTersediaItem `json:"items"`
@@ -62,9 +74,10 @@ type CBTListQuestionsResponse struct {
 
 // CBTSaveAnswerRequest untuk POST /api/v1/cbt/attempts/:attemptId/answers
 type CBTSaveAnswerRequest struct {
-	QuestionID  string `json:"question_id" binding:"required"`
-	OptionID    string `json:"option_id"`    // PG, B-S
-	AnswerText  string `json:"answer_text"`  // Essay
+	QuestionID  string   `json:"question_id" binding:"required"`
+	OptionID    string   `json:"option_id"`    // PG, B-S
+	OptionIDs   []string `json:"option_ids"`   // MRA: multiple option IDs
+	AnswerText  string   `json:"answer_text"`  // Essay
 }
 
 // CBTSaveAnswerResponse response

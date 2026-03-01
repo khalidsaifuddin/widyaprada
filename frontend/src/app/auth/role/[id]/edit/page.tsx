@@ -188,13 +188,13 @@ export default function RoleEditPage() {
           <button
             type="submit"
             disabled={submitLoading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 disabled:opacity-50"
           >
             {submitLoading ? "Menyimpan..." : "Simpan"}
           </button>
           <Link
             href={`/auth/role/${id}`}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
           >
             Batal
           </Link>

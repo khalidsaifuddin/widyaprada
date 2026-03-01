@@ -1,5 +1,6 @@
 "use client";
 
+import RichTextEditor from "@/components/molecules/RichTextEditor";
 import { apiService } from "@/lib/api";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -15,6 +16,7 @@ interface QuestionOptionInput {
   option_key: string;
   option_text: string;
   is_correct: boolean;
+  option_weight?: number;
 }
 
 interface QuestionDetail {
@@ -27,7 +29,22 @@ interface QuestionDetail {
   answer_key: string;
   weight: number;
   status: string;
-  options: { option_key: string; option_text: string; is_correct: boolean }[];
+  options: {
+    option_key: string;
+    option_text: string;
+    is_correct: boolean;
+    option_weight?: number;
+  }[];
+}
+
+const OPTION_KEYS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+function getNextOptionKey(current: string[]): string {
+  const used = new Set(current);
+  for (const k of OPTION_KEYS) {
+    if (!used.has(k)) return k;
+  }
+  return String.fromCharCode(65 + current.length);
 }
 
 export default function BankSoalEditPage() {
@@ -77,14 +94,17 @@ export default function BankSoalEditPage() {
         setStatus(q.status ?? "Draft");
         if (q.type === "BENAR_SALAH") {
           setBsCorrect(q.answer_key === "BENAR");
-        } else if (q.type === "PG" && q.options?.length) {
-          const pgOpts = ["A", "B", "C", "D"].map((key) => {
-            const o = q.options.find((x) => x.option_key === key);
-            return o
-              ? { ...o, is_correct: o.is_correct }
-              : { option_key: key, option_text: "", is_correct: false };
-          });
-          setOptions(pgOpts);
+        } else if ((q.type === "PG" || q.type === "MRA") && q.options?.length) {
+          const correctKeys = new Set(
+            (q.answer_key ?? "").split(",").map((k) => k.trim()).filter(Boolean)
+          );
+          const opts = q.options.map((o) => ({
+            option_key: o.option_key,
+            option_text: o.option_text,
+            is_correct: q.type === "MRA" ? correctKeys.has(o.option_key) : o.is_correct,
+            option_weight: o.option_weight ?? 1,
+          }));
+          setOptions(opts);
         }
       }
       setLoading(false);
@@ -94,7 +114,8 @@ export default function BankSoalEditPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!code.trim() || !questionText.trim()) {
+    const strippedText = questionText.replace(/<[^>]*>/g, "").trim();
+    if (!code.trim() || !strippedText) {
       setError("Kode dan teks soal wajib diisi");
       return;
     }
@@ -105,13 +126,34 @@ export default function BankSoalEditPage() {
         return;
       }
     }
+    if (type === "MRA") {
+      const correctCount = options.filter((o) => o.is_correct).length;
+      if (correctCount === 0) {
+        setError("Pilih minimal satu kunci jawaban");
+        return;
+      }
+      if (options.some((o) => !o.option_text?.trim())) {
+        setError("Semua opsi wajib diisi");
+        return;
+      }
+    }
 
     setSubmitLoading(true);
     let opts: QuestionOptionInput[] = [];
     let key = answerKey;
     if (type === "PG") {
-      opts = options;
+      opts = options.map((o) => ({ ...o, option_weight: 1 }));
       key = options.find((o) => o.is_correct)?.option_key ?? "";
+    } else if (type === "MRA") {
+      opts = options.map((o) => ({
+        ...o,
+        option_weight: (o.option_weight ?? 1) <= 0 ? 1 : (o.option_weight ?? 1),
+      }));
+      key = options
+        .filter((o) => o.is_correct)
+        .map((o) => o.option_key)
+        .sort()
+        .join(",");
     } else if (type === "BENAR_SALAH") {
       opts = [
         { option_key: "BENAR", option_text: "Benar", is_correct: bsCorrect },
@@ -140,8 +182,67 @@ export default function BankSoalEditPage() {
   };
 
   const setOptionCorrect = (idx: number) => {
-    setOptions((prev) => prev.map((o, i) => ({ ...o, is_correct: i === idx })));
+    if (type === "PG") {
+      setOptions((prev) => prev.map((o, i) => ({ ...o, is_correct: i === idx })));
+    } else if (type === "MRA") {
+      setOptions((prev) =>
+        prev.map((o, i) => (i === idx ? { ...o, is_correct: !o.is_correct } : o))
+      );
+    }
   };
+
+  const addOption = () => {
+    const next = getNextOptionKey(options.map((o) => o.option_key));
+    setOptions((prev) => [...prev, { option_key: next, option_text: "", is_correct: false }]);
+  };
+
+  const removeOption = (idx: number) => {
+    if (options.length <= 2) return;
+    setOptions((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const setOptionWeight = (idx: number, value: number) => {
+    setOptions((prev) =>
+      prev.map((o, i) => (i === idx ? { ...o, option_weight: Math.max(0.1, value) } : o))
+    );
+  };
+
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+
+  const moveOption = (fromIdx: number, toIdx: number) => {
+    if (fromIdx === toIdx) return;
+    setOptions((prev) => {
+      const arr = [...prev];
+      const [moved] = arr.splice(fromIdx, 1);
+      arr.splice(toIdx, 0, moved);
+      return arr.map((o, i) => ({ ...o, option_key: OPTION_KEYS[i] ?? String(i + 1) }));
+    });
+  };
+
+  const handleDragStart = (e: React.DragEvent, idx: number) => {
+    setDraggedIdx(idx);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", String(idx));
+  };
+  const handleDragOver = (e: React.DragEvent) => e.preventDefault();
+  const handleDrop = (e: React.DragEvent, toIdx: number) => {
+    e.preventDefault();
+    if (draggedIdx === null) return;
+    if (draggedIdx !== toIdx) moveOption(draggedIdx, toIdx);
+    setDraggedIdx(null);
+  };
+  const handleDragEnd = () => setDraggedIdx(null);
+
+  const GripIcon = () => (
+    <svg className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing" viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="9" cy="6" r="1.5" />
+      <circle cx="9" cy="12" r="1.5" />
+      <circle cx="9" cy="18" r="1.5" />
+      <circle cx="15" cy="6" r="1.5" />
+      <circle cx="15" cy="12" r="1.5" />
+      <circle cx="15" cy="18" r="1.5" />
+    </svg>
+  );
 
   if (loading) return <div className="p-8">Memuat...</div>;
 
@@ -177,9 +278,15 @@ export default function BankSoalEditPage() {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
             <option value="PG">Pilihan Ganda</option>
+            <option value="MRA">Multiple Right Answer</option>
             <option value="BENAR_SALAH">Benar-Salah</option>
             <option value="ESSAY">Essay</option>
           </select>
+          {type === "MRA" && (
+            <p className="text-xs text-gray-500 mt-1">
+              Beberapa jawaban benar. Masing-masing opsi bisa punya bobot berbeda.
+            </p>
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
@@ -197,7 +304,9 @@ export default function BankSoalEditPage() {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tingkat Kesulitan</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Tingkat Kesulitan
+          </label>
           <select
             value={difficulty}
             onChange={(e) => setDifficulty(e.target.value)}
@@ -211,41 +320,94 @@ export default function BankSoalEditPage() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Teks Soal *</label>
-          <textarea
+          <RichTextEditor
             value={questionText}
-            onChange={(e) => setQuestionText(e.target.value)}
-            rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-            required
+            onChange={setQuestionText}
+            placeholder="Tulis teks soal di sini..."
+            minHeight="10rem"
           />
         </div>
 
-        {type === "PG" && (
+        {(type === "PG" || type === "MRA") && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Opsi Jawaban</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Opsi Jawaban
+                {type === "PG"
+                  ? " (pilih satu kunci)"
+                  : " (centang yang benar, atur bobot per opsi)"}
+              </label>
+              <button
+                type="button"
+                onClick={addOption}
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                + Tambah Opsi
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mb-2">Geser untuk mengubah urutan</p>
             <div className="space-y-2">
               {options.map((o, i) => (
-                <div key={i} className="flex gap-2 items-center">
+                <div
+                  key={i}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, i)}
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, i)}
+                  onDragEnd={handleDragEnd}
+                  className={`flex gap-2 items-center flex-wrap p-2 rounded-lg border transition-colors ${
+                    draggedIdx === i ? "border-blue-400 bg-blue-50 opacity-75" : "border-gray-200 bg-white hover:border-gray-300"
+                  }`}
+                >
+                  <div className="flex-shrink-0 touch-none">
+                    <GripIcon />
+                  </div>
                   <span className="w-6 font-medium">{o.option_key}.</span>
                   <input
                     type="text"
                     value={o.option_text}
                     onChange={(e) =>
                       setOptions((prev) =>
-                        prev.map((opt, j) => (j === i ? { ...opt, option_text: e.target.value } : opt))
+                        prev.map((opt, j) =>
+                          j === i ? { ...opt, option_text: e.target.value } : opt
+                        )
                       )
                     }
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                    className="flex-1 min-w-[120px] px-3 py-2 border border-gray-300 rounded-lg"
                   />
+                  {type === "MRA" && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs text-gray-500">Bobot:</span>
+                      <input
+                        type="number"
+                        value={o.option_weight ?? 1}
+                        onChange={(e) =>
+                          setOptionWeight(i, parseFloat(e.target.value) || 1)
+                        }
+                        min={0.1}
+                        step={0.1}
+                        className="w-16 px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  )}
                   <label className="flex items-center gap-1">
                     <input
-                      type="radio"
-                      name="correct"
+                      type={type === "PG" ? "radio" : "checkbox"}
+                      name={type === "PG" ? "correct" : undefined}
                       checked={o.is_correct}
                       onChange={() => setOptionCorrect(i)}
                     />
                     <span className="text-sm">Kunci</span>
                   </label>
+                  {options.length > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => removeOption(i)}
+                      className="text-red-600 hover:text-red-800 text-sm"
+                    >
+                      Hapus
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -254,7 +416,9 @@ export default function BankSoalEditPage() {
 
         {type === "BENAR_SALAH" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Kunci Jawaban</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Kunci Jawaban
+            </label>
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
                 <input
@@ -280,7 +444,9 @@ export default function BankSoalEditPage() {
 
         {type === "ESSAY" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Model Jawaban</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Model Jawaban
+            </label>
             <input
               type="text"
               value={answerKey}
@@ -291,7 +457,7 @@ export default function BankSoalEditPage() {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Bobot</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Bobot Soal</label>
           <input
             type="number"
             value={weight}
@@ -316,13 +482,13 @@ export default function BankSoalEditPage() {
           <button
             type="submit"
             disabled={submitLoading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 disabled:opacity-50"
           >
             {submitLoading ? "Menyimpan..." : "Simpan"}
           </button>
           <Link
             href={`/wpujikom/bank-soal/${id}`}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
           >
             Batal
           </Link>

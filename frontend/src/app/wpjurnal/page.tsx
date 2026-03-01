@@ -40,7 +40,7 @@ export default function WPJurnalPage() {
         <h1 className="text-2xl font-bold text-gray-900">Manajemen Jurnal</h1>
         <Link
           href="/wpjurnal/create"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium"
         >
           <span>+</span> Buat Jurnal
         </Link>

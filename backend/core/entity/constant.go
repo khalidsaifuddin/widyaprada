@@ -58,7 +58,7 @@ var (
 	ErrQuestionCodeExists    = errors.New("kode soal sudah digunakan")
 	ErrQuestionInUseByPaket  = errors.New("soal ini digunakan oleh paket ujian")
 	ErrQuestionDeleteReason  = errors.New("alasan penghapusan wajib diisi")
-	ErrQuestionOptionsRequired = errors.New("opsi dan kunci jawaban wajib untuk PG dan Benar-Salah")
+	ErrQuestionOptionsRequired = errors.New("opsi dan kunci jawaban wajib untuk PG, MRA, dan Benar-Salah")
 	ErrCategoryNotFound      = errors.New("kategori tidak ditemukan")
 )
 

@@ -34,13 +34,18 @@ func (r *questionRepo) CreateOptions(ctx context.Context, questionID string, opt
 	}
 	rows := make([]QuestionOption, len(opts))
 	for i := range opts {
+		w := opts[i].OptionWeight
+		if w <= 0 {
+			w = 1
+		}
 		rows[i] = QuestionOption{
-			ID:         opts[i].ID,
-			QuestionID: opts[i].QuestionID,
-			OptionKey:  opts[i].OptionKey,
-			OptionText: opts[i].OptionText,
-			IsCorrect:  opts[i].IsCorrect,
-			CreatedAt:  &now,
+			ID:           opts[i].ID,
+			QuestionID:   opts[i].QuestionID,
+			OptionKey:    opts[i].OptionKey,
+			OptionText:   opts[i].OptionText,
+			IsCorrect:    opts[i].IsCorrect,
+			OptionWeight: w,
+			CreatedAt:    &now,
 		}
 	}
 	return r.db.WithContext(ctx).Create(&rows).Error

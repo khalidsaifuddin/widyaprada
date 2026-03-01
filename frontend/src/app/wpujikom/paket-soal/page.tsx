@@ -48,7 +48,7 @@ export default function PaketSoalPage() {
   const [totalData, setTotalData] = useState(0);
   const [canEditRole, setCanEditRole] = useState(false);
   const [canVerifyRole, setCanVerifyRole] = useState(false);
-  const pageSize = 10;
+  const pageSize = 20;
 
   useEffect(() => {
     getUserProfile().then((p) => {
@@ -107,7 +107,7 @@ export default function PaketSoalPage() {
         {canEditRole && (
           <Link
             href="/wpujikom/paket-soal/create"
-            className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium"
           >
             Tambah Paket
           </Link>

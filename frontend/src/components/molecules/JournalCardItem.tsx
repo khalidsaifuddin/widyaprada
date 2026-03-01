@@ -40,7 +40,7 @@ export default function JournalCardItem({
   const canEdit = status?.toLowerCase().includes("draft");
 
   return (
-    <div className="p-4 rounded-lg border border-gray-200 bg-white hover:border-blue-200 transition-colors">
+    <div className="p-4 rounded-lg border border-gray-200 bg-white hover:border-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex-1 min-w-0">
           <h4 className="font-medium text-gray-900 truncate">{title || "Tanpa judul"}</h4>
@@ -54,14 +54,14 @@ export default function JournalCardItem({
         <div className="flex gap-2">
           <Link
             href={`/wpjurnal/${id}`}
-            className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+            className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
           >
             Lihat
           </Link>
           {canEdit && (
             <Link
               href={`/wpjurnal/${id}/edit`}
-              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
             >
               Edit
             </Link>

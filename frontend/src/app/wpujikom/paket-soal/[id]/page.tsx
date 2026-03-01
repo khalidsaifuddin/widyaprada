@@ -122,13 +122,13 @@ export default function PaketSoalDetailPage() {
             <>
               <Link
                 href={`/wpujikom/paket-soal/${id}/edit`}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
               >
                 Edit
               </Link>
               <button
                 onClick={() => setDeleteDialog(true)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700"
               >
                 Hapus
               </button>
@@ -137,7 +137,7 @@ export default function PaketSoalDetailPage() {
           {canVerifyRole && (
             <button
               onClick={() => handleVerify(pkg!.verification_status !== "Sudah")}
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+              className="px-4 py-2 bg-amber-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-amber-700"
             >
               {pkg!.verification_status === "Sudah" ? "Batal Verifikasi" : "Verifikasi"}
             </button>
@@ -164,7 +164,10 @@ export default function PaketSoalDetailPage() {
             {pkg.description && (
               <div>
                 <dt className="text-sm font-medium text-gray-500">Deskripsi</dt>
-                <dd className="mt-1 text-gray-600">{pkg.description}</dd>
+                <dd
+                  className="mt-1 text-gray-600 text-sm [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-base [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-2 [&_blockquote]:border-gray-300 [&_blockquote]:pl-4 [&_blockquote]:italic"
+                  dangerouslySetInnerHTML={{ __html: pkg.description }}
+                />
               </div>
             )}
             <div className="flex gap-4">
@@ -239,14 +242,14 @@ export default function PaketSoalDetailPage() {
               <div className="mt-4 flex justify-end gap-2">
                 <button
                   onClick={() => setDeleteDialog(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
                 >
                   Batal
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={!deleteReason.trim() || deleteLoading}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700 disabled:opacity-50"
                 >
                   {deleteLoading ? "Menghapus..." : "Hapus"}
                 </button>

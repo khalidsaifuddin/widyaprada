@@ -79,7 +79,7 @@ function ResetPasswordForm() {
             </div>
             <Link
               href="/auth/login"
-              className="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg text-white bg-blue-600 hover:bg-blue-700 font-medium"
+              className="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg text-white bg-blue-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium"
             >
               Login
             </Link>
@@ -107,7 +107,7 @@ function ResetPasswordForm() {
             </div>
             <Link
               href="/auth/forgot-password"
-              className="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg text-white bg-blue-600 hover:bg-blue-700 font-medium"
+              className="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg text-white bg-blue-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium"
             >
               Minta Tautan Baru
             </Link>
@@ -196,7 +196,7 @@ function ResetPasswordForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center items-center py-3 px-4 rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 font-medium"
+              className="w-full flex justify-center items-center py-3 px-4 rounded-lg text-white bg-blue-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 font-medium"
             >
               {loading ? (
                 <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />

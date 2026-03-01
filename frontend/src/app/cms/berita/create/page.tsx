@@ -107,7 +107,7 @@ export default function BeritaCMSCreatePage() {
               <button
                 type="button"
                 onClick={() => setGalleryUrls(galleryUrls.filter((_, j) => j !== i))}
-                className="shrink-0 rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 hover:bg-red-50 mt-1"
+                className="shrink-0 rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-50 mt-1"
               >
                 Hapus
               </button>
@@ -116,7 +116,7 @@ export default function BeritaCMSCreatePage() {
           <button
             type="button"
             onClick={() => setGalleryUrls([...galleryUrls, ""])}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
           >
             + Tambah Gambar
           </button>
@@ -156,8 +156,8 @@ export default function BeritaCMSCreatePage() {
           </div>
         </div>
         <div className="flex gap-3">
-          <button type="submit" disabled={loading} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50">{loading ? "Menyimpan..." : "Simpan"}</button>
-          <Link href="/cms/berita" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Batal</Link>
+          <button type="submit" disabled={loading} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 disabled:opacity-50">{loading ? "Menyimpan..." : "Simpan"}</button>
+          <Link href="/cms/berita" className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50">Batal</Link>
         </div>
       </form>
     </div>

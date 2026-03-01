@@ -51,7 +51,7 @@ export default function TautanListPage() {
           <h1 className="text-2xl font-bold text-gray-900">CMS Tautan</h1>
           <p className="text-gray-600 mt-1">Kelola tautan penting landing page</p>
         </div>
-        <Link href="/cms/tautan/create" className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+        <Link href="/cms/tautan/create" className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700">
           Tambah Tautan
         </Link>
       </div>
@@ -76,7 +76,7 @@ export default function TautanListPage() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {items.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
+                <tr key={item.id} className="transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium text-gray-900">{item.title || "-"}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">
                     <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate max-w-xs block">

@@ -63,7 +63,7 @@ export default function CBTListPage() {
         </div>
         <Link
           href="/wpujikom/cbt/riwayat"
-          className="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium"
+          className="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 text-gray-700 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50 font-medium"
         >
           Riwayat Ujian
         </Link>
@@ -96,7 +96,7 @@ export default function CBTListPage() {
           {exams.map((exam) => (
             <div
               key={exam.id}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:border-blue-200 transition-colors"
+              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:border-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
             >
               <h3 className="font-semibold text-gray-900">{exam.name}</h3>
               <p className="text-sm text-gray-500 mt-1 font-mono">{exam.code}</p>
@@ -106,7 +106,7 @@ export default function CBTListPage() {
               <p className="text-sm text-gray-600">Durasi: {exam.durasi_menit} menit</p>
               <Link
                 href={`/wpujikom/cbt/${exam.id}/mulai`}
-                className="mt-4 inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium text-sm"
+                className="mt-4 inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium text-sm"
               >
                 Mulai Ujian
               </Link>

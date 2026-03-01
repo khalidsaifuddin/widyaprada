@@ -1,5 +1,6 @@
 "use client";
 
+import RichTextEditor from "@/components/molecules/RichTextEditor";
 import { apiService } from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -60,7 +61,7 @@ export default function PaketSoalCreatePage() {
     const res = await apiService.post("v1/question-packages", {
       code: code.trim(),
       name: name.trim(),
-      description: description.trim() || undefined,
+      description: description?.replace(/<[^>]*>/g, "").trim() ? description : undefined,
       status,
       question_ids: questionIds,
     });
@@ -126,11 +127,11 @@ export default function PaketSoalCreatePage() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi (opsional)</label>
-          <textarea
+          <RichTextEditor
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={2}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            onChange={setDescription}
+            placeholder="Tulis deskripsi paket soal..."
+            minHeight="8rem"
           />
         </div>
         <div>
@@ -167,7 +168,7 @@ export default function PaketSoalCreatePage() {
               questions.map((q) => (
                 <label
                   key={q.id}
-                  className="flex items-start gap-2 p-2 rounded hover:bg-gray-50 cursor-pointer"
+                  className="flex items-start gap-2 p-2 rounded transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50 cursor-pointer"
                 >
                   <input
                     type="checkbox"
@@ -178,7 +179,7 @@ export default function PaketSoalCreatePage() {
                   <div className="flex-1 min-w-0">
                     <span className="font-mono text-sm">{q.code}</span>
                     <span className="text-gray-500 text-sm ml-2">({q.type})</span>
-                    <p className="text-sm text-gray-600 truncate">{q.question_text}</p>
+                    <p className="text-sm text-gray-600 truncate">{q.question_text?.replace(/<[^>]*>/g, "") ?? ""}</p>
                   </div>
                 </label>
               ))
@@ -190,13 +191,13 @@ export default function PaketSoalCreatePage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 disabled:opacity-50"
           >
             {loading ? "Menyimpan..." : "Simpan"}
           </button>
           <Link
             href="/wpujikom/paket-soal"
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
           >
             Batal
           </Link>

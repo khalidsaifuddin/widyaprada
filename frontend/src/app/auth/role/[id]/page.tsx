@@ -81,13 +81,13 @@ export default function RoleDetailPage() {
         <div className="flex gap-2">
           <Link
             href={`/auth/role/${id}/edit`}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
           >
             Edit
           </Link>
           <button
             onClick={() => setDeleteDialog(true)}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            className="px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700"
           >
             Hapus
           </button>
@@ -162,14 +162,14 @@ export default function RoleDetailPage() {
               <div className="mt-4 flex justify-end gap-2">
                 <button
                   onClick={() => setDeleteDialog(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
                 >
                   Batal
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={!deleteReason.trim() || deleteLoading}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700 disabled:opacity-50"
                 >
                   {deleteLoading ? "Menghapus..." : "Hapus"}
                 </button>

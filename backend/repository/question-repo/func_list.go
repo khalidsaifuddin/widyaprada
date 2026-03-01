@@ -60,14 +60,18 @@ func (r *questionRepo) List(ctx context.Context, req entity.GetQuestionListReque
 	categoryCache := make(map[string]string)
 	for i := range rows {
 		q := rows[i]
+		catID := ""
+		if q.CategoryID != nil {
+			catID = *q.CategoryID
+		}
 		catName := ""
-		if q.CategoryID != "" {
-			if n, ok := categoryCache[q.CategoryID]; ok {
+		if catID != "" {
+			if n, ok := categoryCache[catID]; ok {
 				catName = n
 			} else {
 				var cat QuestionCategory
-				if r.db.WithContext(ctx).Where("id = ?", q.CategoryID).First(&cat).Error == nil {
-					categoryCache[q.CategoryID] = cat.Name
+				if r.db.WithContext(ctx).Where("id = ?", catID).First(&cat).Error == nil {
+					categoryCache[catID] = cat.Name
 					catName = cat.Name
 				}
 			}
@@ -80,7 +84,7 @@ func (r *questionRepo) List(ctx context.Context, req entity.GetQuestionListReque
 			ID:                 q.ID,
 			Code:               q.Code,
 			Type:               q.Type,
-			CategoryID:         q.CategoryID,
+			CategoryID:         catID,
 			CategoryName:       catName,
 			Difficulty:         q.Difficulty,
 			QuestionText:       q.QuestionText,

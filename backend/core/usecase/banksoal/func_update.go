@@ -44,7 +44,7 @@ func (u *bankSoalUsecase) Update(ctx context.Context, id string, req entity.Upda
 		q.Status = req.Status
 	}
 
-	if (q.Type == entity.QuestionTypePG || q.Type == entity.QuestionTypeBenarSalah) &&
+	if (q.Type == entity.QuestionTypePG || q.Type == entity.QuestionTypeMRA || q.Type == entity.QuestionTypeBenarSalah) &&
 		len(req.Options) > 0 {
 		if q.AnswerKey == "" {
 			return nil, entity.ErrQuestionOptionsRequired
@@ -55,11 +55,16 @@ func (u *bankSoalUsecase) Update(ctx context.Context, id string, req entity.Upda
 		}
 		opts := make([]entity.QuestionOption, len(req.Options))
 		for i := range req.Options {
+			w := req.Options[i].OptionWeight
+			if w <= 0 {
+				w = 1
+			}
 			opts[i] = entity.QuestionOption{
-				QuestionID: id,
-				OptionKey:  req.Options[i].OptionKey,
-				OptionText: req.Options[i].OptionText,
-				IsCorrect:  req.Options[i].IsCorrect,
+				QuestionID:   id,
+				OptionKey:    req.Options[i].OptionKey,
+				OptionText:   req.Options[i].OptionText,
+				IsCorrect:    req.Options[i].IsCorrect,
+				OptionWeight: w,
 			}
 		}
 		if err := u.questionRepo.CreateOptions(ctx, id, opts); err != nil {

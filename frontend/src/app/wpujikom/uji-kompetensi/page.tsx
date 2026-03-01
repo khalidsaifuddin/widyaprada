@@ -49,7 +49,7 @@ export default function UjiKompetensiPage() {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [totalData, setTotalData] = useState(0);
-  const pageSize = 10;
+  const pageSize = 20;
 
   const fetchExams = useCallback(async () => {
     setLoading(true);
@@ -97,7 +97,7 @@ export default function UjiKompetensiPage() {
         </div>
         <Link
           href="/wpujikom/uji-kompetensi/create"
-          className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium"
+          className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium"
         >
           Tambah Ujian
         </Link>

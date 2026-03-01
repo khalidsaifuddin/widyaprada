@@ -16,7 +16,7 @@ func (u *bankSoalUsecase) Create(ctx context.Context, req entity.CreateQuestionR
 		return nil, entity.ErrQuestionCodeExists
 	}
 
-	if (req.Type == entity.QuestionTypePG || req.Type == entity.QuestionTypeBenarSalah) &&
+	if (req.Type == entity.QuestionTypePG || req.Type == entity.QuestionTypeMRA || req.Type == entity.QuestionTypeBenarSalah) &&
 		(len(req.Options) == 0 || req.AnswerKey == "") {
 		return nil, entity.ErrQuestionOptionsRequired
 	}
@@ -46,12 +46,17 @@ func (u *bankSoalUsecase) Create(ctx context.Context, req entity.CreateQuestionR
 
 	opts := make([]entity.QuestionOption, len(req.Options))
 	for i := range req.Options {
+		w := req.Options[i].OptionWeight
+		if w <= 0 {
+			w = 1
+		}
 		opts[i] = entity.QuestionOption{
-			ID:         uuid.New().String(),
-			QuestionID: q.ID,
-			OptionKey:  req.Options[i].OptionKey,
-			OptionText: req.Options[i].OptionText,
-			IsCorrect:  req.Options[i].IsCorrect,
+			ID:           uuid.New().String(),
+			QuestionID:   q.ID,
+			OptionKey:    req.Options[i].OptionKey,
+			OptionText:   req.Options[i].OptionText,
+			IsCorrect:    req.Options[i].IsCorrect,
+			OptionWeight: w,
 		}
 	}
 	if len(opts) > 0 {

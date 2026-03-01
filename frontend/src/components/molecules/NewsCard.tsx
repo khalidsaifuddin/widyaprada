@@ -38,7 +38,7 @@ export default function NewsCard({
   return (
     <Link
       href={`/berita/${slug}`}
-      className="block rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-md hover:border-blue-200 transition-all"
+      className="block rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-lg hover:border-blue-200 hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300"
     >
       <div className="relative h-40 bg-gray-100">
         {imageUrl ? (

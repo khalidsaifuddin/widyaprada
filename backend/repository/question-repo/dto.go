@@ -33,7 +33,7 @@ type Question struct {
 	ID                 string         `gorm:"column:id;primaryKey;type:uuid"`
 	Code               string         `gorm:"column:code;size:100;uniqueIndex;not null"`
 	Type               string         `gorm:"column:type;size:50;not null"`
-	CategoryID         string         `gorm:"column:category_id;type:uuid"`
+	CategoryID         *string        `gorm:"column:category_id;type:uuid"`
 	Difficulty         string         `gorm:"column:difficulty;size:20"`
 	QuestionText       string         `gorm:"column:question_text;type:text;not null"`
 	AnswerKey          string         `gorm:"column:answer_key;size:10"`
@@ -58,11 +58,15 @@ func (q *Question) ToEntity() entity.QuestionDetail {
 	if q.UpdatedAt != nil {
 		updatedAt = q.UpdatedAt.UTC().Format(time.RFC3339)
 	}
+	catID := ""
+	if q.CategoryID != nil {
+		catID = *q.CategoryID
+	}
 	return entity.QuestionDetail{
 		ID:                 q.ID,
 		Code:               q.Code,
 		Type:               q.Type,
-		CategoryID:         q.CategoryID,
+		CategoryID:         catID,
 		Difficulty:         q.Difficulty,
 		QuestionText:       q.QuestionText,
 		AnswerKey:          q.AnswerKey,
@@ -89,11 +93,16 @@ func (Question) FromEntity(e entity.QuestionDetail) Question {
 			updatedAt = &t
 		}
 	}
+	var catID *string
+	if e.CategoryID != "" {
+		s := e.CategoryID
+		catID = &s
+	}
 	return Question{
 		ID:                 e.ID,
 		Code:               e.Code,
 		Type:               e.Type,
-		CategoryID:         e.CategoryID,
+		CategoryID:         catID,
 		Difficulty:         e.Difficulty,
 		QuestionText:       e.QuestionText,
 		AnswerKey:          e.AnswerKey,
@@ -108,12 +117,13 @@ func (Question) FromEntity(e entity.QuestionDetail) Question {
 
 // QuestionOption DTO untuk question_options
 type QuestionOption struct {
-	ID         string     `gorm:"column:id;primaryKey;type:uuid"`
-	QuestionID string     `gorm:"column:question_id;type:uuid;not null;index"`
-	OptionKey  string     `gorm:"column:option_key;size:10;not null"`
-	OptionText string     `gorm:"column:option_text;type:text;not null"`
-	IsCorrect  bool       `gorm:"column:is_correct;default:false"`
-	CreatedAt  *time.Time `gorm:"column:created_at"`
+	ID           string     `gorm:"column:id;primaryKey;type:uuid"`
+	QuestionID   string     `gorm:"column:question_id;type:uuid;not null;index"`
+	OptionKey    string     `gorm:"column:option_key;size:10;not null"`
+	OptionText   string     `gorm:"column:option_text;type:text;not null"`
+	IsCorrect    bool       `gorm:"column:is_correct;default:false"`
+	OptionWeight float64    `gorm:"column:option_weight;default:1"`
+	CreatedAt    *time.Time `gorm:"column:created_at"`
 }
 
 func (QuestionOption) TableName() string {
@@ -121,11 +131,16 @@ func (QuestionOption) TableName() string {
 }
 
 func (o *QuestionOption) ToEntity() entity.QuestionOption {
+	w := o.OptionWeight
+	if w <= 0 {
+		w = 1
+	}
 	return entity.QuestionOption{
-		ID:         o.ID,
-		QuestionID: o.QuestionID,
-		OptionKey:  o.OptionKey,
-		OptionText: o.OptionText,
-		IsCorrect:  o.IsCorrect,
+		ID:           o.ID,
+		QuestionID:   o.QuestionID,
+		OptionKey:    o.OptionKey,
+		OptionText:   o.OptionText,
+		IsCorrect:    o.IsCorrect,
+		OptionWeight: w,
 	}
 }

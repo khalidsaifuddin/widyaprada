@@ -112,19 +112,19 @@ export default function UjianDetailPage() {
             <>
               <Link
                 href={`/wpujikom/uji-kompetensi/${id}/edit`}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
               >
                 Edit
               </Link>
               <button
                 onClick={handlePublish}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-green-700"
               >
                 Terbitkan
               </button>
               <button
                 onClick={() => setDeleteDialog(true)}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700"
               >
                 Hapus
               </button>
@@ -132,7 +132,7 @@ export default function UjianDetailPage() {
           )}
           <button
             onClick={() => handleVerify(exam.verification_status !== "Sudah")}
-            className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+            className="px-4 py-2 bg-amber-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-amber-700"
           >
             {exam.verification_status === "Sudah" ? "Batal Verifikasi" : "Verifikasi"}
           </button>

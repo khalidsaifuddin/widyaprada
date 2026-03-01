@@ -114,7 +114,7 @@ function PublicHeaderAuth() {
     return (
       <Link
         href="/dashboard"
-        className="rounded-lg px-5 py-2.5 text-base font-semibold shadow-md transition-colors hover:opacity-95"
+        className="rounded-lg px-5 py-2.5 text-base font-semibold shadow-md transition-all duration-300 hover:opacity-95 hover:scale-[1.02] hover:-translate-y-0.5"
         style={{ backgroundColor: "#F9A702", color: "#3D3300" }}
       >
         {t("nav.dashboard")}
@@ -125,7 +125,7 @@ function PublicHeaderAuth() {
   return (
     <Link
       href="/auth/login"
-      className="rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-[#033259] hover:bg-white/90"
+      className="rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-[#033259] hover:bg-white/90 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5"
     >
       {t("nav.login")}
     </Link>

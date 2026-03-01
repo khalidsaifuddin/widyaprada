@@ -45,7 +45,7 @@ export default function AssignmentCardItem({
       : "bg-amber-100 text-amber-800";
 
   return (
-    <div className="p-4 rounded-lg border border-gray-200 bg-white hover:border-blue-200 transition-colors">
+    <div className="p-4 rounded-lg border border-gray-200 bg-white hover:border-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex-1 min-w-0">
           <h4 className="font-medium text-gray-900 truncate">{exam_name}</h4>
@@ -63,7 +63,7 @@ export default function AssignmentCardItem({
           {can_start && (
             <Link
               href={`/wpujikom/cbt/${id}/mulai`}
-              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
             >
               Mulai Ujian
             </Link>
@@ -71,7 +71,7 @@ export default function AssignmentCardItem({
           {can_view_result && (
             <Link
               href={`/wpujikom/assignment/${id}/hasil`}
-              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
             >
               Lihat Hasil
             </Link>
@@ -79,7 +79,7 @@ export default function AssignmentCardItem({
           {can_view_leaderboard && (
             <Link
               href={`/wpujikom/assignment/${id}/leaderboard`}
-              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="inline-flex px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
             >
               Lihat Leaderboard
             </Link>

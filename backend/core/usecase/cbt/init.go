@@ -10,6 +10,7 @@ import (
 // CBTUsecase interface
 type CBTUsecase interface {
 	ListUjianTersedia(ctx context.Context, userID string) (*entity.CBTListExamsResponse, error)
+	GetExamDetail(ctx context.Context, userID, examID string) (*entity.CBTExamDetailResponse, error)
 	MulaiUjian(ctx context.Context, userID, examID string) (*entity.CBTStartResponse, error)
 	GetSoal(ctx context.Context, userID, attemptID string) (*entity.CBTListQuestionsResponse, error)
 	GetSoalByNomor(ctx context.Context, userID, attemptID string, num int) (*entity.CBTQuestionItem, error)

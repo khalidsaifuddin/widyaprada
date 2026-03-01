@@ -2,6 +2,7 @@ package cbt
 
 import (
 	"context"
+	"strings"
 
 	"github.com/ProjectWidyaprada/backend/core/entity"
 )
@@ -19,7 +20,9 @@ func (u *cbtUsecase) SimpanJawaban(ctx context.Context, userID, attemptID string
 	}
 
 	answerValue := req.OptionID
-	if req.AnswerText != "" {
+	if len(req.OptionIDs) > 0 {
+		answerValue = strings.Join(req.OptionIDs, ",")
+	} else if req.AnswerText != "" {
 		answerValue = req.AnswerText
 	}
 	return u.cbtRepo.SaveAnswer(ctx, attemptID, req.QuestionID, answerValue)

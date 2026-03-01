@@ -10,6 +10,8 @@ import (
 type CBTRepo interface {
 	// ListExamsTersedia daftar ujian tersedia: Diterbitkan, jadwal aktif, user peserta, belum submit
 	ListExamsTersedia(ctx context.Context, userID string) ([]entity.CBTExamTersediaItem, error)
+	// GetExamByIDForInstructions detail ujian untuk halaman petunjuk
+	GetExamByIDForInstructions(ctx context.Context, examID, userID string) (*entity.CBTExamDetailResponse, error)
 	// CreateAttempt membuat attempt baru
 	CreateAttempt(ctx context.Context, examID, userID string) (*entity.CBTStartResponse, error)
 	// GetAttemptByID mendapatkan attempt by ID

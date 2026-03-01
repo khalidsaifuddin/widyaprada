@@ -112,7 +112,7 @@ export default function JurnalList() {
           </select>
           <button
             type="submit"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
           >
             {t("action.search")}
           </button>
@@ -135,7 +135,7 @@ export default function JurnalList() {
                 <Link
                   key={item.id}
                   href={`/jurnal/${item.id}`}
-                  className="block rounded-xl border border-gray-200 bg-white p-5 hover:shadow-md hover:border-blue-200 transition-all"
+                  className="block rounded-xl border border-gray-200 bg-white p-5 hover:shadow-lg hover:border-blue-200 hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <p className="text-xs text-gray-500 mb-1">
                     {item.published_at ? formatDate(item.published_at) : item.year || "-"} • {item.author}

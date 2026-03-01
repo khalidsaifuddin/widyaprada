@@ -70,7 +70,7 @@ export default function WPDataListPage() {
           <h1 className="text-2xl font-bold text-gray-900">Manajemen Data WP</h1>
           <p className="text-gray-600 mt-1">Data Widyaprada - NIP, Nama, Satker, Unit Kerja</p>
         </div>
-        <Link href="/wpdata/create" className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+        <Link href="/wpdata/create" className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white font-medium transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700">
           Tambah Data WP
         </Link>
       </div>
@@ -109,7 +109,7 @@ export default function WPDataListPage() {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {items.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-50">
+                  <tr key={item.id} className="transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50">
                     <td className="px-4 py-3 text-sm font-mono text-gray-900">{item.nip}</td>
                     <td className="px-4 py-3 text-sm font-medium text-gray-900">{item.nama_lengkap}</td>
                     <td className="px-4 py-3 text-sm text-gray-600">{item.satker_id || "-"}</td>

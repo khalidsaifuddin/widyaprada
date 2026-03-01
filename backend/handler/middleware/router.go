@@ -278,6 +278,7 @@ func InitRouter(cfg config.Config, db *gorm.DB) (*gin.Engine, interface{}) {
 	cbtGroup := v1Group.Group("/cbt")
 	cbtGroup.Use(AuthRequired(cfg, tokenBlacklist))
 	cbtGroup.GET("/exams", RequireAnyRole("PESERTA", "SUPER_ADMIN", "ADMIN_UJIKOM"), cbtHandler.GetCBTExams)
+	cbtGroup.GET("/exams/:id", RequireAnyRole("PESERTA", "SUPER_ADMIN", "ADMIN_UJIKOM"), cbtHandler.GetCBTExam)
 	cbtGroup.POST("/exams/:id/start", RequireAnyRole("PESERTA", "SUPER_ADMIN", "ADMIN_UJIKOM"), cbtHandler.StartCBTExam)
 	cbtGroup.GET("/attempts/:attemptId/questions", RequireAnyRole("PESERTA", "SUPER_ADMIN", "ADMIN_UJIKOM"), cbtHandler.GetCBTQuestions)
 	cbtGroup.GET("/attempts/:attemptId/questions/:num", RequireAnyRole("PESERTA", "SUPER_ADMIN", "ADMIN_UJIKOM"), cbtHandler.GetCBTQuestionByNum)

@@ -145,7 +145,7 @@ export default function ApplyUjikomPage() {
           <p className="mt-2 text-gray-600">Status: Menunggu verifikasi.</p>
           <Link
             href="/wpujikom/assignment"
-            className="mt-6 inline-block px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+            className="mt-6 inline-block px-4 py-2 rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
           >
             Kembali ke Tugas Saya
           </Link>
@@ -218,13 +218,13 @@ export default function ApplyUjikomPage() {
           <button
             type="submit"
             disabled={loading || !jenisUjikom || existingStatus !== null}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 disabled:opacity-50"
           >
             {loading ? "Mengirim..." : "Kirim Pendaftaran"}
           </button>
           <Link
             href="/wpujikom/assignment"
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
           >
             Batal
           </Link>

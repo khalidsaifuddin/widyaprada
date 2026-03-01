@@ -254,7 +254,7 @@ export default function Sidebar() {
         ) : (
           <Link
             href="/auth/login"
-            className="flex items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 w-full"
+            className="flex items-center justify-center rounded-xl bg-blue-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 text-white font-medium py-2 w-full"
           >
             {collapsed && !mobile ? "L" : t("nav.login")}
           </Link>
@@ -318,7 +318,7 @@ export default function Sidebar() {
     >
       <button
         type="button"
-        className="absolute -right-4 top-4 z-10 w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow hover:bg-gray-50"
+        className="absolute -right-4 top-4 z-10 w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
         onClick={() => setCollapsed((c) => !c)}
         aria-label={collapsed ? t("action.expand") : t("action.collapse")}
         style={{ left: collapsed ? 48 : width - 16 }}

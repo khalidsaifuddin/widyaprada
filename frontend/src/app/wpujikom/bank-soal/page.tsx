@@ -32,6 +32,13 @@ function isSuperAdmin(roleUser: { role_aplikasi?: string }[] | undefined): boole
   return roleUser?.some((r) => r.role_aplikasi === "SUPER_ADMIN") ?? false;
 }
 
+const TYPE_LABELS: Record<string, string> = {
+  PG: "Pilihan Ganda",
+  MRA: "Multiple Right Answer",
+  BENAR_SALAH: "Benar-Salah",
+  ESSAY: "Essay",
+};
+
 export default function BankSoalPage() {
   const [questions, setQuestions] = useState<QuestionListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,7 +53,7 @@ export default function BankSoalPage() {
   const [totalData, setTotalData] = useState(0);
   const [categories, setCategories] = useState<{ id: string; code: string; name: string }[]>([]);
   const [canCreate, setCanCreate] = useState(false);
-  const pageSize = 10;
+  const pageSize = 20;
 
   useEffect(() => {
     getUserProfile().then((p) => setCanCreate(isSuperAdmin(p?.role_user)));
@@ -109,12 +116,12 @@ export default function BankSoalPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Bank Soal</h1>
-          <p className="text-gray-600 mt-1">Kelola soal PG, Benar–Salah, Essay</p>
+          <p className="text-gray-600 mt-1">Kelola soal PG, MRA, Benar–Salah, Essay</p>
         </div>
         {canCreate && (
           <Link
             href="/wpujikom/bank-soal/create"
-            className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium"
           >
             Tambah Soal
           </Link>
@@ -138,6 +145,7 @@ export default function BankSoalPage() {
             >
               <option value="">Semua Tipe</option>
               <option value="PG">Pilihan Ganda</option>
+              <option value="MRA">Multiple Right Answer</option>
               <option value="BENAR_SALAH">Benar-Salah</option>
               <option value="ESSAY">Essay</option>
             </select>
@@ -207,9 +215,9 @@ export default function BankSoalPage() {
                   {questions.map((q) => (
                     <tr key={q.id}>
                       <td className="px-4 py-3 text-sm font-mono text-gray-900">{q.code}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{q.type}</td>
+                      <td className="px-4 py-3 text-sm text-gray-600">{TYPE_LABELS[q.type] ?? q.type}</td>
                       <td className="px-4 py-3 text-sm text-gray-600">{q.category_name || "-"}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600 truncate max-w-[200px]">{q.question_text}</td>
+                      <td className="px-4 py-3 text-sm text-gray-600 truncate max-w-[200px]">{q.question_text?.replace(/<[^>]*>/g, "") ?? "-"}</td>
                       <td className="px-4 py-3">
                         <span
                           className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${

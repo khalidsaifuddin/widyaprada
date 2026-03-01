@@ -38,7 +38,7 @@ func (r *cbtRepo) GetQuestionForCBT(ctx context.Context, questionID string) (*en
 		Weight:       q.Weight,
 	}
 
-	if q.Type == "PG" || q.Type == "BENAR_SALAH" {
+	if q.Type == "PG" || q.Type == "MRA" || q.Type == "BENAR_SALAH" {
 		var opts []struct {
 			ID         string
 			OptionKey  string

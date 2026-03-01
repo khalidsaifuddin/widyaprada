@@ -5,30 +5,35 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-interface CBTExamItem {
+interface CBTExamDetail {
   id: string;
   code: string;
   name: string;
   jadwal_mulai: string;
   jadwal_selesai: string;
   durasi_menit: number;
+  dapat_mulai: boolean;
+  alasan?: string;
 }
 
 export default function CBTInstructionsPage() {
   const params = useParams();
   const router = useRouter();
   const examId = params.examId as string;
-  const [exam, setExam] = useState<CBTExamItem | null>(null);
+  const [exam, setExam] = useState<CBTExamDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState("");
+  const [notFoundMessage, setNotFoundMessage] = useState("");
 
   const fetchExam = useCallback(async () => {
-    const res = await apiService.get<CBTListResponse>("v1/cbt/exams");
+    const res = await apiService.get<CBTExamDetail>(`v1/cbt/exams/${examId}`);
     if (res.success && res.data) {
-      const d = res.data as { items: CBTExamItem[] };
-      const found = d.items?.find((e) => e.id === examId);
-      setExam(found ?? null);
+      setExam(res.data);
+      setNotFoundMessage("");
+    } else {
+      setExam(null);
+      setNotFoundMessage(res.message ?? "Ujian tidak ditemukan.");
     }
     setLoading(false);
   }, [examId]);
@@ -71,10 +76,12 @@ export default function CBTInstructionsPage() {
         <Link href="/wpujikom/cbt" className="text-blue-600 hover:underline">
           ← Kembali
         </Link>
-        <p className="text-red-600">Ujian tidak ditemukan.</p>
+        <p className="text-red-600">{notFoundMessage || "Ujian tidak ditemukan."}</p>
       </div>
     );
   }
+
+  const canStart = exam.dapat_mulai;
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -89,20 +96,23 @@ export default function CBTInstructionsPage() {
           <p>Pastikan koneksi internet Anda stabil. Setelah memulai, timer akan berjalan.</p>
           <p>Jawaban otomatis tersimpan. Klik &quot;Submit Ujian&quot; untuk mengirim jawaban final.</p>
         </div>
+        {exam.alasan && (
+          <div className="mt-4 p-3 rounded-lg bg-amber-50 text-amber-800 text-sm">{exam.alasan}</div>
+        )}
         {error && (
           <div className="mt-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">{error}</div>
         )}
         <div className="mt-6 flex gap-3">
           <button
             onClick={handleMulai}
-            disabled={starting}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
+            disabled={starting || !canStart}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 disabled:opacity-50 font-medium"
           >
             {starting ? "Memulai..." : "Mulai Ujian"}
           </button>
           <Link
             href="/wpujikom/cbt"
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50"
           >
             Batal
           </Link>
@@ -110,8 +120,4 @@ export default function CBTInstructionsPage() {
       </div>
     </div>
   );
-}
-
-interface CBTListResponse {
-  items: CBTExamItem[];
 }

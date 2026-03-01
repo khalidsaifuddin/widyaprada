@@ -102,7 +102,7 @@ export default function AnnouncementPanel() {
                     {data.can_start_ujikom && (
                       <Link
                         href={`/wpujikom/cbt/${j.exam_id}/mulai`}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
                       >
                         <PlayIcon className="h-4 w-4" />
                         Mulai Ujikom

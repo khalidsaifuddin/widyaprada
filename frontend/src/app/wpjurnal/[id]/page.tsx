@@ -91,7 +91,7 @@ export default function WPJurnalDetailPage() {
         <h1 className="text-2xl font-bold text-gray-900">{data.title}</h1>
         <Link
           href={`/wpjurnal/${id}/edit`}
-          className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+          className="inline-flex px-4 py-2 rounded-lg bg-blue-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
         >
           Edit
         </Link>
@@ -123,7 +123,7 @@ export default function WPJurnalDetailPage() {
             href={pdfFullUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 font-medium"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-700 font-medium"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />

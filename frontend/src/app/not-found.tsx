@@ -31,7 +31,7 @@ export default function NotFound() {
             <div className="flex gap-3 w-full sm:w-auto">
               <Link
                 href="/"
-                className="flex-1 sm:flex-initial flex justify-center items-center px-4 py-3 rounded-lg text-white bg-blue-600 hover:bg-blue-700 font-medium text-sm"
+                className="flex-1 sm:flex-initial flex justify-center items-center px-4 py-3 rounded-lg text-white bg-blue-600 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700 font-medium text-sm"
               >
                 <HomeIcon className="h-5 w-5 mr-2" />
                 {t("nav.home")}
@@ -39,7 +39,7 @@ export default function NotFound() {
               <button
                 type="button"
                 onClick={() => window.history.back()}
-                className="flex-1 sm:flex-initial flex justify-center items-center px-4 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium text-sm"
+                className="flex-1 sm:flex-initial flex justify-center items-center px-4 py-3 rounded-lg border border-gray-300 text-gray-700 bg-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50 font-medium text-sm"
               >
                 {t("action.back")}
               </button>

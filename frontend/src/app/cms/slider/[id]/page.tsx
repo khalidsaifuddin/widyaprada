@@ -55,14 +55,14 @@ export default function SliderDetailPage() {
         <div className="flex gap-2">
           <Link
             href={`/cms/slider/${id}/edit`}
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-blue-700"
           >
             Edit
           </Link>
           <button
             type="button"
             onClick={() => setDeleteOpen(true)}
-            className="rounded-lg border border-red-600 text-red-600 px-4 py-2 text-sm font-medium hover:bg-red-50"
+            className="rounded-lg border border-red-600 text-red-600 px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-red-50"
           >
             Hapus
           </button>

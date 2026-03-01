@@ -110,32 +110,40 @@ type ExamParticipantInfo struct {
 	UserName string `json:"user_name,omitempty"`
 }
 
+// ExamContentInput item untuk create/update (urutan preserved)
+type ExamContentInput struct {
+	SourceType string `json:"source_type"` // question | package
+	SourceID   string `json:"source_id"`
+}
+
 // CreateExamRequest untuk POST /api/v1/exams
 type CreateExamRequest struct {
-	Code                 string   `json:"code" binding:"required"`
-	Name                 string   `json:"name" binding:"required"`
-	JadwalMulai          string   `json:"jadwal_mulai" binding:"required"`
-	JadwalSelesai        string   `json:"jadwal_selesai" binding:"required"`
-	DurasiMenit          int      `json:"durasi_menit" binding:"required"`
-	QuestionIDs          []string `json:"question_ids"`
-	PackageIDs           []string `json:"package_ids"`
-	ParticipantIDs       []string `json:"participant_ids"`
-	ShuffleQuestions     bool     `json:"shuffle_questions"`
-	TampilkanLeaderboard bool     `json:"tampilkan_leaderboard"`
+	Code                 string              `json:"code" binding:"required"`
+	Name                 string              `json:"name" binding:"required"`
+	JadwalMulai          string              `json:"jadwal_mulai" binding:"required"`
+	JadwalSelesai        string              `json:"jadwal_selesai" binding:"required"`
+	DurasiMenit          int                 `json:"durasi_menit" binding:"required"`
+	Contents             []ExamContentInput  `json:"contents"` // urutan: soal/paket dicampur
+	QuestionIDs          []string            `json:"question_ids"` // fallback jika contents kosong
+	PackageIDs           []string            `json:"package_ids"`
+	ParticipantIDs       []string            `json:"participant_ids"`
+	ShuffleQuestions     bool                `json:"shuffle_questions"`
+	TampilkanLeaderboard bool                `json:"tampilkan_leaderboard"`
 }
 
 // UpdateExamRequest untuk PUT /api/v1/exams/:id
 type UpdateExamRequest struct {
-	Code                 string   `json:"code"`
-	Name                 string   `json:"name"`
-	JadwalMulai          string   `json:"jadwal_mulai"`
-	JadwalSelesai        string   `json:"jadwal_selesai"`
-	DurasiMenit          int      `json:"durasi_menit"`
-	QuestionIDs          []string `json:"question_ids"`
-	PackageIDs           []string `json:"package_ids"`
-	ParticipantIDs       []string `json:"participant_ids"`
-	ShuffleQuestions     *bool    `json:"shuffle_questions"`
-	TampilkanLeaderboard *bool    `json:"tampilkan_leaderboard"`
+	Code                 string              `json:"code"`
+	Name                 string              `json:"name"`
+	JadwalMulai          string              `json:"jadwal_mulai"`
+	JadwalSelesai        string              `json:"jadwal_selesai"`
+	DurasiMenit          int                 `json:"durasi_menit"`
+	Contents             []ExamContentInput  `json:"contents"`
+	QuestionIDs          []string            `json:"question_ids"`
+	PackageIDs           []string            `json:"package_ids"`
+	ParticipantIDs       []string            `json:"participant_ids"`
+	ShuffleQuestions     *bool               `json:"shuffle_questions"`
+	TampilkanLeaderboard *bool               `json:"tampilkan_leaderboard"`
 }
 
 // DeleteExamRequest untuk DELETE /api/v1/exams/:id

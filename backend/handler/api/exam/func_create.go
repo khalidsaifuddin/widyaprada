@@ -38,10 +38,6 @@ func (h *examHTTPHandler) CreateExam(c *gin.Context) {
 			helper.ResponseOutput(c, int32(http.StatusBadRequest), "Minimal 1 soal atau paket dalam ujian", nil)
 			return
 		}
-		if errors.Is(err, entity.ErrExamMinParticipant) {
-			helper.ResponseOutput(c, int32(http.StatusBadRequest), "Minimal 1 peserta dalam ujian", nil)
-			return
-		}
 		helper.ResponseOutput(c, int32(http.StatusInternalServerError), "Internal server error", nil)
 		return
 	}

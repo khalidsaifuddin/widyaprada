@@ -181,12 +181,13 @@ func seedDevQuestions(db *gorm.DB) error {
 		return err
 	}
 	now := time.Now().UTC()
+	catID := cat.ID
 
 	q1 := questionrepo.Question{
 		ID:                 uuid.New().String(),
 		Code:               "UMUM-001",
 		Type:               "PG",
-		CategoryID:         cat.ID,
+		CategoryID:         &catID,
 		Difficulty:         "mudah",
 		QuestionText:       "Apa kepanjangan dari PMP?",
 		AnswerKey:          "A",
@@ -210,7 +211,7 @@ func seedDevQuestions(db *gorm.DB) error {
 		ID:                 uuid.New().String(),
 		Code:               "UMUM-002",
 		Type:               "PG",
-		CategoryID:         cat.ID,
+		CategoryID:         &catID,
 		Difficulty:         "sedang",
 		QuestionText:       "Siapa yang bertugas sebagai widyaprada?",
 		AnswerKey:          "B",
@@ -234,7 +235,7 @@ func seedDevQuestions(db *gorm.DB) error {
 		ID:                 uuid.New().String(),
 		Code:               "UMUM-003",
 		Type:               "PG",
-		CategoryID:         cat.ID,
+		CategoryID:         &catID,
 		Difficulty:         "mudah",
 		QuestionText:       "Standar Nasional Pendidikan mencakup berapa standar?",
 		AnswerKey:          "C",

@@ -42,62 +42,69 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
 
   if (len === 0) return null;
 
-  const slide = slides[current];
-  const hasLink = slide.link_url && slide.link_url.trim() !== "";
-
   return (
     <div
       className="relative w-full overflow-hidden bg-gray-900"
       style={{ minHeight: 416 }}
-      onMouseEnter={() => {
-        // pause auto-play on hover would need ref to interval
-      }}
     >
       <div className="relative w-full h-[416px] md:h-[546px]">
-        {slide.image_url ? (
-          <Image
-            src={resolveImageUrl(slide.image_url)}
-            alt={slide.title}
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-            unoptimized
-          />
-        ) : (
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(135deg, #022a47 0%, #044a7d 100%)",
-            }}
-          />
-        )}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 35%, transparent 70%)",
-          }}
-        />
-        <div className="absolute inset-0 flex items-end justify-center">
-          <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8 md:pb-12 text-left text-white">
-            <h2 className="text-4xl md:text-4xl font-bold drop-shadow-lg">
-              {slide.title || t("hero.welcome")}
-            </h2>
-            {slide.subtitle && (
-              <p className="mt-2 text-base md:text-lg text-white/90 drop-shadow">
-                {slide.subtitle}
-              </p>
-            )}
-            {hasLink && (
-              <Link
-                href={slide.link_url!}
-                className="mt-6 inline-block rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-[#033259] hover:bg-white/90 transition-colors"
-              >
-                {slide.cta_label || t("hero.readMore")}
-              </Link>
-            )}
-          </div>
-        </div>
+        {slides.map((slide, i) => {
+          const isActive = i === current;
+          const hasLink = slide.link_url && slide.link_url.trim() !== "";
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${!isActive ? "pointer-events-none" : ""}`}
+              style={{ opacity: isActive ? 1 : 0 }}
+              aria-hidden={!isActive}
+            >
+              {slide.image_url ? (
+                <Image
+                  src={resolveImageUrl(slide.image_url)}
+                  alt={slide.title}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                  priority={i === 0}
+                  unoptimized
+                />
+              ) : (
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: "linear-gradient(135deg, #022a47 0%, #044a7d 100%)",
+                  }}
+                />
+              )}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 35%, transparent 70%)",
+                }}
+              />
+              <div className="absolute inset-0 flex items-end justify-center">
+                <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8 md:pb-12 text-left text-white">
+                  <h2 className="text-4xl md:text-4xl font-bold drop-shadow-lg">
+                    {slide.title || t("hero.welcome")}
+                  </h2>
+                  {slide.subtitle && (
+                    <p className="mt-2 text-base md:text-lg text-white/90 drop-shadow">
+                      {slide.subtitle}
+                    </p>
+                  )}
+                  {hasLink && (
+                    <Link
+                      href={slide.link_url!}
+                      className="mt-6 inline-block rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-[#033259] hover:bg-white/90 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5"
+                    >
+                      {slide.cta_label || t("hero.readMore")}
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {len > 1 && (
@@ -105,7 +112,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
           <button
             type="button"
             onClick={goPrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+            className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-all duration-300 hover:scale-110"
             aria-label={t("hero.slidePrev")}
           >
             <ChevronLeftIcon className="h-6 w-6" />
@@ -113,7 +120,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
           <button
             type="button"
             onClick={goNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-all duration-300 hover:scale-110"
             aria-label={t("hero.slideNext")}
           >
             <ChevronRightIcon className="h-6 w-6" />

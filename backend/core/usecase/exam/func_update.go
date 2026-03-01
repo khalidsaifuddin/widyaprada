@@ -44,7 +44,25 @@ func (u *examUsecase) Update(ctx context.Context, id string, req entity.UpdateEx
 		e.TampilkanLeaderboard = *req.TampilkanLeaderboard
 	}
 
-	if len(req.QuestionIDs) > 0 || len(req.PackageIDs) > 0 {
+	if len(req.Contents) > 0 {
+		var contents []entity.ExamContentItem
+		for i, c := range req.Contents {
+			if c.SourceType != entity.ExamContentSourceQuestion && c.SourceType != entity.ExamContentSourcePackage {
+				continue
+			}
+			contents = append(contents, entity.ExamContentItem{
+				SourceType: c.SourceType,
+				SourceID:   c.SourceID,
+				SortOrder:  i + 1,
+			})
+		}
+		if len(contents) == 0 {
+			return nil, entity.ErrExamMinContent
+		}
+		if err := u.examRepo.SetContents(ctx, id, contents); err != nil {
+			return nil, err
+		}
+	} else if len(req.QuestionIDs) > 0 || len(req.PackageIDs) > 0 {
 		var contents []entity.ExamContentItem
 		sortOrder := 1
 		for _, qid := range req.QuestionIDs {
@@ -63,14 +81,11 @@ func (u *examUsecase) Update(ctx context.Context, id string, req entity.UpdateEx
 			})
 			sortOrder++
 		}
-		if len(contents) == 0 {
-			return nil, entity.ErrExamMinContent
-		}
 		if err := u.examRepo.SetContents(ctx, id, contents); err != nil {
 			return nil, err
 		}
 	}
-	if len(req.ParticipantIDs) > 0 {
+	if req.ParticipantIDs != nil {
 		if err := u.examRepo.SetParticipants(ctx, id, req.ParticipantIDs); err != nil {
 			return nil, err
 		}

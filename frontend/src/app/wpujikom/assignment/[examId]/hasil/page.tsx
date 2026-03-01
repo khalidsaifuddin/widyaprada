@@ -69,7 +69,7 @@ export default function ExamResultPage() {
         <div className="mt-6">
           <Link
             href={`/wpujikom/assignment/${examId}/leaderboard`}
-            className="inline-flex px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium"
+            className="inline-flex px-4 py-2 rounded-lg border border-gray-300 text-gray-700 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:bg-gray-50 font-medium"
           >
             Lihat Leaderboard (jika tersedia)
           </Link>
