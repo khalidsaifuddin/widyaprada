@@ -14,6 +14,7 @@ type Journal struct {
 	Author      string         `gorm:"column:author;size:255"`
 	Abstract    string         `gorm:"column:abstract;type:text"`
 	Content     string         `gorm:"column:content;type:text"`
+	PdfURL      string         `gorm:"column:pdf_url;size:1000"`
 	PublishedAt *time.Time     `gorm:"column:published_at"`
 	Status      string         `gorm:"column:status;size:50;default:Draft"`
 	Category    string         `gorm:"column:category;size:100"`

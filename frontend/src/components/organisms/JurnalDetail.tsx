@@ -10,6 +10,7 @@ interface JurnalDetailData {
   author: string;
   abstract?: string;
   content?: string;
+  pdf_url?: string;
   published_at?: string;
   year?: number;
   category?: string;
@@ -93,6 +94,21 @@ export default function JurnalDetail({ id }: { id: string }) {
           <div className="rounded-lg bg-gray-50 p-4 mb-8">
             <h3 className="font-semibold text-gray-900 mb-2">Abstrak</h3>
             <p className="text-gray-700 leading-relaxed">{data.abstract}</p>
+          </div>
+        )}
+        {data.pdf_url && (
+          <div className="mb-8">
+            <a
+              href={data.pdf_url.startsWith("http") ? data.pdf_url : ((process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/api\/?$/, "") ?? "http://localhost:8080") + data.pdf_url)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 font-medium"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+              </svg>
+              Unduh PDF
+            </a>
           </div>
         )}
         {data.content && (

@@ -135,7 +135,8 @@ export const getAuthData = async (): Promise<AuthData | null> => {
   const data = await getFromDB();
   if (!data?.access_token) return null;
   if (data.expiry && new Date(data.expiry) <= new Date()) {
-    await logout();
+    await clearDB();
+    clearAuthCookie();
     return null;
   }
   return data;

@@ -17,6 +17,7 @@ import (
 	landing_api "github.com/ProjectWidyaprada/backend/handler/api/landing"
 	jurnal_api "github.com/ProjectWidyaprada/backend/handler/api/jurnal"
 	question_api "github.com/ProjectWidyaprada/backend/handler/api/question"
+	upload_api "github.com/ProjectWidyaprada/backend/handler/api/upload"
 	questionpackage_api "github.com/ProjectWidyaprada/backend/handler/api/questionpackage"
 	rbac_api "github.com/ProjectWidyaprada/backend/handler/api/rbac"
 	user_api "github.com/ProjectWidyaprada/backend/handler/api/user"
@@ -74,9 +75,13 @@ func InitRouter(cfg config.Config, db *gorm.DB) (*gin.Engine, interface{}) {
 		router.Use(SentryRecoveryMiddleware())
 		router.Use(SentryMiddleware())
 	}
-	router.MaxMultipartMemory = 10 << 20
+	router.MaxMultipartMemory = 16 << 20
 	router.Use(func(c *gin.Context) {
-		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 1<<20)
+		maxBytes := int64(1 << 20)
+		if strings.Contains(c.GetHeader("Content-Type"), "multipart/form-data") {
+			maxBytes = 16 << 20
+		}
+		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, maxBytes)
 		c.Next()
 	})
 
@@ -306,10 +311,21 @@ func InitRouter(cfg config.Config, db *gorm.DB) (*gin.Engine, interface{}) {
 	jurnalGroup.GET("", jurnalHandler.GetList)
 	jurnalGroup.GET("/:id", jurnalHandler.GetByID)
 
+	// WPJurnal (manajemen jurnal - auth)
+	wpjurnalGroup := v1Group.Group("/wpjurnal")
+	wpjurnalGroup.Use(AuthRequired(cfg, tokenBlacklist))
+	wpjurnalGroup.Use(RequireAnyRole("PESERTA", "SUPER_ADMIN", "ADMIN_UJIKOM", "ADMIN_SATKER"))
+	uploadHandler := upload_api.NewUploadHTTPHandler()
+	wpjurnalGroup.GET("/:id", jurnalHandler.GetByIDForOwner)
+	wpjurnalGroup.POST("/upload-pdf", uploadHandler.UploadJournalPDF)
+	wpjurnalGroup.POST("", jurnalHandler.Create)
+	wpjurnalGroup.PUT("/:id", jurnalHandler.Update)
+
 	// CMS Slider, Berita, Tautan (auth: Admin Satker or Super Admin)
 	cmsGroup := v1Group.Group("/cms")
 	cmsGroup.Use(AuthRequired(cfg, tokenBlacklist))
 	cmsGroup.Use(RequireAnyRole("SUPER_ADMIN", "ADMIN_SATKER"))
+	cmsGroup.POST("/upload-image", uploadHandler.UploadImage)
 	sliderGroup := cmsGroup.Group("/slider")
 	sliderGroup.GET("", cmsHandler.GetSlideList)
 	sliderGroup.POST("", cmsHandler.CreateSlide)
@@ -345,6 +361,12 @@ func InitRouter(cfg config.Config, db *gorm.DB) (*gin.Engine, interface{}) {
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"code": "404", "message": "Page not found"})
 	})
+
+	uploadDir := cfg.UploadDir
+	if uploadDir == "" {
+		uploadDir = "uploads"
+	}
+	router.Static("/uploads", uploadDir)
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

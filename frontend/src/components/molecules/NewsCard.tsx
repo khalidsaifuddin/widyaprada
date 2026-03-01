@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { resolveImageUrl } from "@/lib/image";
 
 export interface NewsCardProps {
   id: string;
@@ -42,12 +43,12 @@ export default function NewsCard({
       <div className="relative h-40 bg-gray-100">
         {imageUrl ? (
           <Image
-            src={imageUrl}
+            src={resolveImageUrl(imageUrl)}
             alt={title}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 33vw"
-            unoptimized={imageUrl.startsWith("http")}
+            unoptimized
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-gray-400">

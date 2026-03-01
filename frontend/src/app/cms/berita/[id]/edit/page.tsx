@@ -1,6 +1,8 @@
 "use client";
 
 import BeritaImageSlider from "@/components/molecules/BeritaImageSlider";
+import ImageUrlInput from "@/components/molecules/ImageUrlInput";
+import RichTextEditor from "@/components/molecules/RichTextEditor";
 import { apiService } from "@/lib/api";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -89,32 +91,33 @@ export default function BeritaCMSEditPage() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Konten</label>
-          <textarea value={konten} onChange={(e) => setKonten(e.target.value)} rows={10} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono" />
+          <RichTextEditor value={konten} onChange={setKonten} placeholder="Ketik konten berita di sini..." />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">URL Thumbnail</label>
-          <input type="url" value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" placeholder="https://..." />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
+          <p className="text-xs text-gray-500 mb-1">Masukkan URL atau unggah langsung ke folder images</p>
+          <ImageUrlInput value={thumbnail} onChange={setThumbnail} placeholder="URL atau unggah file" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Galeri Gambar (multiple)</label>
-          <p className="text-xs text-gray-500 mb-2">URL gambar ditampilkan sebagai slider di halaman detail berita</p>
+          <p className="text-xs text-gray-500 mb-2">URL atau unggah langsung untuk slider di halaman detail berita</p>
           {galleryUrls.map((url, i) => (
-            <div key={i} className="flex gap-2 mb-2">
-              <input
-                type="url"
-                value={url}
-                onChange={(e) => {
-                  const next = [...galleryUrls];
-                  next[i] = e.target.value;
-                  setGalleryUrls(next);
-                }}
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                placeholder={`URL gambar ${i + 1}`}
-              />
+            <div key={i} className="flex gap-2 mb-2 items-start">
+              <div className="flex-1 min-w-0">
+                <ImageUrlInput
+                  value={url}
+                  onChange={(v) => {
+                    const next = [...galleryUrls];
+                    next[i] = v;
+                    setGalleryUrls(next);
+                  }}
+                  placeholder={`Gambar ${i + 1}`}
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => setGalleryUrls(galleryUrls.filter((_, j) => j !== i))}
-                className="rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                className="shrink-0 rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 hover:bg-red-50 mt-1"
               >
                 Hapus
               </button>

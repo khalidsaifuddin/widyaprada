@@ -8,6 +8,9 @@ import (
 type JurnalHTTPHandler interface {
 	GetList(c *gin.Context)
 	GetByID(c *gin.Context)
+	GetByIDForOwner(c *gin.Context)
+	Create(c *gin.Context)
+	Update(c *gin.Context)
 }
 
 type jurnalHTTPHandler struct {

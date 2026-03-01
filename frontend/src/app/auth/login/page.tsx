@@ -126,12 +126,12 @@ function LoginForm() {
       }}
     >
       <div className="w-full max-w-md">
-        <div className="text-center mb-8 md:hidden">
-          <img src={ui.logo.src} alt={ui.logo.alt} className="h-14 w-auto mx-auto mb-2" />
-          <h2 className="text-2xl font-bold">
+        <div className="flex items-center justify-center space-x-3 mb-8">
+          <img src={ui.logo.src} alt={ui.logo.alt} className="h-24 w-auto" />
+          <span className="text-5xl font-bold whitespace-nowrap">
             <span style={{ color: "#057AC1" }}>Widya</span>
             <span style={{ color: "#F9A702" }}>prada</span>
-          </h2>
+          </span>
         </div>
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-6">

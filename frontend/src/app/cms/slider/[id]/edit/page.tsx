@@ -1,6 +1,8 @@
 "use client";
 
 import { apiService } from "@/lib/api";
+import ImageUrlInput from "@/components/molecules/ImageUrlInput";
+import { resolveImageUrl } from "@/lib/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -84,8 +86,9 @@ export default function SliderEditPage() {
       <form onSubmit={handleSubmit} className="max-w-xl space-y-4">
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">URL Gambar *</label>
-          <input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" required />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Gambar *</label>
+          <p className="text-xs text-gray-500 mb-1">Masukkan URL atau unggah langsung ke folder images</p>
+          <ImageUrlInput value={imageUrl} onChange={setImageUrl} />
           {imageUrl.trim() && (
             <div className="mt-3">
               <p className="text-xs text-gray-500 mb-1">Pratinjau</p>
@@ -94,7 +97,7 @@ export default function SliderEditPage() {
                   <p className="text-sm text-gray-500">Gagal memuat gambar</p>
                 ) : (
                   <img
-                    src={imageUrl.trim()}
+                    src={resolveImageUrl(imageUrl.trim())}
                     alt="Pratinjau gambar slide"
                     className="h-full w-full object-contain"
                     onLoad={() => setImgError(false)}

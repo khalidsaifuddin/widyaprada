@@ -116,6 +116,7 @@ func toJournalEntity(j *Journal) *entity.Jurnal {
 		Author:      j.Author,
 		Abstract:    j.Abstract,
 		Content:     j.Content,
+		PdfURL:      j.PdfURL,
 		PublishedAt: publishedAt,
 		Status:      j.Status,
 		Category:    j.Category,
@@ -159,6 +160,7 @@ func (r *journalRepo) Create(ctx context.Context, j *entity.Jurnal) error {
 		Author:      j.Author,
 		Abstract:    j.Abstract,
 		Content:     j.Content,
+		PdfURL:      j.PdfURL,
 		PublishedAt: publishedAt,
 		Status:      j.Status,
 		Category:    j.Category,
@@ -167,5 +169,41 @@ func (r *journalRepo) Create(ctx context.Context, j *entity.Jurnal) error {
 		CreatedAt:   &now,
 		UpdatedAt:   &now,
 	}
-	return r.db.WithContext(ctx).Create(&dto).Error
+	if err := r.db.WithContext(ctx).Create(&dto).Error; err != nil {
+		return err
+	}
+	j.ID = dto.ID
+	return nil
+}
+
+// Update journal by ID
+func (r *journalRepo) Update(ctx context.Context, j *entity.Jurnal) error {
+	var existing Journal
+	if err := r.db.WithContext(ctx).Where("id = ? AND deleted_at IS NULL", j.ID).First(&existing).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil
+		}
+		return err
+	}
+	now := time.Now().UTC()
+	var publishedAt *time.Time
+	if j.PublishedAt != "" {
+		if t, err := time.Parse(time.RFC3339, j.PublishedAt); err == nil {
+			t := t.UTC()
+			publishedAt = &t
+		}
+	}
+	updates := map[string]interface{}{
+		"title":        j.Title,
+		"author":       j.Author,
+		"abstract":     j.Abstract,
+		"content":      j.Content,
+		"pdf_url":      j.PdfURL,
+		"published_at": publishedAt,
+		"status":       j.Status,
+		"category":     j.Category,
+		"year":         j.Year,
+		"updated_at":   &now,
+	}
+	return r.db.WithContext(ctx).Model(&Journal{}).Where("id = ?", j.ID).Updates(updates).Error
 }

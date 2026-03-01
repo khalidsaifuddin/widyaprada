@@ -53,6 +53,9 @@ type Config struct {
 	JWTSecret   string `envconfig:"JWT_SECRET" default:"widyaprada-secret-change-in-production"`
 	JWTExpiryHr int    `envconfig:"JWT_EXPIRY_HOUR" default:"1"`
 
+	// Upload: folder relatif terhadap working directory backend
+	UploadDir string `envconfig:"UPLOAD_DIR" default:"uploads"`
+
 	// Lupa Password
 	FrontendURL        string `envconfig:"FRONTEND_URL" default:"http://localhost:3000"`
 	ResetTokenExpiryHr int    `envconfig:"RESET_TOKEN_EXPIRY_HOUR" default:"1"`

@@ -12,6 +12,7 @@ type Jurnal struct {
 	Author      string  `json:"author"`
 	Abstract    string  `json:"abstract"`
 	Content     string  `json:"content"`
+	PdfURL      string  `json:"pdf_url,omitempty"`
 	PublishedAt string  `json:"published_at,omitempty"`
 	Status      string  `json:"status"`
 	Category    string  `json:"category,omitempty"`
@@ -59,6 +60,7 @@ type JurnalDetailResponse struct {
 	Author      string `json:"author"`
 	Abstract    string `json:"abstract"`
 	Content     string `json:"content"`
+	PdfURL      string `json:"pdf_url,omitempty"`
 	PublishedAt string `json:"published_at,omitempty"`
 	Status      string `json:"status"`
 	Year        int    `json:"year,omitempty"`

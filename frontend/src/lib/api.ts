@@ -72,6 +72,23 @@ class ApiService {
     return this.handleResponse<T>(res);
   }
 
+  async uploadFile<T>(endpoint: string, formData: FormData): Promise<ApiResponse<T>> {
+    if (!this.checkRateLimit()) {
+      return { success: false, data: null as T, message: "Rate limit exceeded" };
+    }
+    const path = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
+    const url = new URL(path, this.baseUrl + "/");
+    const headers = await this.authHeaders();
+    delete (headers as Record<string, string>)["Content-Type"];
+    const res = await fetch(url.toString(), {
+      method: "POST",
+      headers,
+      body: formData,
+      credentials: "include",
+    });
+    return this.handleResponse<T>(res);
+  }
+
   async post<T>(endpoint: string, body?: unknown): Promise<ApiResponse<T>> {
     if (!this.checkRateLimit()) {
       return { success: false, data: null as T, message: "Rate limit exceeded" };
@@ -128,6 +145,7 @@ export const apiService = {
   post: <T>(endpoint: string, body?: unknown) => api.post<T>(endpoint, body),
   put: <T>(endpoint: string, body?: unknown) => api.put<T>(endpoint, body),
   delete: <T>(endpoint: string, body?: unknown) => api.delete<T>(endpoint, body),
+  uploadFile: <T>(endpoint: string, formData: FormData) => api.uploadFile<T>(endpoint, formData),
 };
 
 export function extractApiData<T>(response: ApiResponse<unknown>, fallback: T): T {

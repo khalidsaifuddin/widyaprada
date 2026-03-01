@@ -10,6 +10,12 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@tiptap/extension-link": "^3.20.0",
+    "@tiptap/extension-placeholder": "^3.20.0",
+    "@tiptap/extension-underline": "^3.20.0",
+    "@tiptap/pm": "^3.20.0",
+    "@tiptap/react": "^3.20.0",
+    "@tiptap/starter-kit": "^3.20.0",
     "clsx": "^2.1.1",
     "i18next": "^25.8.13",
     "i18next-http-backend": "^3.0.2",

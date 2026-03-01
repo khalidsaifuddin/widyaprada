@@ -3,6 +3,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { resolveImageUrl } from "@/lib/image";
 
 interface BeritaImageSliderProps {
   images: string[];
@@ -30,7 +31,7 @@ export default function BeritaImageSlider({ images, title, className = "" }: Ber
 
   if (len === 0) return null;
 
-  const src = images[current];
+  const src = resolveImageUrl(images[current]);
   return (
     <div className={`relative h-64 md:h-96 rounded-xl overflow-hidden bg-gray-100 ${className}`}>
       <Image
@@ -40,7 +41,7 @@ export default function BeritaImageSlider({ images, title, className = "" }: Ber
         fill
         className="object-cover"
         sizes="(max-width: 768px) 100vw, 672px"
-        unoptimized={src.startsWith("http")}
+        unoptimized
       />
       {len > 1 && (
         <>

@@ -3,6 +3,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import { resolveImageUrl } from "@/lib/image";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -55,13 +56,13 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
       <div className="relative w-full h-[416px] md:h-[546px]">
         {slide.image_url ? (
           <Image
-            src={slide.image_url}
+            src={resolveImageUrl(slide.image_url)}
             alt={slide.title}
             fill
             className="object-cover"
             sizes="100vw"
             priority
-            unoptimized={slide.image_url.startsWith("http")}
+            unoptimized
           />
         ) : (
           <div
@@ -71,10 +72,15 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
             }}
           />
         )}
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="max-w-4xl mx-auto px-4 text-center text-white">
-            <h2 className="text-2xl md:text-4xl font-bold drop-shadow-lg">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 35%, transparent 70%)",
+          }}
+        />
+        <div className="absolute inset-0 flex items-end justify-center">
+          <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8 md:pb-12 text-left text-white">
+            <h2 className="text-4xl md:text-4xl font-bold drop-shadow-lg">
               {slide.title || t("hero.welcome")}
             </h2>
             {slide.subtitle && (
@@ -118,9 +124,8 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
                 key={i}
                 type="button"
                 onClick={() => setCurrent(i)}
-                className={`h-2 rounded-full transition-all ${
-                  i === current ? "w-6 bg-white" : "w-2 bg-white/50 hover:bg-white/70"
-                }`}
+                className={`h-2 rounded-full transition-all ${i === current ? "w-6 bg-white" : "w-2 bg-white/50 hover:bg-white/70"
+                  }`}
                 aria-label={`Slide ${i + 1}`}
               />
             ))}

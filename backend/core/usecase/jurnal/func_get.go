@@ -20,6 +20,7 @@ func (u *jurnalUsecase) GetByID(ctx context.Context, id string) (*entity.JurnalD
 		Author:      j.Author,
 		Abstract:    j.Abstract,
 		Content:     j.Content,
+		PdfURL:      j.PdfURL,
 		PublishedAt: j.PublishedAt,
 		Status:      j.Status,
 		Year:        j.Year,
